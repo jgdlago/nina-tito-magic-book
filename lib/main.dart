@@ -1,7 +1,7 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'package:nina_tito_magic_book/magic_book_game.dart';
-import 'main_menu.dart';
+import 'package:nina_tito_magic_book/game/magic_book_game.dart';
+import 'components/main_menu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
