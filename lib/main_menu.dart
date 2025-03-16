@@ -32,14 +32,29 @@ class MainMenu extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 50.0),
-                child: Text(
-                  'As aventuras de Nina e Tito em busca do livro mágico',
-                  style: GoogleFonts.londrinaShadow(
-                    fontSize: 44,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'As aventuras de Nina e Tito',
+                      style: GoogleFonts.cinzel(
+                        fontSize: 44,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Em busca do livro mágico',
+                      style: GoogleFonts.cinzel(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ),
