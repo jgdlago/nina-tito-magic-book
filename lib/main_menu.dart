@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MainMenu extends StatelessWidget {
@@ -32,7 +33,7 @@ class MainMenu extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Text(
-                  'As aventuras de Nina e Tito em busca do livro màgico',
+                  'As aventuras de Nina e Tito em busca do livro mágico',
                   style: GoogleFonts.londrinaShadow(
                     fontSize: 44,
                     color: Colors.white,
@@ -57,7 +58,12 @@ class MainMenu extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Configurações'),
+                  child: SvgPicture.asset(
+                    'assets/icons/more.svg',
+                    width: 40,
+                    height: 40,
+                    colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  ),
                 ),
               ),
             ),
@@ -76,7 +82,17 @@ class MainMenu extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Iniciar Jogo'),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/play.svg',
+                        width: 40,
+                        height: 40,
+                        colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

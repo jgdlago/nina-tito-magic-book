@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
           runApp(const MagicBookGameWidget());
         },
         onSettings: () {
-          // Adicione a lógica para abrir a tela de configurações
           debugPrint('Abrir Configurações');
         },
       ),
