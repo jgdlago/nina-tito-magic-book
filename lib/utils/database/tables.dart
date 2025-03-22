@@ -1,8 +1,62 @@
+const String createPlayersTable = '''
+  CREATE TABLE players(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    character TEXT NOT NULL,
+    equipped_skin TEXT NOT NULL,
+  )
+''';
+
 const String createUsersTable = '''
   CREATE TABLE users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     age INTEGER NOT NULL,
-    gender TEXT CHECK(gender IN ('Masculino', 'Feminino')) NOT NULL
+    gender TEXT CHECK(gender IN ('Masculino', 'Feminino')) NOT NULL,
+    player_id INTEGER UNIQUE NULL,
+    FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE SET NULL
   )
 ''';
+
+const String createLevelsTable = '''
+  CREATE TABLE levels(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    order INTEGER NOT NULL,
+    finished_at DATETIME DEFAULT NULL
+  )
+''';
+
+const String createUserProgressTable = '''
+  CREATE TABLE user_progress(
+    user_id INTEGER NOT NULL,
+    level_id INTEGER NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, level_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (level_id) REFERENCES levels(id) ON DELETE CASCADE
+  )
+''';
+
+const String createItemsTable = '''
+  CREATE TABLE items(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    unlock_level_id INTEGER NOT NULL,
+    FOREIGN KEY (unlock_level_id) REFERENCES levels(id) ON DELETE CASCADE
+  )
+''';
+
+const String createUserItemsTable = '''
+  CREATE TABLE user_items(
+    user_id INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    collected_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, item_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
+  )
+''';
+
+
+
