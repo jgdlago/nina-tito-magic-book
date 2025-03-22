@@ -1,14 +1,14 @@
-enum Gender {
+enum GenderEnum {
   male,
   female,
 }
 
-extension GenderExtension on Gender {
+extension GenderEnumExtension on GenderEnum {
   String get label {
     switch (this) {
-      case Gender.male:
+      case GenderEnum.male:
         return 'Masculino';
-      case Gender.female:
+      case GenderEnum.female:
         return 'Feminino';
     }
   }

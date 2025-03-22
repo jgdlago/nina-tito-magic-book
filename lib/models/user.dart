@@ -4,7 +4,7 @@ class User {
   final int id;
   final String name;
   final int age;
-  final Gender gender;
+  final GenderEnum gender;
   final int? playerId;
 
   User({
@@ -20,7 +20,7 @@ class User {
       id: map['id'],
       name: map['name'],
       age: map['age'],
-      gender: Gender.values.firstWhere((e) => e.toString() == 'Gender.${map['gender']}'),
+      gender: GenderEnum.values.firstWhere((e) => e.toString() == 'Gender.${map['gender']}'),
       playerId: map['player_id'],
     );
   }
