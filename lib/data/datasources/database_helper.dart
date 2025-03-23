@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:nina_tito_magic_book/utils/database/tables.dart';
+import 'tables.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

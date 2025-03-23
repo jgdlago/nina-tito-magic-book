@@ -1,5 +1,5 @@
-import 'package:nina_tito_magic_book/enums/character_enum.dart';
-import 'package:nina_tito_magic_book/enums/player_skin_enum.dart';
+import 'package:nina_tito_magic_book/data/models/character_enum.dart';
+import 'package:nina_tito_magic_book/data/models/player_skin_enum.dart';
 
 class Player {
   final int? id;
