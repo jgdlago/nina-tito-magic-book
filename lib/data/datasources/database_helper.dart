@@ -24,6 +24,11 @@ class DatabaseHelper {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(createUsersTable);
+        await db.execute(createPlayersTable);
+        await db.execute(createLevelsTable);
+        await db.execute(createUserProgressTable);
+        await db.execute(createItemsTable);
+        await db.execute(createUserItemsTable);
       },
     );
   }

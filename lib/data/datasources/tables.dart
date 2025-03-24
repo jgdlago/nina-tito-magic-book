@@ -2,7 +2,7 @@ const String createPlayersTable = '''
   CREATE TABLE players(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     character TEXT NOT NULL,
-    equipped_skin TEXT NOT NULL,
+    equipped_skin TEXT NOT NULL
   )
 ''';
 
@@ -21,7 +21,7 @@ const String createLevelsTable = '''
   CREATE TABLE levels(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    order INTEGER NOT NULL,
+    level_order INTEGER NOT NULL,
     finished_at DATETIME DEFAULT NULL
   )
 ''';
