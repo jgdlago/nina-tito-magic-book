@@ -18,10 +18,10 @@ class MainMenu extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/main_menu_background.jpg"),
+            image: AssetImage("assets/images/background.png"),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
-              Color(0x80000000),
+              Color(0x60000000),
               BlendMode.darken,
             ),
           ),
