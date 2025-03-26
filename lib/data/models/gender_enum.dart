@@ -7,9 +7,9 @@ extension GenderEnumExtension on GenderEnum {
   String get label {
     switch (this) {
       case GenderEnum.male:
-        return 'Masculino';
+        return 'Menino';
       case GenderEnum.female:
-        return 'Feminino';
+        return 'Menina';
     }
   }
 }
