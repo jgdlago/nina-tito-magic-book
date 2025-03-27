@@ -16,65 +16,73 @@ class UserIdentity extends ConsumerWidget {
 
     return Scaffold(
       body: BackgroundContainer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              'Quantos anos você tem?',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/paper_background.png"),
+              fit: BoxFit.fill,
+            )
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'Quantos anos você tem?',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            Slider(
-              value: selectedAge.toDouble(),
-              min: 6,
-              max: 12,
-              divisions: 6,
-              label: selectedAge.toString(),
-              onChanged: (double value) {
-                ref.read(ageProvider.notifier).state = value.toInt();
-              },
-            ),
+              Slider(
+                value: selectedAge.toDouble(),
+                min: 6,
+                max: 12,
+                divisions: 6,
+                label: selectedAge.toString(),
+                onChanged: (double value) {
+                  ref.read(ageProvider.notifier).state = value.toInt();
+                },
+              ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  children: [
-                    Radio<GenderEnum>(
-                      value: GenderEnum.male,
-                      groupValue: selectedGender,
-                      onChanged: (GenderEnum? value) {
-                        ref.read(genderProvider.notifier).state = value!;
-                      },
-                    ),
-                    Text(selectedGender.label),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      Radio<GenderEnum>(
+                        value: GenderEnum.male,
+                        groupValue: selectedGender,
+                        onChanged: (GenderEnum? value) {
+                          ref.read(genderProvider.notifier).state = value!;
+                        },
+                      ),
+                      Text(selectedGender.label),
+                    ],
+                  ),
 
-                Row(
-                  children: [
-                    Radio<GenderEnum>(
-                      value: GenderEnum.female,
-                      groupValue: selectedGender,
-                      onChanged: (GenderEnum? value) {
-                        ref.read(genderProvider.notifier).state = value!;
-                      },
-                    ),
-                    Text(selectedGender.label),
-                  ],
-                ),
-              ],
-            ),
+                  Row(
+                    children: [
+                      Radio<GenderEnum>(
+                        value: GenderEnum.female,
+                        groupValue: selectedGender,
+                        onChanged: (GenderEnum? value) {
+                          ref.read(genderProvider.notifier).state = value!;
+                        },
+                      ),
+                      Text(selectedGender.label),
+                    ],
+                  ),
+                ],
+              ),
 
-            Text(
-              'Eu sou ${selectedGender.label} e tenho $selectedAge anos!',
-              style: const TextStyle(fontSize: 18),
-            ),
-          ],
+              Text(
+                'Eu sou ${selectedGender.label} e tenho $selectedAge anos!',
+                style: const TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
         ),
       ),
     );
