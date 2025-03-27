@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
+import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
 
 final ageProvider = StateProvider<int>((ref) => 9);
 final genderProvider = StateProvider<GenderEnum>((ref) => GenderEnum.male);
@@ -14,17 +15,18 @@ class UserIdentity extends ConsumerWidget {
     final GenderEnum selectedGender = ref.watch(genderProvider);
 
     return Scaffold(
-      body: Center(
+      body: BackgroundContainer(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text('Quantos anos você tem?',
+            const Text(
+              'Quantos anos você tem?',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             Slider(
               value: selectedAge.toDouble(),
@@ -70,11 +72,8 @@ class UserIdentity extends ConsumerWidget {
 
             Text(
               'Eu sou ${selectedGender.label} e tenho $selectedAge anos!',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+              style: const TextStyle(fontSize: 18),
             ),
-
           ],
         ),
       ),
