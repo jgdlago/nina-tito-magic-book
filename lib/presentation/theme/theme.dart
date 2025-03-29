@@ -8,7 +8,16 @@ class AppTheme {
     return ThemeData(
       textTheme: GoogleFonts.cinzelTextTheme().merge(
         const TextTheme(
-          titleMedium: TextStyle(fontSize: 30, color: AppColors.mysticalBlack),
+          titleMedium: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mysticalBlack,
+          ),
+          bodySmall: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.normal,
+            color: AppColors.mysticalBlack,
+          ),
         ),
       ),
     );

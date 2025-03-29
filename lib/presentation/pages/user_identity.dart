@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
 import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
 import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 final ageProvider = StateProvider<int>((ref) => 9);
 final genderProvider = StateProvider<GenderEnum>((ref) => GenderEnum.male);
@@ -20,7 +21,7 @@ class UserIdentity extends ConsumerWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.goldenMagic,
+            color: AppColors.mysticalWhite,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: AppColors.mysticalBlack,
@@ -35,16 +36,18 @@ class UserIdentity extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 20),
-              Slider(
-                value: selectedAge.toDouble(),
-                min: 6,
-                max: 12,
-                divisions: 6,
-                label: selectedAge.toString(),
-                activeColor: AppColors.mysticalBlack,
-                inactiveColor: Colors.white,
-                onChanged: (double value) {
-                  ref.read(ageProvider.notifier).state = value.toInt();
+              NumberPicker(
+                value: selectedAge,
+                minValue: 4,
+                maxValue: 14,
+                step: 1,
+                axis: Axis.horizontal,
+                selectedTextStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+                textStyle: const TextStyle(fontSize: 16, color: Colors.blueGrey),
+                onChanged: (value) {
+                  ref.read(ageProvider.notifier).state = value;
                 },
               ),
               Row(
@@ -60,7 +63,10 @@ class UserIdentity extends ConsumerWidget {
                           ref.read(genderProvider.notifier).state = value!;
                         },
                       ),
-                      Text(selectedGender.label),
+                      Text(
+                        GenderEnum.male.label,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ],
                   ),
                   Row(
@@ -73,14 +79,17 @@ class UserIdentity extends ConsumerWidget {
                           ref.read(genderProvider.notifier).state = value!;
                         },
                       ),
-                      Text(selectedGender.label),
+                      Text(
+                        GenderEnum.female.label,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ],
                   ),
                 ],
               ),
               Text(
                 'Eu sou ${selectedGender.label} e tenho $selectedAge anos!',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),

@@ -9,5 +9,8 @@ class AppColors {
   static const Color dreamyPink = Color(0xFFF78DBF); // Rosa
   static const Color fantasyGreen = Color(0xFF80E0A7); // Verde
   static const Color mysteryPurple = Color(0xFFA27BEF); // Roxo
+
+  // Base
   static const Color mysticalBlack = Color(0xFF2D2D2D); // Preto
+  static const Color mysticalWhite = Color(0xB3FFFFFF); // Branco
 }
