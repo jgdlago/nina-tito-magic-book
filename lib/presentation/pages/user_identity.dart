@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
 import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
+import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
 
 final ageProvider = StateProvider<int>((ref) => 9);
 final genderProvider = StateProvider<GenderEnum>((ref) => GenderEnum.male);
@@ -17,35 +18,35 @@ class UserIdentity extends ConsumerWidget {
     return Scaffold(
       body: BackgroundContainer(
         child: Container(
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/paper_background.png"),
-              fit: BoxFit.fill,
-            )
+            color: AppColors.goldenMagic,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppColors.mysticalBlack,
+              width: 3,
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
+              Text(
                 'Quantos anos você tem?',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 20),
-
               Slider(
                 value: selectedAge.toDouble(),
                 min: 6,
                 max: 12,
                 divisions: 6,
                 label: selectedAge.toString(),
+                activeColor: Colors.white,
+                inactiveColor: Colors.blueGrey,
                 onChanged: (double value) {
                   ref.read(ageProvider.notifier).state = value.toInt();
                 },
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -61,7 +62,6 @@ class UserIdentity extends ConsumerWidget {
                       Text(selectedGender.label),
                     ],
                   ),
-
                   Row(
                     children: [
                       Radio<GenderEnum>(
@@ -76,10 +76,9 @@ class UserIdentity extends ConsumerWidget {
                   ),
                 ],
               ),
-
               Text(
                 'Eu sou ${selectedGender.label} e tenho $selectedAge anos!',
-                style: const TextStyle(fontSize: 18),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ],
           ),
