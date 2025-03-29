@@ -65,7 +65,10 @@ class UserIdentity extends ConsumerWidget {
                       ),
                       Text(
                         GenderEnum.male.label,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: selectedGender == GenderEnum.male ? FontWeight.bold : FontWeight.normal,
+                          color: selectedGender == GenderEnum.male ? AppColors.enchantedBlue : AppColors.mysticalBlack,
+                        ),
                       ),
                     ],
                   ),
@@ -81,7 +84,10 @@ class UserIdentity extends ConsumerWidget {
                       ),
                       Text(
                         GenderEnum.female.label,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: selectedGender == GenderEnum.female ? FontWeight.bold : FontWeight.normal,
+                          color: selectedGender == GenderEnum.female ? AppColors.dreamyPink : AppColors.mysticalBlack,
+                        ),
                       ),
                     ],
                   ),
