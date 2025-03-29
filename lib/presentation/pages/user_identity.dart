@@ -25,7 +25,7 @@ class UserIdentity extends ConsumerWidget {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: AppColors.mysticalBlack,
-              width: 3,
+              width: 4,
             ),
           ),
           child: Column(
