@@ -8,12 +8,17 @@ class AppTheme {
     return ThemeData(
       textTheme: GoogleFonts.fredokaTextTheme().copyWith(
         titleMedium: const TextStyle(
-          fontSize: 30,
+          fontSize: 28,
           fontWeight: FontWeight.bold,
           color: AppColors.mysticalBlack,
         ),
+        bodyMedium: GoogleFonts.quicksand(
+          fontSize: 22,
+          fontWeight: FontWeight.normal,
+          color: AppColors.mysticalBlack,
+        ),
         bodySmall: GoogleFonts.quicksand(
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.normal,
           color: AppColors.mysticalBlack,
         ),

@@ -32,8 +32,12 @@ class UserIdentity extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Quantos anos você tem?',
+                'Vamos nos conhecer!',
                 style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                'Qual sua idade?',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 20),
               NumberPicker(
@@ -42,13 +46,17 @@ class UserIdentity extends ConsumerWidget {
                 maxValue: 14,
                 step: 1,
                 axis: Axis.horizontal,
-                selectedTextStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                selectedTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
                 textStyle: const TextStyle(fontSize: 16, color: Colors.blueGrey),
                 onChanged: (value) {
                   ref.read(ageProvider.notifier).state = value;
                 },
+              ),
+              Text(
+                'Você é:',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +73,7 @@ class UserIdentity extends ConsumerWidget {
                       ),
                       Text(
                         GenderEnum.male.label,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: selectedGender == GenderEnum.male ? FontWeight.bold : FontWeight.normal,
                           color: selectedGender == GenderEnum.male ? AppColors.enchantedBlue : AppColors.mysticalBlack,
                         ),
@@ -84,7 +92,7 @@ class UserIdentity extends ConsumerWidget {
                       ),
                       Text(
                         GenderEnum.female.label,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: selectedGender == GenderEnum.female ? FontWeight.bold : FontWeight.normal,
                           color: selectedGender == GenderEnum.female ? AppColors.dreamyPink : AppColors.mysticalBlack,
                         ),
