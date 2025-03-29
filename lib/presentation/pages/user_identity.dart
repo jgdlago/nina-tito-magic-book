@@ -41,8 +41,8 @@ class UserIdentity extends ConsumerWidget {
                 max: 12,
                 divisions: 6,
                 label: selectedAge.toString(),
-                activeColor: Colors.white,
-                inactiveColor: Colors.blueGrey,
+                activeColor: AppColors.mysticalBlack,
+                inactiveColor: Colors.white,
                 onChanged: (double value) {
                   ref.read(ageProvider.notifier).state = value.toInt();
                 },
@@ -55,6 +55,7 @@ class UserIdentity extends ConsumerWidget {
                       Radio<GenderEnum>(
                         value: GenderEnum.male,
                         groupValue: selectedGender,
+                        activeColor: AppColors.enchantedBlue,
                         onChanged: (GenderEnum? value) {
                           ref.read(genderProvider.notifier).state = value!;
                         },
@@ -67,6 +68,7 @@ class UserIdentity extends ConsumerWidget {
                       Radio<GenderEnum>(
                         value: GenderEnum.female,
                         groupValue: selectedGender,
+                        activeColor: AppColors.dreamyPink,
                         onChanged: (GenderEnum? value) {
                           ref.read(genderProvider.notifier).state = value!;
                         },
