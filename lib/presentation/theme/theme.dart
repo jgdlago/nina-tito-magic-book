@@ -12,6 +12,11 @@ class AppTheme {
           fontWeight: FontWeight.bold,
           color: AppColors.mysticalBlack,
         ),
+        titleLarge: const TextStyle(
+          fontSize: 36,
+          fontWeight: FontWeight.bold,
+          color: AppColors.mysticalBlack,
+        ),
         bodyMedium: GoogleFonts.quicksand(
           fontSize: 22,
           fontWeight: FontWeight.normal,

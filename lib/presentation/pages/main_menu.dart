@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:nina_tito_magic_book/presentation/pages/user_identity.dart';
 import 'package:nina_tito_magic_book/presentation/components/custom_icon_button.dart';
 import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
@@ -34,20 +33,16 @@ class MainMenu extends StatelessWidget {
                   children: [
                     Text(
                       'As aventuras de Nina e Tito',
-                      style: GoogleFonts.cinzel(
-                        fontSize: 44,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: AppColors.mysticalWhite,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Em busca do livro mágico',
-                      style: GoogleFonts.cinzel(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: AppColors.mysticalWhite,
                       ),
                       textAlign: TextAlign.center,
                     ),
