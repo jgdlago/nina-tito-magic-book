@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nina_tito_magic_book/presentation/pages/user_identity.dart';
 
 class MainMenu extends StatelessWidget {
-  final VoidCallback onStartGame;
-  final VoidCallback onSettings;
 
   const MainMenu({
-    super.key,
-    required this.onStartGame,
-    required this.onSettings,
+    super.key
   });
 
   @override
@@ -58,13 +55,12 @@ class MainMenu extends StatelessWidget {
                 ),
               ),
             ),
-            // Botão configurações
             Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
                 padding: const EdgeInsets.all(50.0),
                 child: ElevatedButton(
-                  onPressed: onSettings,
+                  onPressed: getSettingsScreen,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
@@ -82,13 +78,12 @@ class MainMenu extends StatelessWidget {
                 ),
               ),
             ),
-            // Botão iniciar
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.all(50.0),
                 child: ElevatedButton(
-                  onPressed: onStartGame,
+                  onPressed: getGameScreen,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
@@ -115,5 +110,13 @@ class MainMenu extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget getSettingsScreen() {
+    return MainMenu();
+  }
+
+  Widget getGameScreen() {
+    return UserIdentity();
   }
 }
