@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_colors.dart';
 
-enum IconType { play, more }
+enum IconType { play, more, info }
 
 class CustomIconButton extends StatelessWidget {
   final IconType type;
@@ -26,6 +26,8 @@ class CustomIconButton extends StatelessWidget {
         return 'assets/icons/play.svg';
       case IconType.more:
         return 'assets/icons/more.svg';
+      case IconType.info:
+        return 'assets/icons/info.svg';
     }
   }
 

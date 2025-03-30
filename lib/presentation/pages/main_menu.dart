@@ -55,7 +55,21 @@ class MainMenu extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 50.0, bottom: 50.0),
                 child: SizedBox(
-                  width: buttonSize,
+                  width: MediaQuery.of(context).size.width * 0.075,
+                  child: CustomIconButton(
+                    type: IconType.info,
+                    onPressed: getSettingsScreen,
+                    color: AppColors.warningAmber,
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 120.0, bottom: 50.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.075,
                   child: CustomIconButton(
                     type: IconType.more,
                     onPressed: getSettingsScreen,
