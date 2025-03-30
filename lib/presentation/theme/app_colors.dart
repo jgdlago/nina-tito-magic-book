@@ -13,4 +13,9 @@ class AppColors {
   // Base
   static const Color mysticalBlack = Color(0xFF2D2D2D); // Preto
   static const Color mysticalWhite = Color(0xB3FFFFFF); // Branco
+
+  // Feedback
+  static const Color confirmationGreen = Color(0xFF4CAF50); // Confirmação
+  static const Color denialRed = Color(0xFFE57373); // Negação
+  static const Color warningAmber = Color(0xFFFFB74D); // Alerta
 }
