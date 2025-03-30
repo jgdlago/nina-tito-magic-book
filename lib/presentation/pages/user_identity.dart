@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
 import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
 import 'package:nina_tito_magic_book/presentation/components/action_button.dart';
+import 'package:nina_tito_magic_book/presentation/components/info_modal.dart';
 import 'package:nina_tito_magic_book/presentation/pages/character_selection.dart';
 import 'package:nina_tito_magic_book/presentation/pages/main_menu.dart';
 import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
@@ -42,17 +43,8 @@ class UserIdentity extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: 16),
-                Container(
+                InfoModal(
                   width: modalWidth,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.mysticalWhite,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: AppColors.mysticalBlack,
-                      width: 4,
-                    ),
-                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -77,9 +69,10 @@ class UserIdentity extends ConsumerWidget {
                               maxValue: 14,
                               step: 1,
                               axis: Axis.horizontal,
-                              selectedTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              selectedTextStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(fontWeight: FontWeight.bold),
                               textStyle: const TextStyle(fontSize: 16, color: Colors.blueGrey),
                               onChanged: (value) {
                                 ref.read(ageProvider.notifier).state = value;
