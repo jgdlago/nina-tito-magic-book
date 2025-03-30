@@ -54,7 +54,7 @@ class ActionButton extends StatelessWidget {
           foregroundColor: Colors.white,
           textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
         child: Text(buttonText),
