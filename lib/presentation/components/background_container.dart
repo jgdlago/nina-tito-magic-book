@@ -26,10 +26,7 @@ class BackgroundContainer extends StatelessWidget {
         ),
         child: Padding(
           padding: padding ??
-              EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.2,
-                vertical: MediaQuery.of(context).size.height * 0.1,
-              ),
+              EdgeInsets.all(12),
           child: child,
         ),
       ),
