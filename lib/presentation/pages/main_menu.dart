@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nina_tito_magic_book/presentation/pages/user_identity.dart';
+import 'package:nina_tito_magic_book/presentation/components/custom_icon_button.dart';
+import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
 
 class MainMenu extends StatelessWidget {
-
-  const MainMenu({
-    super.key
-  });
+  const MainMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final double buttonSize = MediaQuery.of(context).size.width * 0.15;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -58,22 +58,13 @@ class MainMenu extends StatelessWidget {
             Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: const EdgeInsets.all(50.0),
-                child: ElevatedButton(
-                  onPressed: getSettingsScreen,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: SvgPicture.asset(
-                    'assets/icons/more.svg',
-                    width: 40,
-                    height: 40,
-                    colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                padding: const EdgeInsets.only(left: 50.0, bottom: 50.0),
+                child: SizedBox(
+                  width: buttonSize,
+                  child: CustomIconButton(
+                    type: IconType.more,
+                    onPressed: getSettingsScreen,
+                    color: AppColors.warningAmber,
                   ),
                 ),
               ),
@@ -81,27 +72,13 @@ class MainMenu extends StatelessWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.all(50.0),
-                child: ElevatedButton(
-                  onPressed: getGameScreen,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/play.svg',
-                        width: 40,
-                        height: 40,
-                        colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                      ),
-                    ],
+                padding: const EdgeInsets.only(right: 50.0, bottom: 50.0),
+                child: SizedBox(
+                  width: buttonSize,
+                  child: CustomIconButton(
+                    type: IconType.play,
+                    onPressed: getGameScreen,
+                    color: AppColors.confirmationGreen,
                   ),
                 ),
               ),
