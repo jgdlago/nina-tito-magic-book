@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
 
 enum ButtonType { confirmation, denial, warning }
@@ -40,9 +41,31 @@ class ActionButton extends StatelessWidget {
     }
   }
 
+  Widget? _getIcon() {
+    switch (type) {
+      case ButtonType.confirmation:
+        return SvgPicture.asset(
+          'assets/icons/arrow_right.svg',
+          width: 16,
+          height: 16,
+          color: Colors.white,
+        );
+      case ButtonType.denial:
+        return SvgPicture.asset(
+          'assets/icons/arrow_left.svg',
+          width: 16,
+          height: 16,
+          color: Colors.white,
+        );
+      default:
+        return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final buttonText = text ?? _getDefaultText();
+    final icon = _getIcon();
 
     return SizedBox(
       width: double.infinity,
@@ -52,12 +75,33 @@ class ActionButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12),
           backgroundColor: _getBackgroundColor(),
           foregroundColor: Colors.white,
-          textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
+          textStyle: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(fontWeight: FontWeight.bold),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: Text(buttonText),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: type == ButtonType.denial
+              ? [
+            if (icon != null) icon,
+            const SizedBox(width: 8),
+            Text(buttonText),
+          ]
+              : type == ButtonType.confirmation
+              ? [
+            Text(buttonText),
+            const SizedBox(width: 8),
+            if (icon != null) icon,
+          ]
+              : [
+            Text(buttonText),
+          ],
+        ),
       ),
     );
   }
