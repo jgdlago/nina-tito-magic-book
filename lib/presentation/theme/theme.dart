@@ -6,13 +6,13 @@ import 'app_colors.dart';
 class AppTheme {
   static ThemeData get theme {
     return ThemeData(
-      textTheme: GoogleFonts.fredokaTextTheme().copyWith(
-        titleMedium: const TextStyle(
+      textTheme: TextTheme(
+        titleMedium: GoogleFonts.rampartOne(
           fontSize: 28,
           fontWeight: FontWeight.bold,
           color: AppColors.mysticalBlack,
         ),
-        titleLarge: const TextStyle(
+        titleLarge: GoogleFonts.rampartOne(
           fontSize: 36,
           fontWeight: FontWeight.bold,
           color: AppColors.mysticalBlack,

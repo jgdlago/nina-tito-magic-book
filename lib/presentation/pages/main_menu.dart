@@ -72,7 +72,7 @@ class MainMenu extends StatelessWidget {
                   width: buttonSize,
                   child: CustomIconButton(
                     type: IconType.play,
-                    onPressed: getGameScreen,
+                    onPressed: () => getGameScreen(context),
                     color: AppColors.confirmationGreen,
                   ),
                 ),
@@ -88,7 +88,10 @@ class MainMenu extends StatelessWidget {
     return MainMenu();
   }
 
-  Widget getGameScreen() {
-    return UserIdentity();
+  void getGameScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const UserIdentity()),
+    );
   }
 }

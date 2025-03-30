@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../theme/app_colors.dart';
 
 enum IconType { play, more }
 
@@ -7,6 +8,7 @@ class CustomIconButton extends StatelessWidget {
   final IconType type;
   final VoidCallback onPressed;
   final Color color;
+  final Color iconColor;
   final bool isDisabled;
 
   const CustomIconButton({
@@ -14,6 +16,7 @@ class CustomIconButton extends StatelessWidget {
     required this.type,
     required this.onPressed,
     required this.color,
+    this.iconColor = AppColors.mysticalWhite,
     this.isDisabled = false,
   });
 
@@ -41,7 +44,10 @@ class CustomIconButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: SvgPicture.asset(iconPath),
+        child: SvgPicture.asset(
+          iconPath,
+          color: iconColor,
+        ),
       ),
     );
   }
