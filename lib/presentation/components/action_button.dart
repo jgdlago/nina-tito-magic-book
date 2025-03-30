@@ -32,9 +32,9 @@ class ActionButton extends StatelessWidget {
   String _getDefaultText() {
     switch (type) {
       case ButtonType.confirmation:
-        return 'Confirmar';
+        return 'Continuar';
       case ButtonType.denial:
-        return 'Cancelar';
+        return 'Voltar';
       case ButtonType.warning:
         return 'Mais';
     }
