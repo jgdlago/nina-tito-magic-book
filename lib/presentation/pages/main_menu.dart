@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nina_tito_magic_book/presentation/pages/info.dart';
 import 'package:nina_tito_magic_book/presentation/pages/user_identity.dart';
 import 'package:nina_tito_magic_book/presentation/components/custom_icon_button.dart';
 import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
@@ -94,7 +95,7 @@ class _BottomButtons extends StatelessWidget {
                 width: iconButtonSize,
                 child: CustomIconButton(
                   type: IconType.info,
-                  onPressed: () => _openSettings(context),
+                  onPressed: () => _openInfoScreen(context),
                   color: AppColors.warningAmber,
                 ),
               ),
@@ -133,6 +134,13 @@ class _BottomButtons extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const UserIdentity()),
+    );
+  }
+
+  void _openInfoScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Info()),
     );
   }
 }
