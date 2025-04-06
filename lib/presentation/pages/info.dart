@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nina_tito_magic_book/presentation/components/action_button.dart';
 import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
 import 'package:nina_tito_magic_book/presentation/components/Info_modal.dart';
-import 'package:nina_tito_magic_book/presentation/components/custom_icon_button.dart';
-import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
 
 class Info extends StatelessWidget {
   const Info({super.key});
