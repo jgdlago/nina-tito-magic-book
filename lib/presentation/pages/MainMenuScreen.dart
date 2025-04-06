@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/InfoUserIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/components/custom_icon_button.dart';
-import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
+import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});

@@ -5,7 +5,7 @@ import 'package:nina_tito_magic_book/presentation/components/background_containe
 import 'package:nina_tito_magic_book/presentation/components/info_modal.dart';
 import 'package:nina_tito_magic_book/presentation/components/action_button.dart';
 import 'package:nina_tito_magic_book/presentation/pages/MainMenuScreen.dart';
-import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
+import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
 final characterProvider = StateProvider<CharacterEnum>((ref) => CharacterEnum.tito);
 

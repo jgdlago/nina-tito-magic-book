@@ -6,7 +6,7 @@ import 'package:nina_tito_magic_book/presentation/components/action_button.dart'
 import 'package:nina_tito_magic_book/presentation/components/info_modal.dart';
 import 'package:nina_tito_magic_book/presentation/pages/CharacterSelectionScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/MainMenuScreen.dart';
-import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
+import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 final ageProvider = StateProvider<int>((ref) => 9);

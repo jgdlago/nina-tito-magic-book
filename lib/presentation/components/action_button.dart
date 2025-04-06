@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
+import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
 enum ButtonType { confirmation, denial, warning }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
+import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
 class InfoModal extends StatelessWidget {
   final double? width;
