@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nina_tito_magic_book/presentation/pages/info.dart';
-import 'package:nina_tito_magic_book/presentation/pages/user_identity.dart';
+import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
+import 'package:nina_tito_magic_book/presentation/pages/InfoUserIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/components/custom_icon_button.dart';
 import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
 
-class MainMenu extends StatelessWidget {
-  const MainMenu({super.key});
+class MainMenuScreen extends StatelessWidget {
+  const MainMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -126,21 +126,21 @@ class _BottomButtons extends StatelessWidget {
   void _openSettings(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MainMenu()),
+      MaterialPageRoute(builder: (context) => const MainMenuScreen()),
     );
   }
 
   void _openGameScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const UserIdentity()),
+      MaterialPageRoute(builder: (context) => const InfoUserIdentifyScreen()),
     );
   }
 
   void _openInfoScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const Info()),
+      MaterialPageRoute(builder: (context) => const InfoScreen()),
     );
   }
 }

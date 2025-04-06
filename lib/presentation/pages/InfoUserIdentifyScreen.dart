@@ -4,16 +4,16 @@ import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
 import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
 import 'package:nina_tito_magic_book/presentation/components/action_button.dart';
 import 'package:nina_tito_magic_book/presentation/components/info_modal.dart';
-import 'package:nina_tito_magic_book/presentation/pages/character_selection.dart';
-import 'package:nina_tito_magic_book/presentation/pages/main_menu.dart';
+import 'package:nina_tito_magic_book/presentation/pages/CharacterSelectionScreen.dart';
+import 'package:nina_tito_magic_book/presentation/pages/MainMenuScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 final ageProvider = StateProvider<int>((ref) => 9);
 final genderProvider = StateProvider<GenderEnum>((ref) => GenderEnum.male);
 
-class UserIdentity extends ConsumerWidget {
-  const UserIdentity({super.key});
+class InfoUserIdentifyScreen extends ConsumerWidget {
+  const InfoUserIdentifyScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +37,7 @@ class UserIdentity extends ConsumerWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MainMenu()),
+                        MaterialPageRoute(builder: (context) => MainMenuScreen()),
                       );
                     },
                   ),
@@ -143,7 +143,7 @@ class UserIdentity extends ConsumerWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CharacterSelection()),
+                        MaterialPageRoute(builder: (context) => CharacterSelectionScreen()),
                       );
                     },
                   ),

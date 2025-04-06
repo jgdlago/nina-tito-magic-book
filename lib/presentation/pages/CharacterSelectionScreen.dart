@@ -4,13 +4,13 @@ import 'package:nina_tito_magic_book/data/models/character_enum.dart';
 import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
 import 'package:nina_tito_magic_book/presentation/components/info_modal.dart';
 import 'package:nina_tito_magic_book/presentation/components/action_button.dart';
-import 'package:nina_tito_magic_book/presentation/pages/main_menu.dart';
+import 'package:nina_tito_magic_book/presentation/pages/MainMenuScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/app_colors.dart';
 
 final characterProvider = StateProvider<CharacterEnum>((ref) => CharacterEnum.tito);
 
-class CharacterSelection extends ConsumerWidget {
-  const CharacterSelection({super.key});
+class CharacterSelectionScreen extends ConsumerWidget {
+  const CharacterSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,7 +54,7 @@ class CharacterSelection extends ConsumerWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MainMenu()),
+                          MaterialPageRoute(builder: (context) => MainMenuScreen()),
                         );
                       },
                     ),

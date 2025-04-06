@@ -2,7 +2,7 @@ import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/data/datasources/database_helper.dart';
-import 'presentation/pages/main_menu.dart';
+import 'presentation/pages/MainMenuScreen.dart';
 import 'presentation/theme/theme.dart';
 
 void main() async {
@@ -25,7 +25,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
-      home: const MainMenu(),
+      home: const MainMenuScreen(),
     );
   }
 }
