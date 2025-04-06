@@ -1,7 +1,7 @@
 import 'package:nina_tito_magic_book/data/datasources/database_helper.dart';
 import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
-import 'package:nina_tito_magic_book/domain/entities/user.dart';
-import 'package:nina_tito_magic_book/domain/repositories/user_repository_interface.dart';
+import 'package:nina_tito_magic_book/domain/entities/User.dart';
+import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
 
 class UserRepositoryImplements implements UserRepositoryInterface {
   final DatabaseHelper _databaseHelper;
