@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nina_tito_magic_book/presentation/components/action_button.dart';
-import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
-import 'package:nina_tito_magic_book/presentation/components/Info_modal.dart';
+import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
+import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
+import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});

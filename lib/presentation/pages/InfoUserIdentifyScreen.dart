@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
-import 'package:nina_tito_magic_book/presentation/components/background_container.dart';
-import 'package:nina_tito_magic_book/presentation/components/action_button.dart';
-import 'package:nina_tito_magic_book/presentation/components/info_modal.dart';
+import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
+import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
+import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 import 'package:nina_tito_magic_book/presentation/pages/CharacterSelectionScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/MainMenuScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
