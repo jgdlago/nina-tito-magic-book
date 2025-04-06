@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
-import 'package:nina_tito_magic_book/presentation/pages/InfoUserIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/components/CustomIconButton.dart';
+import 'package:nina_tito_magic_book/presentation/pages/UserNameIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
 class MainMenuScreen extends StatelessWidget {
@@ -133,7 +133,7 @@ class _BottomButtons extends StatelessWidget {
   void _openGameScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const InfoUserIdentifyScreen()),
+      MaterialPageRoute(builder: (context) => const UserNameIdentifyScreen()),
     );
   }
 

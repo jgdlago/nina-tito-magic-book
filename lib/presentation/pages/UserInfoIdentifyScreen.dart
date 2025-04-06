@@ -12,8 +12,8 @@ import 'package:numberpicker/numberpicker.dart';
 final ageProvider = StateProvider<int>((ref) => 9);
 final genderProvider = StateProvider<GenderEnum>((ref) => GenderEnum.male);
 
-class InfoUserIdentifyScreen extends ConsumerWidget {
-  const InfoUserIdentifyScreen({super.key});
+class UserInfoIdentifyScreen extends ConsumerWidget {
+  const UserInfoIdentifyScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,7 +52,7 @@ class InfoUserIdentifyScreen extends ConsumerWidget {
                         'Vamos nos conhecer!',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,

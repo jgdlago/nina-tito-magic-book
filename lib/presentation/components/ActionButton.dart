@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
-enum ButtonType { confirmation, denial, warning }
+enum ButtonType { confirmation, denial, warning, skip }
 
 class ActionButton extends StatelessWidget {
   final ButtonType type;
@@ -27,6 +27,8 @@ class ActionButton extends StatelessWidget {
         return AppColors.denialRed;
       case ButtonType.warning:
         return AppColors.warningAmber;
+      case ButtonType.skip:
+        return AppColors.enchantedBlue;
     }
   }
 
@@ -38,12 +40,15 @@ class ActionButton extends StatelessWidget {
         return 'Voltar';
       case ButtonType.warning:
         return 'Mais';
+      case ButtonType.skip:
+        return 'Pular';
     }
   }
 
   Widget? _getIcon() {
     switch (type) {
       case ButtonType.confirmation:
+      case ButtonType.skip:
         return SvgPicture.asset(
           'assets/icons/arrow_right.svg',
           width: 16,
@@ -92,7 +97,7 @@ class ActionButton extends StatelessWidget {
             const SizedBox(width: 8),
             Text(buttonText),
           ]
-              : type == ButtonType.confirmation
+              : (type == ButtonType.confirmation || type == ButtonType.skip)
               ? [
             Text(buttonText),
             const SizedBox(width: 8),
