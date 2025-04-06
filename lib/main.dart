@@ -1,7 +1,7 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nina_tito_magic_book/data/datasources/database_helper.dart';
+import 'package:nina_tito_magic_book/data/datasources/DatabaseHelper.dart';
 import 'presentation/pages/MainMenuScreen.dart';
 import 'presentation/theme/AppTheme.dart';
 

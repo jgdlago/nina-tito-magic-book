@@ -1,12 +1,12 @@
-import 'package:nina_tito_magic_book/data/datasources/database_helper.dart';
-import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
+import 'package:nina_tito_magic_book/data/datasources/DatabaseHelper.dart';
+import 'package:nina_tito_magic_book/data/models/GenderEnum.dart';
 import 'package:nina_tito_magic_book/domain/entities/User.dart';
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
 
-class UserRepositoryImplements implements UserRepositoryInterface {
+class UserRepository implements UserRepositoryInterface {
   final DatabaseHelper _databaseHelper;
 
-  UserRepositoryImplements(this._databaseHelper);
+  UserRepository(this._databaseHelper);
 
   @override
   Future<bool> userExists() async {

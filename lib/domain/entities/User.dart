@@ -1,4 +1,4 @@
-import 'package:nina_tito_magic_book/data/models/gender_enum.dart';
+import 'package:nina_tito_magic_book/data/models/GenderEnum.dart';
 
 class User {
   final int? id;

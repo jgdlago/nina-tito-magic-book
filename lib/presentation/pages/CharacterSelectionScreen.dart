@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nina_tito_magic_book/data/models/character_enum.dart';
+import 'package:nina_tito_magic_book/data/models/CharacterEnum.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';

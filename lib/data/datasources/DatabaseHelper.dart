@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'tables.dart';
+import 'Tables.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
