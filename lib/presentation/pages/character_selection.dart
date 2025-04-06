@@ -75,6 +75,9 @@ class CharacterSelection extends ConsumerWidget {
       CharacterEnum selectedCharacter,
       ) {
     bool isSelected = character == selectedCharacter;
+    final String imagePath = character == CharacterEnum.nina
+        ? 'assets/game/main_characters/nina/Idle (1).png'
+        : 'assets/game/main_characters/tito/Idle (1).png';
 
     return GestureDetector(
       onTap: () => ref.read(characterProvider.notifier).state = character,
@@ -89,10 +92,11 @@ class CharacterSelection extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.person,
-                size: 80,
-                color: isSelected ? AppColors.confirmationGreen : Colors.white,
+              Image.asset(
+                imagePath,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
               ),
               const SizedBox(height: 12),
               Text(
@@ -110,3 +114,4 @@ class CharacterSelection extends ConsumerWidget {
     );
   }
 }
+
