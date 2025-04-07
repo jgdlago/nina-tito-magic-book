@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nina_tito_magic_book/data/datasources/DatabaseHelper.dart';
 import 'package:nina_tito_magic_book/data/models/GenderEnum.dart';
+import 'package:nina_tito_magic_book/data/repositories/UserRepository.dart';
+import 'package:nina_tito_magic_book/domain/entities/User.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
@@ -11,9 +14,16 @@ import 'package:numberpicker/numberpicker.dart';
 
 final ageProvider = StateProvider<int>((ref) => 9);
 final genderProvider = StateProvider<GenderEnum>((ref) => GenderEnum.male);
+final nameProvider = StateProvider<String>((ref) => '');
+final userRepositoryProvider = Provider<UserRepository>(
+      (ref) => UserRepository(DatabaseHelper()),
+);
+
 
 class UserInfoIdentifyScreen extends ConsumerWidget {
-  const UserInfoIdentifyScreen({super.key});
+  final String? name;
+
+  const UserInfoIdentifyScreen({super.key, this.name});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -141,10 +151,7 @@ class UserInfoIdentifyScreen extends ConsumerWidget {
                   child: ActionButton(
                     type: ButtonType.confirmation,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CharacterSelectionScreen()),
-                      );
+                      _saveAndContinue(context, ref);
                     },
                   ),
                 ),
@@ -153,6 +160,21 @@ class UserInfoIdentifyScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _saveAndContinue(context, ref) async {
+    User user = User(
+      name: ref.read(nameProvider),
+      age: ref.read(ageProvider),
+      gender: ref.read(genderProvider),
+    );
+      final userRepository = ref.read(userRepositoryProvider);
+      await userRepository.createUser(user);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CharacterSelectionScreen()),
     );
   }
 }

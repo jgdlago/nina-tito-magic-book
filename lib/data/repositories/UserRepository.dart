@@ -33,13 +33,12 @@ class UserRepository implements UserRepositoryInterface {
   }
 
   @override
-  Future<void> createUser(String name, int age, GenderEnum gender, {int? playerId}) async {
+  Future<void> createUser(User user) async {
     final db = await _databaseHelper.database;
     await db.insert('users', {
-      'name': name,
-      'age': age,
-      'gender': gender.toString().split('.').last,
-      if (playerId != null) 'player_id': playerId,
+      'name': user.name,
+      'age': user.age,
+      'gender': user.gender.label
     });
   }
 }

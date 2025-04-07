@@ -1,3 +1,5 @@
+import 'package:nina_tito_magic_book/data/models/GenderEnum.dart';
+
 const String createPlayersTable = '''
   CREATE TABLE players(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -6,16 +8,20 @@ const String createPlayersTable = '''
   )
 ''';
 
-const String createUsersTable = '''
+String genderMasc = GenderEnum.male.label;
+String genderFem = GenderEnum.female.label;
+
+final String createUsersTable = '''
   CREATE TABLE users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     age INTEGER NOT NULL,
-    gender TEXT CHECK(gender IN ('Masculino', 'Feminino')) NOT NULL,
+    gender TEXT CHECK(gender IN ('$genderMasc', '$genderFem')) NOT NULL,
     player_id INTEGER UNIQUE NULL,
     FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE SET NULL
   )
 ''';
+
 
 const String createLevelsTable = '''
   CREATE TABLE levels(

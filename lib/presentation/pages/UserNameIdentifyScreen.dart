@@ -37,7 +37,9 @@ class _UserNameIdentifyScreenState extends ConsumerState<UserNameIdentifyScreen>
   void _onContinue() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const UserInfoIdentifyScreen()),
+      MaterialPageRoute(
+        builder: (context) => UserInfoIdentifyScreen(name: _nameController.text.trim()),
+      ),
     );
   }
 
@@ -54,6 +56,7 @@ class _UserNameIdentifyScreenState extends ConsumerState<UserNameIdentifyScreen>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                // Botão de voltar
                 SizedBox(
                   width: buttonSize,
                   child: ActionButton(
