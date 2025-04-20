@@ -4,4 +4,5 @@ abstract class UserRepositoryInterface {
   Future<bool> userExists();
   Future<User?> getUser();
   Future<void> createUser(User user);
+  Future<Map<String, dynamic>?> getUserProgress();
 }

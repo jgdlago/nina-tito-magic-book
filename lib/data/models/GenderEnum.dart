@@ -12,4 +12,15 @@ extension GenderEnumExtension on GenderEnum {
         return 'Menina';
     }
   }
+
+  static GenderEnum genderFromString(String gender) {
+    switch (gender) {
+      case 'Menino':
+        return GenderEnum.male;
+      case 'Menina':
+        return GenderEnum.female;
+      default:
+        throw Exception('Gênero desconhecido');
+    }
+  }
 }

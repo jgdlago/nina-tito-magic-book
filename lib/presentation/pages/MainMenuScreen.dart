@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
+import 'package:nina_tito_magic_book/game/MagicBookGame.dart';
 import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
 import 'package:nina_tito_magic_book/presentation/components/CustomIconButton.dart';
+import 'package:nina_tito_magic_book/presentation/pages/UserInfoIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserNameIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
@@ -77,12 +81,13 @@ class _TitleSection extends StatelessWidget {
   }
 }
 
-class _BottomButtons extends StatelessWidget {
+class _BottomButtons extends ConsumerWidget {
   const _BottomButtons();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final double iconButtonSize = MediaQuery.of(context).size.width * 0.075;
+    final userRepository = ref.read(userRepositoryProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
@@ -114,7 +119,7 @@ class _BottomButtons extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.15,
             child: CustomIconButton(
               type: IconType.play,
-              onPressed: () => _openGameScreen(context),
+              onPressed: () => _openGameScreen(context, userRepository),
               color: AppColors.confirmationGreen,
             ),
           ),
@@ -130,11 +135,19 @@ class _BottomButtons extends StatelessWidget {
     );
   }
 
-  void _openGameScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const UserNameIdentifyScreen()),
-    );
+  Future<void> _openGameScreen(BuildContext context, UserRepositoryInterface userRepository) async {
+    final user = await userRepository.getUser();
+    if (user != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MagicBookGameWidget()),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const UserNameIdentifyScreen()),
+      );
+    }
   }
 
   void _openInfoScreen(BuildContext context) {

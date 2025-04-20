@@ -26,7 +26,7 @@ class UserRepository implements UserRepositoryInterface {
         id: user['id'] as int,
         name: user['name'] as String,
         age: user['age'] as int,
-        gender: user['gender'] as GenderEnum,
+        gender: GenderEnumExtension.genderFromString(user['gender'] as String),
       );
     }
     return null;
@@ -40,5 +40,21 @@ class UserRepository implements UserRepositoryInterface {
       'age': user.age,
       'gender': user.gender.label
     });
+  }
+
+  @override
+  Future<Map<String, dynamic>?> getUserProgress() async {
+    final db = await _databaseHelper.database;
+    final result = await db.query(
+      'user_progress',
+      orderBy: 'updated_at DESC',
+      limit: 1,
+    );
+
+    if (result.isNotEmpty) {
+      return result.first;
+    }
+
+    return null;
   }
 }
