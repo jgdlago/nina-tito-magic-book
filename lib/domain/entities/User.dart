@@ -23,7 +23,7 @@ class User {
       name: map['name'],
       age: map['age'],
       gender: GenderEnum.values.firstWhere(
-            (e) => e.toString() == 'Gender.${map['gender']}',
+            (e) => e.label == map['gender'],
       ),
       playerId: map['player_id'],
     );

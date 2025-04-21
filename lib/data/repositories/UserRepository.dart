@@ -1,5 +1,4 @@
 import 'package:nina_tito_magic_book/data/datasources/DatabaseHelper.dart';
-import 'package:nina_tito_magic_book/data/models/GenderEnum.dart';
 import 'package:nina_tito_magic_book/domain/entities/User.dart';
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
 
@@ -21,14 +20,10 @@ class UserRepository implements UserRepositoryInterface {
     final result = await db.query('users', limit: 1);
 
     if (result.isNotEmpty) {
-      final user = result.first;
-      return User(
-        id: user['id'] as int,
-        name: user['name'] as String,
-        age: user['age'] as int,
-        gender: GenderEnumExtension.genderFromString(user['gender'] as String),
-      );
+      final userMap = result.first;
+      return User.fromMap(userMap);
     }
+
     return null;
   }
 
