@@ -2,7 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
-import 'package:nina_tito_magic_book/game/MagicBookGame.dart';
+import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
 import 'package:nina_tito_magic_book/presentation/components/CustomIconButton.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserInfoIdentifyScreen.dart';
@@ -142,7 +142,7 @@ class _BottomButtons extends ConsumerWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => GameWidget(game: MagicBookGame()),
+          builder: (context) => GameWidget(game: MagicBook()),
         ),
       );
     } else {
