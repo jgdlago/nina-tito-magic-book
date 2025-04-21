@@ -34,7 +34,7 @@ class User {
       'id': id,
       'name': name ?? gender.label,
       'age': age,
-      'gender': gender.toString().split('.').last,
+      'gender': gender.label,
       'player_id': playerId,
     };
   }

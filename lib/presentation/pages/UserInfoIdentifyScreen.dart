@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/data/datasources/DatabaseHelper.dart';
 import 'package:nina_tito_magic_book/data/models/GenderEnum.dart';
 import 'package:nina_tito_magic_book/data/repositories/UserRepository.dart';
-import 'package:nina_tito_magic_book/domain/entities/User.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
@@ -151,7 +150,10 @@ class UserInfoIdentifyScreen extends ConsumerWidget {
                   child: ActionButton(
                     type: ButtonType.confirmation,
                     onPressed: () {
-                      _saveAndContinue(context, ref);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CharacterSelectionScreen()),
+                      );
                     },
                   ),
                 ),
@@ -160,21 +162,6 @@ class UserInfoIdentifyScreen extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _saveAndContinue(context, ref) async {
-    User user = User(
-      name: ref.read(nameProvider),
-      age: ref.read(ageProvider),
-      gender: ref.read(genderProvider),
-    );
-      final userRepository = ref.read(userRepositoryProvider);
-      await userRepository.createUser(user);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CharacterSelectionScreen()),
     );
   }
 }

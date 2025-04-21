@@ -1,4 +1,5 @@
 import 'package:nina_tito_magic_book/data/datasources/DatabaseHelper.dart';
+import 'package:nina_tito_magic_book/domain/entities/Player.dart';
 import 'package:nina_tito_magic_book/domain/entities/User.dart';
 import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
@@ -14,12 +15,12 @@ class PlayerRepository implements PlayerRepositoryInterface {
     final db = await _databaseHelper.database;
     final User? user = await _userRepository.getCurrentUser();
 
-    if (user == null) return null;
+    if (user == null || user.playerId == null) return null;
 
     final result = await db.query(
       'players',
-      where: 'user_id = ?',
-      whereArgs: [user.id],
+      where: 'id = ?',
+      whereArgs: [user.playerId],
       limit: 1,
     );
 
@@ -28,5 +29,22 @@ class PlayerRepository implements PlayerRepositoryInterface {
     }
 
     return null;
+  }
+
+  @override
+  Future<void> createPlayer(Player player, int userId) async {
+    final db = await _databaseHelper.database;
+
+    final playerId = await db.insert('players', {
+      'character': player.character.toString().split('.').last,
+      'equipped_skin': player.equippedSkin.toString().split('.').last,
+    });
+
+    await db.update(
+      'users',
+      {'player_id': playerId},
+      where: 'id = ?',
+      whereArgs: [userId],
+    );
   }
 }

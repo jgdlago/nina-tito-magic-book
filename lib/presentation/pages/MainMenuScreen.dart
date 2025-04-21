@@ -132,6 +132,7 @@ class _BottomButtons extends ConsumerWidget {
   Future<void> _handlePlay(BuildContext context, UserRepositoryInterface userRepo, PlayerRepositoryInterface playerRepo) async {
     final user = await userRepo.getCurrentUser();
     final player = await playerRepo.getPlayerByCurrentUser();
+
     if (user == null || player == null) {
       return _goToIdentify(context);
     }

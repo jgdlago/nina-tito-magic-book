@@ -9,7 +9,7 @@ class Player {
   Player({
     this.id,
     required this.character,
-    required this.equippedSkin,
+    this.equippedSkin = PlayerSkinEnum.standard,
   });
 
   factory Player.fromMap(Map<String, dynamic> map) {

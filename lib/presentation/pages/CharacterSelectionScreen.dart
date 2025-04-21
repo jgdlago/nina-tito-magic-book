@@ -1,11 +1,16 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/data/models/CharacterEnum.dart';
+import 'package:nina_tito_magic_book/domain/entities/Player.dart';
+import 'package:nina_tito_magic_book/domain/entities/User.dart';
+import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
-import 'package:nina_tito_magic_book/presentation/pages/MainMenuScreen.dart';
+import 'package:nina_tito_magic_book/presentation/pages/UserInfoIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
+import 'package:nina_tito_magic_book/providers/PlayerProvider.dart';
 
 final characterProvider = StateProvider<CharacterEnum>((ref) => CharacterEnum.tito);
 
@@ -51,12 +56,7 @@ class CharacterSelectionScreen extends ConsumerWidget {
                     width: buttonSize,
                     child: ActionButton(
                       type: ButtonType.confirmation,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MainMenuScreen()),
-                        );
-                      },
+                      onPressed: () => _saveAndContinue(context, ref, selectedCharacter)
                     ),
                   ),
                 ],
@@ -110,6 +110,29 @@ class CharacterSelectionScreen extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _saveAndContinue(BuildContext context, WidgetRef ref, CharacterEnum selectedCharacter) async {
+    final userRepository = ref.read(userRepositoryProvider);
+    final playerRepository = ref.read(playerRepositoryProvider);
+
+    final user = User(
+      name: ref.read(nameProvider),
+      age: ref.read(ageProvider),
+      gender: ref.read(genderProvider),
+    );
+
+    final createdUser = await userRepository.createUser(user);
+
+    final player = Player(character: selectedCharacter);
+    await playerRepository.createPlayer(player, createdUser.id!);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => GameWidget(game: MagicBook()),
       ),
     );
   }
