@@ -1,13 +1,15 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
-import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
 import 'package:nina_tito_magic_book/presentation/components/CustomIconButton.dart';
+import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserInfoIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserNameIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
+import 'package:nina_tito_magic_book/providers/PlayerProvider.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -38,48 +40,39 @@ class _Background extends StatelessWidget {
   const _Background();
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/background.png"),
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(
-            Color(0x60000000),
-            BlendMode.darken,
-          ),
-        ),
+  Widget build(BuildContext context) => Container(
+    decoration: const BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage("assets/images/background.png"),
+        fit: BoxFit.cover,
+        colorFilter: ColorFilter.mode(Color(0x60000000), BlendMode.darken),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class _TitleSection extends StatelessWidget {
   const _TitleSection();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          'As aventuras de Nina e Tito',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-            color: AppColors.mysticalWhite,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Em busca do livro mágico',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-            color: AppColors.mysticalWhite,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Text(
+        'As aventuras de Nina e Tito',
+        style: Theme.of(context).textTheme.titleLarge!
+            .copyWith(color: AppColors.mysticalWhite),
+        textAlign: TextAlign.center,
+      ),
+      const SizedBox(height: 8),
+      Text(
+        'Em busca do livro mágico',
+        style: Theme.of(context).textTheme.titleMedium!
+            .copyWith(color: AppColors.mysticalWhite),
+        textAlign: TextAlign.center,
+      ),
+    ],
+  );
 }
 
 class _BottomButtons extends ConsumerWidget {
@@ -87,8 +80,9 @@ class _BottomButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final double iconButtonSize = MediaQuery.of(context).size.width * 0.075;
-    final userRepository = ref.read(userRepositoryProvider);
+    final size = MediaQuery.of(context).size;
+    final userRepo = ref.read(userRepositoryProvider);
+    final playerRepo = ref.read(playerRepositoryProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
@@ -98,29 +92,35 @@ class _BottomButtons extends ConsumerWidget {
           Row(
             children: [
               SizedBox(
-                width: iconButtonSize,
+                width: size.width * 0.075,
                 child: CustomIconButton(
                   type: IconType.info,
-                  onPressed: () => _openInfoScreen(context),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const InfoScreen()),
+                  ),
                   color: AppColors.warningAmber,
                 ),
               ),
               const SizedBox(width: 20),
               SizedBox(
-                width: iconButtonSize,
+                width: size.width * 0.075,
                 child: CustomIconButton(
                   type: IconType.more,
-                  onPressed: () => _openSettings(context),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const MainMenuScreen()),
+                  ),
                   color: AppColors.warningAmber,
                 ),
               ),
             ],
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.15,
+            width: size.width * 0.15,
             child: CustomIconButton(
               type: IconType.play,
-              onPressed: () => _openGameScreen(context, userRepository),
+              onPressed: () => _handlePlay(context, userRepo, playerRepo),
               color: AppColors.confirmationGreen,
             ),
           ),
@@ -129,34 +129,25 @@ class _BottomButtons extends ConsumerWidget {
     );
   }
 
-  void _openSettings(BuildContext context) {
+  Future<void> _handlePlay(BuildContext context, UserRepositoryInterface userRepo, PlayerRepositoryInterface playerRepo) async {
+    final user = await userRepo.getCurrentUser();
+    final player = await playerRepo.getPlayerByCurrentUser();
+    if (user == null || player == null) {
+      return _goToIdentify(context);
+    }
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MainMenuScreen()),
+      MaterialPageRoute(
+        builder: (_) => GameWidget(game: MagicBook()),
+      ),
     );
   }
 
-  Future<void> _openGameScreen(BuildContext context, UserRepositoryInterface userRepository) async {
-    final user = await userRepository.getCurrentUser();
-    if (user != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => GameWidget(game: MagicBook()),
-        ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const UserNameIdentifyScreen()),
-      );
-    }
-  }
-
-  void _openInfoScreen(BuildContext context) {
+  void _goToIdentify(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const InfoScreen()),
+      MaterialPageRoute(builder: (_) => const UserNameIdentifyScreen()),
     );
   }
 }
