@@ -137,7 +137,7 @@ class _BottomButtons extends ConsumerWidget {
   }
 
   Future<void> _openGameScreen(BuildContext context, UserRepositoryInterface userRepository) async {
-    final user = await userRepository.getUser();
+    final user = await userRepository.getCurrentUser();
     if (user != null) {
       Navigator.push(
         context,

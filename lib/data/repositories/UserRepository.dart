@@ -16,7 +16,7 @@ class UserRepository implements UserRepositoryInterface {
   }
 
   @override
-  Future<User?> getUser() async {
+  Future<User?> getCurrentUser() async {
     final db = await _databaseHelper.database;
     final result = await db.query('users', limit: 1);
 
