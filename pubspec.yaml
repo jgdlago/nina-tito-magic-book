@@ -69,7 +69,8 @@ flutter:
    - assets/icons/
    - assets/game/main_characters/nina/
    - assets/game/main_characters/tito/
-   - assets/game/tiles/bedroom
+   - assets/game/tiles/
+   - assets/game/tiles/bedroom/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
