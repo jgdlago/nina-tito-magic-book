@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nina_tito_magic_book/data/datasources/DatabaseHelper.dart';
 import 'package:nina_tito_magic_book/data/models/GenderEnum.dart';
-import 'package:nina_tito_magic_book/data/repositories/UserRepository.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
@@ -14,9 +12,6 @@ import 'package:numberpicker/numberpicker.dart';
 final ageProvider = StateProvider<int>((ref) => 9);
 final genderProvider = StateProvider<GenderEnum>((ref) => GenderEnum.male);
 final nameProvider = StateProvider<String>((ref) => '');
-final userRepositoryProvider = Provider<UserRepository>(
-      (ref) => UserRepository(DatabaseHelper()),
-);
 
 
 class UserInfoIdentifyScreen extends ConsumerWidget {
@@ -26,8 +21,8 @@ class UserInfoIdentifyScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final int selectedAge = ref.watch(ageProvider);
-    final GenderEnum selectedGender = ref.watch(genderProvider);
+    final selectedAge = ref.watch(ageProvider);
+    final selectedGender = ref.watch(genderProvider);
     final double buttonSize = MediaQuery.of(context).size.width * 0.15;
     final double modalWidth = MediaQuery.of(context).size.width * 0.6;
 

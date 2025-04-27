@@ -11,6 +11,7 @@ import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserInfoIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 import 'package:nina_tito_magic_book/providers/PlayerProvider.dart';
+import 'package:nina_tito_magic_book/providers/UserProvider.dart';
 
 final characterProvider = StateProvider<CharacterEnum>((ref) => CharacterEnum.tito);
 

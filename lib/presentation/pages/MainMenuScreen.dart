@@ -6,10 +6,10 @@ import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/presentation/components/CustomIconButton.dart';
 import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
-import 'package:nina_tito_magic_book/presentation/pages/UserInfoIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserNameIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 import 'package:nina_tito_magic_book/providers/PlayerProvider.dart';
+import 'package:nina_tito_magic_book/providers/UserProvider.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
