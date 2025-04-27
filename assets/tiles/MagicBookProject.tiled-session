@@ -3,10 +3,27 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "bedroomMap.tmx",
     "expandedProjectPaths": [
+        "."
     ],
+    "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
+        "C:/dev/pixel-adventure/assets/tiles/Pixel Adventure.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "bedroomMap.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 966,
+                "y": 512
+            }
+        },
+        "bedroom_tiled_64x64.tsx": {
+            "scaleInDock": 1
+        }
     },
     "last.imagePath": "C:/dev/nina-tito-magic-book/assets/images",
     "map.height": 11,
@@ -15,9 +32,12 @@
     "map.tileWidth": 64,
     "map.width": 32,
     "openFiles": [
+        "bedroomMap.tmx"
     ],
     "project": "MagicBookProject.tiled-project",
     "recentFiles": [
+        "bedroomMap.tmx",
+        "C:/dev/pixel-adventure/assets/tiles/Pixel Adventure.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
