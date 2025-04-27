@@ -13,7 +13,6 @@ final ageProvider = StateProvider<int>((ref) => 9);
 final genderProvider = StateProvider<GenderEnum>((ref) => GenderEnum.male);
 final nameProvider = StateProvider<String>((ref) => '');
 
-
 class UserInfoIdentifyScreen extends ConsumerWidget {
   final String? name;
 

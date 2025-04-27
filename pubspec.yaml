@@ -68,17 +68,17 @@ flutter:
   assets:
    - assets/images/
    - assets/icons/
-   - assets/main_characters/nina/
-   - assets/main_characters/tito/walk/
-   - assets/main_characters/tito/idle/
-   - assets/main_characters/tito/run/
-   - assets/main_characters/tito/jump/
-   - assets/main_characters/tito/dead/
-   - assets/main_characters/nina/walk/
-   - assets/main_characters/nina/idle/
-   - assets/main_characters/nina/run/
-   - assets/main_characters/nina/jump/
-   - assets/main_characters/nina/dead/
+   - assets/images/main_characters/nina/
+   - assets/images/main_characters/tito/walk/
+   - assets/images/main_characters/tito/idle/
+   - assets/images/main_characters/tito/run/
+   - assets/images/main_characters/tito/jump/
+   - assets/images/main_characters/tito/dead/
+   - assets/images/main_characters/nina/walk/
+   - assets/images/main_characters/nina/idle/
+   - assets/images/main_characters/nina/run/
+   - assets/images/main_characters/nina/jump/
+   - assets/images/main_characters/nina/dead/
    - assets/tiles/
 
   # An image asset can refer to one or more resolution-specific "variants", see

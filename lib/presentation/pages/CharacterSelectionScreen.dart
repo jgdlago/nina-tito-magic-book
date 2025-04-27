@@ -133,7 +133,7 @@ class CharacterSelectionScreen extends ConsumerWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => GameWidget(game: MagicBook()),
+        builder: (_) => GameWidget(game: MagicBook(playerRepository: playerRepository)),
       ),
     );
   }
