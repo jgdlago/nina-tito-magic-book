@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="32" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="17">
  <tileset firstgid="1" source="bedroom_tiled_64x64.tsx"/>
- <layer id="1" name="Background" width="32" height="11">
+ <layer id="1" name="Background" class="Background" width="32" height="11">
   <data encoding="csv">
 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,
 33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,
@@ -16,7 +16,7 @@
 321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352
 </data>
  </layer>
- <objectgroup id="2" name="Collisions">
+ <objectgroup id="2" name="Collisions" class="Background">
   <object id="12" name="wardrobe" type="wardrobe" x="1680" y="336">
    <polygon points="0,0 0,336 128,368 240,368 240,-16 256,-32 256,-48 144,-48 -16,-16"/>
   </object>
@@ -27,7 +27,7 @@
    <polygon points="0,0 -16,-16 -96,-16 -144,-32 -144,-320 -96,-336 -16,-336 -16,-320 0,-304"/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="SpawnPoints">
+ <objectgroup id="3" name="SpawnPoints" class="SpawnPoints">
   <object id="16" name="player" type="player" x="432" y="576" width="112" height="128"/>
  </objectgroup>
 </map>

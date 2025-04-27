@@ -19,5 +19,6 @@ class LevelComponent extends World with HasGameReference<MagicBook> {
     await super.onLoad();
 
     await add(scene);
+    await add(player);
   }
 }
