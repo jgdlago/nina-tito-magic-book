@@ -8,7 +8,7 @@ class Bedroom extends Scenario {
   static Future<Bedroom> load() async {
     final scene = await TiledComponent.load(
       'bedroomMap.tmx',
-      Vector2.all(16),
+      Vector2.all(64),
     );
     return Bedroom(scene);
   }

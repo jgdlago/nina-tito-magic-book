@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:nina_tito_magic_book/domain/entities/Player.dart';
@@ -10,6 +11,13 @@ class Level extends World with HasGameRef<MagicBook> {
 
   Level({
     required this.scene,
-    required this.player
+    required this.player,
   });
+
+  @override
+  FutureOr<void> onLoad() async {
+    await super.onLoad();
+
+    await add(scene);
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:flame/components.dart';
 import 'package:nina_tito_magic_book/domain/entities/Player.dart';
 import 'package:nina_tito_magic_book/game/Level.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
@@ -21,7 +22,14 @@ class MagicBook extends FlameGame {
     player = Player.fromMap(data);
 
     final bedroom = await Bedroom.load();
-    final world = Level(scene: bedroom, player: player);
-    add(world);
+    final levelWorld = Level(scene: bedroom, player: player);
+
+    final camera = CameraComponent.withFixedResolution(
+      width: levelWorld.scene.scene.tileMap.map.width * levelWorld.scene.scene.tileMap.map.tileWidth.toDouble(),
+      height: levelWorld.scene.scene.tileMap.map.height * levelWorld.scene.scene.tileMap.map.tileHeight.toDouble(),
+      world: levelWorld,
+    );
+
+    addAll([camera, levelWorld]);
   }
 }
