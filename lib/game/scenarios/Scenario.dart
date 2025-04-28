@@ -8,10 +8,6 @@ abstract class Scenario extends Component {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    scene.position = Vector2(
-      -scene.size.x / 2,
-      -scene.size.y / 2,
-    );
     add(scene);
   }
 }
