@@ -16,12 +16,15 @@ class PlayerComponent extends SpriteAnimationComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    animation = await game.loadSpriteAnimation(
-      'main_characters/tito/idle/spritesheet.png',
+
+    final image = await game.images.load('main_characters/tito/idle/spritesheet.png');
+
+    animation = SpriteAnimation.fromFrameData(
+      image,
       SpriteAnimationData.sequenced(
-        amount: 4,
-        stepTime: 0.2,
-        textureSize: Vector2(48, 48),
+        amount: 15,
+        stepTime: 0.05,
+        textureSize: Vector2.all(64),
       ),
     );
   }

@@ -42,7 +42,7 @@ class MagicBook extends FlameGame {
     final playerComponent = PlayerComponent(
       character: playerData.character.toString(),
       position: spawnPos,
-      size: Vector2(48, 48),
+      size: Vector2(spawnObj.width, spawnObj.height),
       anchor: Anchor.topLeft,
     );
 
