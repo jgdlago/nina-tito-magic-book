@@ -1,3 +1,4 @@
+import 'package:flame/camera.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
@@ -23,9 +24,9 @@ class MagicBook extends FlameGame {
     playerData = await _loadPlayerData();
 
     final bedroomScenario = await Bedroom.load();
-    final tiledComponent  = bedroomScenario.scene;
-    final renderableMap   = tiledComponent.tileMap;
-    final tiledMap        = renderableMap.map;
+    final tiledComponent = bedroomScenario.scene;
+    final renderableMap = tiledComponent.tileMap;
+    final tiledMap = renderableMap.map;
 
     final ObjectGroup spawnGroup = renderableMap
         .getLayer<ObjectGroup>('SpawnPoints')
@@ -51,17 +52,26 @@ class MagicBook extends FlameGame {
     );
     add(levelComponent);
 
-    final worldWidth  = tiledMap.width  * tiledMap.tileWidth.toDouble();
+    final worldWidth = tiledMap.width * tiledMap.tileWidth.toDouble();
     final worldHeight = tiledMap.height * tiledMap.tileHeight.toDouble();
 
-    camera = CameraComponent(world: levelComponent)
+    camera = CameraComponent(
+      world: levelComponent,
+      viewport: FixedSizeViewport(size.x, size.y),
+    )
       ..follow(playerComponent, snap: false, maxSpeed: 400)
-      ..setBounds(Rectangle.fromLTWH(0, 0, worldWidth, worldHeight));
+      ..setBounds(
+        Rectangle.fromLTWH(
+            0,
+            0,
+            worldWidth,
+            worldHeight
+        ),
+        considerViewport: true,
+      );
 
     add(camera);
     await Future.delayed(Duration.zero);
-
-    camera.viewfinder.zoom = size.y / worldHeight;
   }
 
   Future<Player> _loadPlayerData() async {
