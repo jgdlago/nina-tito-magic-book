@@ -32,18 +32,20 @@ class MagicBook extends FlameGame {
         .getLayer<ObjectGroup>('SpawnPoints')
         ?? (throw Exception('Layer "SpawnPoints" não encontrado'));
 
-    final TiledObject spawnObj = spawnGroup.objects.firstWhere(
-          (o) => o.name == 'player',
-      orElse: () => spawnGroup.objects.first,
-    );
+    final TiledObject spawnObj = spawnGroup.objects
+        .firstWhere((o) => o.name == 'player', orElse: () => spawnGroup.objects.first);
 
-    final Vector2 spawnPos = Vector2(spawnObj.x, spawnObj.y);
+    // como usamos Anchor.bottomCenter, position deve ser:
+    // x = spawnObj.x + width/2   (centro em X)
+    // y = spawnObj.y + height    (base em Y)
+    final spawnPos = Vector2(
+      spawnObj.x + spawnObj.width / 2,
+      spawnObj.y + spawnObj.height,
+    );
 
     final playerComponent = PlayerComponent(
       character: playerData.character.toString(),
       position: spawnPos,
-      size: Vector2(spawnObj.width, spawnObj.height),
-      anchor: Anchor.topLeft,
     );
 
     final levelComponent = LevelComponent(

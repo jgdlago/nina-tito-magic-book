@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flame/components.dart';
+import 'package:flame/sprite.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 
 class PlayerComponent extends SpriteAnimationComponent
@@ -8,24 +9,37 @@ class PlayerComponent extends SpriteAnimationComponent
 
   PlayerComponent({
     required this.character,
-    Vector2? position,
-    Vector2? size,
-    Anchor anchor = Anchor.center,
-  }) : super(position: position, size: size, anchor: anchor);
+    required Vector2 position,
+  }) : super(
+    position: position,
+    anchor: Anchor.bottomCenter,
+  );
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    final image = await game.images.load('main_characters/tito/idle/spritesheet.png');
-
-    animation = SpriteAnimation.fromFrameData(
-      image,
-      SpriteAnimationData.sequenced(
-        amount: 15,
-        stepTime: 0.05,
-        textureSize: Vector2.all(64),
-      ),
+    final image = await game.images.load(
+      'main_characters/tito/idle/spritesheet.png',
     );
+
+    const frameCount = 15;
+    final frameWidth = image.width.toDouble() / frameCount;
+    final frameHeight = image.height.toDouble();
+
+    final sheet = SpriteSheet(
+      image: image,
+      srcSize: Vector2(frameWidth, frameHeight),
+    );
+    animation = sheet.createAnimation(
+      row: 0,
+      stepTime: 0.05,
+      to: frameCount,
+      loop: true,
+    );
+
+    const desiredHeight = 128.0;
+    final scale = desiredHeight / frameHeight;
+    size = sheet.srcSize * scale;
   }
 }
