@@ -12,7 +12,7 @@ class PlayerComponent extends SpriteAnimationComponent
     required Vector2 position,
   }) : super(
     position: position,
-    anchor: Anchor.bottomCenter,
+    anchor: Anchor.bottomLeft,
   );
 
   @override
@@ -33,12 +33,12 @@ class PlayerComponent extends SpriteAnimationComponent
     );
     animation = sheet.createAnimation(
       row: 0,
-      stepTime: 0.05,
+      stepTime: 0.06,
       to: frameCount,
       loop: true,
     );
 
-    const desiredHeight = 128.0;
+    const desiredHeight = 256;
     final scale = desiredHeight / frameHeight;
     size = sheet.srcSize * scale;
   }

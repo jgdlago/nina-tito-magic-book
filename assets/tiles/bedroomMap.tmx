@@ -28,6 +28,6 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="SpawnPoints" class="SpawnPoints">
-  <object id="16" name="player" type="player" x="432" y="576" width="112" height="128"/>
+  <object id="16" name="player" type="player" x="448" y="480" width="144" height="224"/>
  </objectgroup>
 </map>
