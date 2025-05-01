@@ -10,8 +10,8 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation walkAnimation;
-  // late final SpriteAnimation runningAnimation;
-  // late final SpriteAnimation jumpingAnimation;
+  late final SpriteAnimation runningAnimation;
+  late final SpriteAnimation jumpingAnimation;
   // late final SpriteAnimation fallingAnimation;
 
   PlayerComponent({
@@ -26,31 +26,25 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // Carrega todas as animações
     await _loadAllAnimations();
 
-    // Ajusta o tamanho do componente com base no primeiro frame da idle
-    final firstFrameSize = idleAnimation.frames.first.sprite.srcSize;
-    const desiredHeight = 256.0;
-    final scale = desiredHeight / firstFrameSize.y;
-    size = firstFrameSize * scale;
+    size = _setSize(idleAnimation.frames.first.sprite.srcSize);
 
-    // Define animação inicial
-    current = PlayerState.idle;
+    current = PlayerState.walk;
   }
 
   Future<void> _loadAllAnimations() async {
     idleAnimation = await _spriteAnimation('idle', 15);
     walkAnimation = await _spriteAnimation('walk', 15);
-    // runningAnimation = await _spriteAnimation('run', 12);
-    // jumpingAnimation = await _spriteAnimation('jump', 1);
+    runningAnimation = await _spriteAnimation('run', 15);
+    jumpingAnimation = await _spriteAnimation('jump', 15);
     // fallingAnimation = await _spriteAnimation('fall', 1);
 
     animations = {
       PlayerState.idle: idleAnimation,
       PlayerState.walk: walkAnimation,
-      // PlayerState.running: runningAnimation,
-      // PlayerState.jumping: jumpingAnimation,
+      PlayerState.running: runningAnimation,
+      PlayerState.jumping: jumpingAnimation,
       // PlayerState.falling: fallingAnimation,
     };
   }
@@ -58,7 +52,6 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
   Future<SpriteAnimation> _spriteAnimation(String state, int amount) async {
     final image = await game.images.load('main_characters/tito/$state/spritesheet.png');
 
-    // Converte width/height para double e calcula o tamanho de cada frame
     final frameSize = Vector2(
       image.width.toDouble()  / amount,
       image.height.toDouble(),
@@ -73,5 +66,11 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
         loop:        true,
       ),
     );
+  }
+
+  Vector2 _setSize(Vector2 firstFrameSize) {
+    const desiredHeight = 256.0;
+    final scale = desiredHeight / firstFrameSize.y;
+    return firstFrameSize * scale;
   }
 }
