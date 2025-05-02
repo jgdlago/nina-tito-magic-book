@@ -29,7 +29,6 @@ class MagicBook extends FlameGame with DragCallbacks {
       'hud/Joystick.png',
     ]);
     joystick = _createJoystick();
-    add(joystick);
 
     playerData = await _loadPlayerData();
 
@@ -81,6 +80,7 @@ class MagicBook extends FlameGame with DragCallbacks {
       );
 
     add(camera);
+    camera.viewport.add(joystick);
     await Future.delayed(Duration.zero);
   }
 

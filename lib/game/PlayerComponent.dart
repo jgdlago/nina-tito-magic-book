@@ -87,10 +87,10 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
   bool get isOnGround => position.y >= groundY;
 
   Future<void> _loadAllAnimations() async {
-    idleAnimation = await _loadAnim('idle', 15);
-    walkAnimation = await _loadAnim('walk', 15);
-    runAnimation  = await _loadAnim('run', 12);
-    jumpAnimation = await _loadAnim('jump', 1);
+    idleAnimation = await _loadSpriteAnimation('idle', 15);
+    walkAnimation = await _loadSpriteAnimation('walk', 15);
+    runAnimation  = await _loadSpriteAnimation('run', 12);
+    jumpAnimation = await _loadSpriteAnimation('jump', 1);
 
     animations = {
       PlayerState.idle:    idleAnimation,
@@ -100,7 +100,7 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
     };
   }
 
-  Future<SpriteAnimation> _loadAnim(String state, int frames) async {
+  Future<SpriteAnimation> _loadSpriteAnimation(String state, int frames) async {
     final img = await game.images.load('main_characters/tito/$state/spritesheet.png');
     final frameSize = Vector2(
       img.width.toDouble()  / frames,
