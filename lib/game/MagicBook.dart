@@ -1,4 +1,5 @@
 import 'package:flame/camera.dart';
+import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
@@ -8,10 +9,12 @@ import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterfa
 import 'package:nina_tito_magic_book/game/LevelComponent.dart';
 import 'package:nina_tito_magic_book/game/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
+import 'package:flutter/widgets.dart';
 
-class MagicBook extends FlameGame {
+class MagicBook extends FlameGame with DragCallbacks {
   late final Player playerData;
   final PlayerRepositoryInterface playerRepository;
+  late final JoystickComponent joystick;
 
   MagicBook({required this.playerRepository}) {
     debugMode = true;
@@ -20,6 +23,13 @@ class MagicBook extends FlameGame {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    await images.loadAll([
+      'hud/Knob.png',
+      'hud/Joystick.png',
+    ]);
+    joystick = _createJoystick();
+    add(joystick);
 
     playerData = await _loadPlayerData();
 
@@ -35,9 +45,6 @@ class MagicBook extends FlameGame {
     final TiledObject spawnObj = spawnGroup.objects
         .firstWhere((o) => o.name == 'player', orElse: () => spawnGroup.objects.first);
 
-    // como usamos Anchor.bottomCenter, position deve ser:
-    // x = spawnObj.x + width/2   (centro em X)
-    // y = spawnObj.y + height    (base em Y)
     final spawnPos = Vector2(
       spawnObj.x + spawnObj.width / 2,
       spawnObj.y + spawnObj.height,
@@ -46,6 +53,7 @@ class MagicBook extends FlameGame {
     final playerComponent = PlayerComponent(
       character: playerData.character.toString(),
       position: spawnPos,
+      joystick: joystick,
     );
 
     final levelComponent = LevelComponent(
@@ -82,5 +90,21 @@ class MagicBook extends FlameGame {
       throw Exception('Nenhum player encontrado para o usuário atual.');
     }
     return Player.fromMap(data);
+  }
+
+  JoystickComponent _createJoystick() {
+    return JoystickComponent(
+      knob: SpriteComponent(
+        sprite: Sprite(images.fromCache('hud/Knob.png')),
+        size: Vector2.all(48),
+        anchor: Anchor.center,
+      ),
+      background: SpriteComponent(
+        sprite: Sprite(images.fromCache('hud/Joystick.png')),
+        size: Vector2.all(150),         // idem
+        anchor: Anchor.center,
+      ),
+      margin: const EdgeInsets.only(left: 40, bottom: 40),
+    );
   }
 }

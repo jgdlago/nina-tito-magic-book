@@ -80,6 +80,7 @@ flutter:
    - assets/images/main_characters/nina/jump/
    - assets/images/main_characters/nina/dead/
    - assets/tiles/
+   - assets/images/hud/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
