@@ -3,24 +3,24 @@ import 'package:flame/components.dart';
 import 'package:nina_tito_magic_book/data/models/PlayerStateEnum.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 
-class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
-    with HasGameReference<MagicBook> {
+class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with HasGameReference<MagicBook> {
   final String character;
   final JoystickComponent joystick;
 
-  // parâmetros configuráveis px/s
-  final double speed = 200;
-  final double jumpSpeed = 500;
-  final double gravity = 800;
-  final double desiredHeight = 256;
+  // Movement configuration
+  static const double _speed = 200.0;
+  static const double _jumpSpeed = 500.0;
+  static const double _gravity = 800.0;
+  static const double _desiredHeight = 256.0;
+  static const double _deadZone = 0.1;
+  static const double _movementSmoothness = 0.2;
 
-  late final SpriteAnimation idleAnimation;
-  late final SpriteAnimation walkAnimation;
-  late final SpriteAnimation runAnimation;
-  late final SpriteAnimation jumpAnimation;
+  // Player state tracking
+  Vector2 _velocity = Vector2.zero();
+  late final double _groundY;
 
-  Vector2 velocity = Vector2.zero();
-  late final double groundY;
+  // Animation objects
+  late final Map<PlayerState, SpriteAnimation> _animations;
 
   PlayerComponent({
     required this.character,
@@ -35,12 +35,13 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
   Future<void> onLoad() async {
     await super.onLoad();
 
-    await _loadAllAnimations();
+    _animations = await _loadAllAnimations();
+    animations = _animations;
 
-    size = _setSize(idleAnimation.frames.first.sprite.srcSize);
+    final firstFrameSize = _animations[PlayerState.idle]!.frames.first.sprite.srcSize;
+    size = _calculateScaledSize(firstFrameSize);
 
-    groundY = position.y;
-
+    _groundY = position.y;
     current = PlayerState.idle;
   }
 
@@ -48,75 +49,92 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
   void update(double dt) {
     super.update(dt);
 
-    final raw = joystick.relativeDelta;
-    const deadZone = 0.1;
-    final dx = raw.x.abs() < deadZone ? 0.0 : raw.x;
+    _handleHorizontalMovement(dt);
+    _handleJumping();
+    _applyGravity(dt);
+    _applyMovement(dt);
+    _handleGroundCollision();
+  }
 
-    final targetVx = dx * speed;
-    velocity.x = lerpDouble(velocity.x, targetVx, 0.2)!;
+  /// Handles left/right movement based on joystick input
+  void _handleHorizontalMovement(double dt) {
+    final rawInput = joystick.relativeDelta;
+    final dx = rawInput.x.abs() < _deadZone ? 0.0 : rawInput.x;
 
-    if (velocity.x.abs() > 1) {
+    final targetVelocityX = dx * _speed;
+    _velocity.x = lerpDouble(_velocity.x, targetVelocityX, _movementSmoothness)!;
+
+    if (_velocity.x.abs() > 1) {
       current = PlayerState.walk;
-      scale.x = velocity.x < 0 ? -1 : 1;
+      scale.x = _velocity.x < 0 ? -1 : 1; // Flip sprite based on direction
     } else {
       current = PlayerState.idle;
-      velocity.x = 0;
+      _velocity.x = 0;
       scale.x = 1;
-    }
-
-    if (joystick.direction == JoystickDirection.up && isOnGround) {
-      velocity.y = -jumpSpeed;
-      current = PlayerState.jumping;
-    }
-
-    // gravidade
-    velocity.y += gravity * dt;
-
-    // aplica movimento
-    position += velocity * dt;
-
-    // colisão chão
-    if (position.y >= groundY) {
-      position.y = groundY;
-      velocity.y = 0;
     }
   }
 
-  bool get isOnGround => position.y >= groundY;
+  /// Handles jumping when the joystick points up
+  void _handleJumping() {
+    if (joystick.direction == JoystickDirection.up && isOnGround) {
+      _velocity.y = -_jumpSpeed;
+      current = PlayerState.jumping;
+    }
+  }
 
-  Future<void> _loadAllAnimations() async {
-    idleAnimation = await _loadSpriteAnimation('idle', 15);
-    walkAnimation = await _loadSpriteAnimation('walk', 15);
-    runAnimation  = await _loadSpriteAnimation('run', 12);
-    jumpAnimation = await _loadSpriteAnimation('jump', 1);
+  /// Applies gravity to vertical velocity
+  void _applyGravity(double dt) {
+    _velocity.y += _gravity * dt;
+  }
 
-    animations = {
-      PlayerState.idle:    idleAnimation,
-      PlayerState.walk:    walkAnimation,
-      PlayerState.running: runAnimation,
-      PlayerState.jumping: jumpAnimation,
+  /// Applies velocity to position
+  void _applyMovement(double dt) {
+    position += _velocity * dt;
+  }
+
+  /// Handles collision with the ground
+  void _handleGroundCollision() {
+    if (position.y >= _groundY) {
+      position.y = _groundY;
+      _velocity.y = 0;
+    }
+  }
+
+  /// Returns whether the player is on the ground
+  bool get isOnGround => position.y >= _groundY;
+
+  /// Loads all player animations from sprite sheets
+  Future<Map<PlayerState, SpriteAnimation>> _loadAllAnimations() async {
+    return {
+      PlayerState.idle: await _loadSpriteAnimation('idle', 15),
+      PlayerState.walk: await _loadSpriteAnimation('walk', 15),
+      PlayerState.running: await _loadSpriteAnimation('run', 12),
+      PlayerState.jumping: await _loadSpriteAnimation('jump', 1),
     };
   }
 
+  /// Loads a single animation from a sprite sheet
   Future<SpriteAnimation> _loadSpriteAnimation(String state, int frames) async {
     final img = await game.images.load('main_characters/tito/$state/spritesheet.png');
     final frameSize = Vector2(
-      img.width.toDouble()  / frames,
+      img.width.toDouble() / frames,
       img.height.toDouble(),
     );
+
     return SpriteAnimation.fromFrameData(
       img,
       SpriteAnimationData.sequenced(
-        amount:      frames,
-        stepTime:    0.05,
+        amount: frames,
+        stepTime: 0.05,
         textureSize: frameSize,
-        loop:        true,
+        loop: true,
       ),
     );
   }
 
-  Vector2 _setSize(Vector2 firstFrame) {
-    final scaleFactor = desiredHeight / firstFrame.y;
-    return firstFrame * scaleFactor;
+  /// Calculates the scaled size based on desired height
+  Vector2 _calculateScaledSize(Vector2 originalSize) {
+    final scaleFactor = _desiredHeight / originalSize.y;
+    return originalSize * scaleFactor;
   }
 }
