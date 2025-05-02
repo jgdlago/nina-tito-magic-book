@@ -93,18 +93,18 @@ class MagicBook extends FlameGame with DragCallbacks {
   }
 
   JoystickComponent _createJoystick() {
+
     return JoystickComponent(
       knob: SpriteComponent(
-        sprite: Sprite(images.fromCache('hud/Knob.png')),
-        size: Vector2.all(48),
-        anchor: Anchor.center,
+        sprite: Sprite(images.fromCache('hud/Knob.png')
+        ),
       ),
       background: SpriteComponent(
-        sprite: Sprite(images.fromCache('hud/Joystick.png')),
-        size: Vector2.all(150),         // idem
-        anchor: Anchor.center,
+        sprite: Sprite(images.fromCache('hud/Joystick.png')
+        ),
       ),
-      margin: const EdgeInsets.only(left: 40, bottom: 40),
-    );
+      margin: const EdgeInsets.only(left: 50, bottom: 50)
+    )..priority = 100;
   }
+
 }
