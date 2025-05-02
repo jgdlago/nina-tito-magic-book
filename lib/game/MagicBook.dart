@@ -93,7 +93,6 @@ class MagicBook extends FlameGame with DragCallbacks {
   }
 
   JoystickComponent _createJoystick() {
-
     return JoystickComponent(
       knob: SpriteComponent(
         sprite: Sprite(images.fromCache('hud/Knob.png')

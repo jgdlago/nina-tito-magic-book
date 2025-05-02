@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:nina_tito_magic_book/data/models/PlayerStateEnum.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 
@@ -64,7 +63,6 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState>
       velocity.x = 0;
       scale.x = 1;
     }
-
 
     if (joystick.direction == JoystickDirection.up && isOnGround) {
       velocity.y = -jumpSpeed;
