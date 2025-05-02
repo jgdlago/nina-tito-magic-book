@@ -7,7 +7,7 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
   final String character;
   final JoystickComponent joystick;
 
-  // Movement configuration
+  // Configuração de movimento
   static const double _speed = 200.0;
   static const double _jumpSpeed = 500.0;
   static const double _gravity = 800.0;
@@ -15,11 +15,9 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
   static const double _deadZone = 0.1;
   static const double _movementSmoothness = 0.2;
 
-  // Player state tracking
   Vector2 _velocity = Vector2.zero();
   late final double _groundY;
 
-  // Animation objects
   late final Map<PlayerState, SpriteAnimation> _animations;
 
   PlayerComponent({
@@ -56,7 +54,6 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
     _handleGroundCollision();
   }
 
-  /// Handles left/right movement based on joystick input
   void _handleHorizontalMovement(double dt) {
     final rawInput = joystick.relativeDelta;
     final dx = rawInput.x.abs() < _deadZone ? 0.0 : rawInput.x;
@@ -66,15 +63,13 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
 
     if (_velocity.x.abs() > 1) {
       current = PlayerState.walk;
-      scale.x = _velocity.x < 0 ? -1 : 1; // Flip sprite based on direction
+      scale.x = _velocity.x < 0 ? -1 : 1;
     } else {
       current = PlayerState.idle;
       _velocity.x = 0;
-      scale.x = 1;
     }
   }
 
-  /// Handles jumping when the joystick points up
   void _handleJumping() {
     if (joystick.direction == JoystickDirection.up && isOnGround) {
       _velocity.y = -_jumpSpeed;
@@ -82,17 +77,14 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
     }
   }
 
-  /// Applies gravity to vertical velocity
   void _applyGravity(double dt) {
     _velocity.y += _gravity * dt;
   }
 
-  /// Applies velocity to position
   void _applyMovement(double dt) {
     position += _velocity * dt;
   }
 
-  /// Handles collision with the ground
   void _handleGroundCollision() {
     if (position.y >= _groundY) {
       position.y = _groundY;
@@ -100,10 +92,8 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
     }
   }
 
-  /// Returns whether the player is on the ground
   bool get isOnGround => position.y >= _groundY;
 
-  /// Loads all player animations from sprite sheets
   Future<Map<PlayerState, SpriteAnimation>> _loadAllAnimations() async {
     return {
       PlayerState.idle: await _loadSpriteAnimation('idle', 15),
@@ -113,7 +103,6 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
     };
   }
 
-  /// Loads a single animation from a sprite sheet
   Future<SpriteAnimation> _loadSpriteAnimation(String state, int frames) async {
     final img = await game.images.load('main_characters/tito/$state/spritesheet.png');
     final frameSize = Vector2(
@@ -132,7 +121,6 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
     );
   }
 
-  /// Calculates the scaled size based on desired height
   Vector2 _calculateScaledSize(Vector2 originalSize) {
     final scaleFactor = _desiredHeight / originalSize.y;
     return originalSize * scaleFactor;
