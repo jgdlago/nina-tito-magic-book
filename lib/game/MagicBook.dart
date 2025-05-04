@@ -6,8 +6,8 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:nina_tito_magic_book/domain/entities/Player.dart';
 import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterface.dart';
-import 'package:nina_tito_magic_book/game/LevelComponent.dart';
-import 'package:nina_tito_magic_book/game/PlayerComponent.dart';
+import 'package:nina_tito_magic_book/game/components/LevelComponent.dart';
+import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
 import 'package:flutter/widgets.dart';
 
