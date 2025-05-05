@@ -17,8 +17,8 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
   static const double _desiredHeight = 256.0;
   static const double _deadZone = 0.1;
   static const double _movementSmoothness = 0.2;
-  static const double _gravity = 400.0;
-  static const double _jumpForce = 350.0;
+  static const double _gravity = 500.0;
+  static const double _jumpForce = 300.0;
 
   Vector2 _velocity = Vector2.zero();
 
@@ -108,11 +108,11 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
       PlayerState.idle: await _loadSpriteAnimation('idle', 15),
       PlayerState.walk: await _loadSpriteAnimation('walk', 15),
       PlayerState.running: await _loadSpriteAnimation('run', 15),
-      PlayerState.jumping: await _loadSpriteAnimation('jump', 15),
+      PlayerState.jumping: await _loadSpriteAnimation('jump', 15, loop: false),
     };
   }
 
-  Future<SpriteAnimation> _loadSpriteAnimation(String state, int frames) async {
+  Future<SpriteAnimation> _loadSpriteAnimation(String state, int frames, {double stepTime = 0.05, bool loop = true}) async {
     final img = await game.images.load('main_characters/tito/$state/spritesheet.png');
     final frameSize = Vector2(
       img.width.toDouble() / frames,
@@ -123,9 +123,9 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
       img,
       SpriteAnimationData.sequenced(
         amount: frames,
-        stepTime: 0.05,
+        stepTime: stepTime,
         textureSize: frameSize,
-        loop: true,
+        loop: loop,
       ),
     );
   }
