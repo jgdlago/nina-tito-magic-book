@@ -11,7 +11,7 @@ import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
 import 'package:flutter/widgets.dart';
 
-class MagicBook extends FlameGame with DragCallbacks {
+class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   late final Player playerData;
   final PlayerRepositoryInterface playerRepository;
   late final JoystickComponent joystick;

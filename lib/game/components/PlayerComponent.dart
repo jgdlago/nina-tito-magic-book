@@ -1,22 +1,26 @@
 import 'dart:ui';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:nina_tito_magic_book/data/models/PlayerStateEnum.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
+import 'package:nina_tito_magic_book/game/components/GroundComponent.dart';
 
-class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with HasGameReference<MagicBook> {
+class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with HasGameReference<MagicBook>, CollisionCallbacks {
   final String character;
   final JoystickComponent joystick;
 
+  final Vector2 fromAbove = Vector2(0, -1);
+  bool isOnGround = false;
+
   // Configuração de movimento
   static const double _speed = 200.0;
-  static const double _jumpSpeed = 500.0;
-  static const double _gravity = 800.0;
   static const double _desiredHeight = 256.0;
   static const double _deadZone = 0.1;
   static const double _movementSmoothness = 0.2;
+  static const double _gravity = 400.0;
+  static const double _jumpForce = 350.0;
 
   Vector2 _velocity = Vector2.zero();
-  late final double _groundY;
 
   late final Map<PlayerState, SpriteAnimation> _animations;
 
@@ -39,19 +43,18 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
     final firstFrameSize = _animations[PlayerState.idle]!.frames.first.sprite.srcSize;
     size = _calculateScaledSize(firstFrameSize);
 
-    _groundY = position.y;
     current = PlayerState.idle;
+
+    add(RectangleHitbox(size: size));
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-
     _handleHorizontalMovement(dt);
-    _handleJumping();
-    _applyGravity(dt);
+    _handleVerticalMovement(dt);
     _applyMovement(dt);
-    _handleGroundCollision();
+    _updatePlayerState();
   }
 
   void _handleHorizontalMovement(double dt) {
@@ -61,45 +64,51 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
     final targetVelocityX = dx * _speed;
     _velocity.x = lerpDouble(_velocity.x, targetVelocityX, _movementSmoothness)!;
 
-    if (_velocity.x.abs() > 1) {
-      current = PlayerState.walk;
-      scale.x = _velocity.x < 0 ? -1 : 1;
+    if (dx != 0) {
+      scale.x = dx < 0 ? -1 : 1;
+    }
+  }
+
+  void _handleVerticalMovement(double dt) {
+    if (!isOnGround) {
+      _velocity.y += _gravity * dt;
     } else {
-      current = PlayerState.idle;
-      _velocity.x = 0;
+      _velocity.y = 0;
+    }
+
+    if (isOnGround && joystick.relativeDelta.y < -0.5) {
+      _jump();
     }
   }
 
-  void _handleJumping() {
-    if (joystick.direction == JoystickDirection.up && isOnGround) {
-      _velocity.y = -_jumpSpeed;
-      current = PlayerState.jumping;
-    }
-  }
-
-  void _applyGravity(double dt) {
-    _velocity.y += _gravity * dt;
+  void _jump() {
+    isOnGround = false;
+    _velocity.y = -_jumpForce;
+    current = PlayerState.jumping;
   }
 
   void _applyMovement(double dt) {
     position += _velocity * dt;
   }
 
-  void _handleGroundCollision() {
-    if (position.y >= _groundY) {
-      position.y = _groundY;
-      _velocity.y = 0;
+  void _updatePlayerState() {
+    if (!isOnGround) {
+      current = PlayerState.jumping;
+    } else if (_velocity.x.abs() > _speed * 0.7) {
+      current = PlayerState.running;
+    } else if (_velocity.x.abs() > 1) {
+      current = PlayerState.walk;
+    } else {
+      current = PlayerState.idle;
     }
   }
-
-  bool get isOnGround => position.y >= _groundY;
 
   Future<Map<PlayerState, SpriteAnimation>> _loadAllAnimations() async {
     return {
       PlayerState.idle: await _loadSpriteAnimation('idle', 15),
       PlayerState.walk: await _loadSpriteAnimation('walk', 15),
-      PlayerState.running: await _loadSpriteAnimation('run', 12),
-      PlayerState.jumping: await _loadSpriteAnimation('jump', 1),
+      PlayerState.running: await _loadSpriteAnimation('run', 15),
+      PlayerState.jumping: await _loadSpriteAnimation('jump', 15),
     };
   }
 
@@ -124,5 +133,30 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
   Vector2 _calculateScaledSize(Vector2 originalSize) {
     final scaleFactor = _desiredHeight / originalSize.y;
     return originalSize * scaleFactor;
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is GroundComponent) {
+      if (_velocity.y > 0) {
+        isOnGround = true;
+        position.y = other.position.y;
+        _velocity.y = 0;
+      }
+    }
+
+    super.onCollision(intersectionPoints, other);
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    if (other is GroundComponent) {
+      bool stillOnGround = false;
+      if (!stillOnGround) {
+        isOnGround = false;
+      }
+    }
+
+    super.onCollisionEnd(other);
   }
 }
