@@ -70,6 +70,7 @@ flutter:
    - assets/images/
    - assets/icons/
    - assets/images/main_characters/nina/
+   - assets/images/main_characters/tito/
    - assets/images/main_characters/tito/walk/
    - assets/images/main_characters/tito/idle/
    - assets/images/main_characters/tito/run/

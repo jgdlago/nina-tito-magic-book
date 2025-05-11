@@ -77,8 +77,8 @@ class CharacterSelectionScreen extends ConsumerWidget {
       ) {
     bool isSelected = character == selectedCharacter;
     final String imagePath = character == CharacterEnum.nina
-        ? 'assets/game/main_characters/nina/Idle (1).png'
-        : 'assets/game/main_characters/tito/Idle (1).png';
+        ? 'assets/images/main_characters/nina/idle/Idle (1).png'
+        : 'assets/images/main_characters/tito/idle/Idle (1).png';
 
     return GestureDetector(
       onTap: () => ref.read(characterProvider.notifier).state = character,
@@ -95,9 +95,8 @@ class CharacterSelectionScreen extends ConsumerWidget {
             children: [
               Image.asset(
                 imagePath,
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
+                width: 100,
+                height: 100,
               ),
               const SizedBox(height: 12),
               Text(
