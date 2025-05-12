@@ -1,7 +1,6 @@
 import 'package:flame/components.dart';
-import 'package:flame/text.dart';
-import 'package:flutter/material.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
+import 'package:nina_tito_magic_book/game/ui/themes/GameTextStyles.dart';
 
 class DialogComponent extends PositionComponent with HasGameReference<MagicBook> {
   late SpriteComponent background;
@@ -31,18 +30,11 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
 
     textBox = TextBoxComponent(
       text: text,
-      boxConfig: TextBoxConfig(
-        maxWidth: size.x * 0.85,    // 85% da largura do diálogo
-        timePerChar: 0,
-      ),
+      boxConfig: TextBoxConfig(maxWidth: size.x * 0.85),
       textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 20,
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
+        style: GameTextStyles.dialogBody,
       ),
-      position: Vector2(size.x * 0.5, size.y * 0.5),
+      position: Vector2(size.x * .5, size.y * .5),
       anchor: Anchor.center,
     );
     add(textBox);
