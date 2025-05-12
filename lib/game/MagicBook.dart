@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:nina_tito_magic_book/domain/entities/Player.dart';
 import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterface.dart';
+import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/LevelComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
@@ -15,8 +16,9 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   late final Player playerData;
   final PlayerRepositoryInterface playerRepository;
   late final JoystickComponent joystick;
+  final bool showDialog;
 
-  MagicBook({required this.playerRepository}) {
+  MagicBook({required this.playerRepository, this.showDialog = false}) {
     debugMode = true;
   }
 
@@ -27,7 +29,9 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     await images.loadAll([
       'hud/Knob.png',
       'hud/Joystick.png',
+      'ui/dialog_torn_paper.png'
     ]);
+
     joystick = _createJoystick();
 
     playerData = await _loadPlayerData();
@@ -81,6 +85,13 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
 
     add(camera);
     camera.viewport.add(joystick);
+
+    if (showDialog) {
+      await camera.viewport.add(DialogComponent(
+        text: 'Bem-vindo ao mundo mágico!',
+      ));
+    }
+
     await Future.delayed(Duration.zero);
   }
 
@@ -94,15 +105,15 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
 
   JoystickComponent _createJoystick() {
     return JoystickComponent(
-      knob: SpriteComponent(
-        sprite: Sprite(images.fromCache('hud/Knob.png')
+        knob: SpriteComponent(
+          sprite: Sprite(images.fromCache('hud/Knob.png')
+          ),
         ),
-      ),
-      background: SpriteComponent(
-        sprite: Sprite(images.fromCache('hud/Joystick.png')
+        background: SpriteComponent(
+          sprite: Sprite(images.fromCache('hud/Joystick.png')
+          ),
         ),
-      ),
-      margin: const EdgeInsets.only(left: 50, bottom: 50)
+        margin: const EdgeInsets.only(left: 50, bottom: 50)
     )..priority = 100;
   }
 
