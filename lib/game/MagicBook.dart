@@ -6,19 +6,24 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:nina_tito_magic_book/domain/entities/Player.dart';
 import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterface.dart';
+import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/LevelComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nina_tito_magic_book/game/ui/messages/DialogMessages.dart';
 
 class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   late final Player playerData;
   final PlayerRepositoryInterface playerRepository;
+  final UserRepositoryInterface userRepository;
   late final JoystickComponent joystick;
-  final bool showDialog;
 
-  MagicBook({required this.playerRepository, this.showDialog = false}) {
+  MagicBook({
+    required this.playerRepository,
+    required this.userRepository,
+  }) {
     debugMode = true;
   }
 
@@ -86,11 +91,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     add(camera);
     camera.viewport.add(joystick);
 
-    if (showDialog) {
-      await camera.viewport.add(DialogComponent(
-        text: 'Bem-vindo ao mundo mágico!',
-      ));
-    }
+    _loadIntroduction();
 
     await Future.delayed(Duration.zero);
   }
@@ -115,6 +116,16 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         ),
         margin: const EdgeInsets.only(left: 50, bottom: 50)
     )..priority = 100;
+  }
+
+  void _loadIntroduction() async {
+    final userProgress = await userRepository.getUserProgress();
+    if (userProgress == null) {
+      camera.viewport.remove(joystick);
+      await camera.viewport.add(
+        DialogComponent(text: DialogMessages.introductionLevel1)
+      );
+    }
   }
 
 }
