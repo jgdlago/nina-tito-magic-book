@@ -1,14 +1,13 @@
-import 'dart:ui';
-
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/game/ui/themes/GameTextStyles.dart';
+import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
 class DialogComponent extends PositionComponent with HasGameReference<MagicBook> {
   late SpriteComponent background;
   late TextBoxComponent textBox;
-  late ButtonComponent continueButton;
+  late HudButtonComponent continueButton;
   final String text;
   final Function? onContinue;
   final Vector2? dialogSize;
@@ -22,8 +21,7 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
   @override
   Future<void> onLoad() async {
     final viewport = game.camera.viewport.size;
-    size = dialogSize ??
-        Vector2(viewport.x * 0.60, viewport.y * 0.85);
+    size = dialogSize ?? Vector2(viewport.x * 0.60, viewport.y * 0.85);
 
     final image = await game.images.load('ui/dialog_torn_paper.png');
     background = SpriteComponent(
@@ -34,7 +32,18 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     );
     add(background);
 
-    _addButton();
+    textBox = TextBoxComponent(
+      text: text,
+      boxConfig: TextBoxConfig(maxWidth: size.x * 0.85),
+      textRenderer: TextPaint(
+        style: GameTextStyles.dialogBody,
+      ),
+      position: Vector2(size.x * .5, size.y * .45),
+      anchor: Anchor.center,
+    );
+    add(textBox);
+
+    await _addButton();
 
     position = viewport / 2;
 
@@ -47,51 +56,38 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     position = game.camera.viewport.size / 2;
   }
 
-  void _addButton() async {
-    textBox = TextBoxComponent(
-      text: text,
-      boxConfig: TextBoxConfig(maxWidth: size.x * 0.85),
-      textRenderer: TextPaint(
-        style: GameTextStyles.dialogBody,
-      ),
-      position: Vector2(size.x * .5, size.y * .45),
-      anchor: Anchor.center,
-    );
-    add(textBox);
-
+  Future<void> _addButton() async {
     final buttonSprite = await game.images.load('ui/default_button.png');
 
-    final buttonContainer = PositionComponent(
-      position: Vector2(size.x * 0.5, size.y * 0.85),
-      anchor: Anchor.center,
-    );
+    final buttonSize = Vector2(size.x * 0.3, 50);
+    final buttonPosition = Vector2(size.x * 0.5, size.y * 0.85);
 
-    final buttonBackground = SpriteComponent(
-      sprite: Sprite(buttonSprite),
-      size: Vector2(size.x * 0.3, 50),
-      anchor: Anchor.center,
-    );
-
-    final buttonText = TextComponent(
-      text: 'Continuar',
-      textRenderer: TextPaint(
-        style: GameTextStyles.dialogBody.copyWith(
-          color: const Color(0xFF333333),
-        ),
+    continueButton = HudButtonComponent(
+      button: SpriteComponent(
+        sprite: Sprite(buttonSprite),
+        size: buttonSize,
+        anchor: Anchor.center,
       ),
-      anchor: Anchor.center,
-    );
-
-    buttonContainer.add(buttonBackground);
-    buttonContainer.add(buttonText);
-
-    continueButton = ButtonComponent(
-      button: buttonContainer,
+      position: buttonPosition,
+      size: buttonSize,
       onPressed: () {
         if (onContinue != null) {
           onContinue!();
         }
+        removeFromParent();
       },
+    );
+
+    continueButton.add(
+      TextComponent(
+        text: 'Continuar',
+        textRenderer: TextPaint(
+          style: GameTextStyles.dialogBody.copyWith(
+            color: AppColors.mysticalBlack,
+          ),
+        ),
+        anchor: Anchor.center,
+      ),
     );
 
     add(continueButton);
