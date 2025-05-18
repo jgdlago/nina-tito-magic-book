@@ -66,8 +66,8 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
       button: SpriteComponent(
         sprite: Sprite(buttonSprite),
         size: buttonSize,
-        anchor: Anchor.center,
       ),
+      anchor: Anchor.center,
       position: buttonPosition,
       size: buttonSize,
       onPressed: () {
@@ -81,12 +81,14 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     continueButton.add(
       TextComponent(
         text: 'Continuar',
+        position: continueButton.size / 2,
         textRenderer: TextPaint(
           style: GameTextStyles.dialogBody.copyWith(
             color: AppColors.mysticalBlack,
           ),
         ),
         anchor: Anchor.center,
+        priority: 1000,
       ),
     );
 
