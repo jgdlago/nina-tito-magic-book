@@ -139,6 +139,9 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     await camera.viewport.add(
         DialogComponent(
           text: DialogMessages.introductionLevel1layer2,
+          onContinue: () {
+            camera.viewport.add(joystick);
+          }
         )
     );
   }
