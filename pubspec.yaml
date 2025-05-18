@@ -72,6 +72,7 @@ flutter:
    - assets/tiles/
    - assets/images/ui/
    - assets/images/hud/
+   - assets/images/general/
    - assets/images/main_characters/nina/
    - assets/images/main_characters/tito/
    - assets/images/main_characters/tito/walk/
