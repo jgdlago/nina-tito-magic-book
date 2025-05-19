@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:nina_tito_magic_book/domain/entities/Player.dart';
+import 'package:nina_tito_magic_book/domain/repositories/LevelRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
@@ -18,11 +19,13 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   late final Player playerData;
   final PlayerRepositoryInterface playerRepository;
   final UserRepositoryInterface userRepository;
+  final LevelRepositoryInterface levelRepository;
   late final JoystickComponent joystick;
 
   MagicBook({
     required this.playerRepository,
     required this.userRepository,
+    required this.levelRepository,
   }) {
     debugMode = true;
   }
@@ -69,6 +72,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     final levelComponent = LevelComponent(
       scene: bedroomScenario,
       player: playerComponent,
+      levelRepository: levelRepository,
     );
     add(levelComponent);
 
