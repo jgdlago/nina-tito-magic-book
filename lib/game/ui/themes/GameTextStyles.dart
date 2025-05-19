@@ -16,4 +16,22 @@ class GameTextStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.mysticalBlack,
   );
+
+  static final TextStyle levelMessageTitle = GoogleFonts.quicksand(
+    fontSize: 12,
+    fontWeight: FontWeight.bold,
+    color: AppColors.goldenMagic,
+    shadows: [
+      Shadow(offset: Offset( 1,  1), blurRadius: 1, color: AppColors.mysticalBlack),
+    ],
+  );
+
+  static final TextStyle levelMessageBody = GoogleFonts.quicksand(
+    fontSize: 12,
+    fontWeight: FontWeight.normal,
+    color: AppColors.goldenMagic,
+    shadows: [
+      Shadow(offset: Offset( 1,  1), blurRadius: 1, color: AppColors.mysticalBlack),
+    ],
+  );
 }
