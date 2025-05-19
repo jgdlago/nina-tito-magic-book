@@ -2,6 +2,7 @@ import 'dart:async';
 import 'Tables.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'DatabaseSeeder.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -29,7 +30,13 @@ class DatabaseHelper {
         await db.execute(createUserProgressTable);
         await db.execute(createItemsTable);
         await db.execute(createUserItemsTable);
+
+        await _seedDatabase(db);
       },
     );
+  }
+
+  Future<void> _seedDatabase(Database db) async {
+    await db.execute(addLevel1);
   }
 }
