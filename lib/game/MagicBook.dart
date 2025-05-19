@@ -101,13 +101,23 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     final userProgress = await userRepository.getUserProgress();
     if (userProgress == null) {
       showingIntroduction = true;
+      removeGameHUD();
       await _loadIntroduction();
     } else {
-      camera.viewport.add(joystick);
-      levelComponent.addLevelMessage();
+      showGameHUD();
     }
 
     await Future.delayed(Duration.zero);
+  }
+
+  void showGameHUD() {
+    camera.viewport.add(joystick);
+    levelComponent.addLevelMessage();
+  }
+
+  void removeGameHUD() {
+    joystick.removeFromParent();
+    levelComponent.removeLevelMessage();
   }
 
   Future<Player> _loadPlayerData() async {
@@ -149,8 +159,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
             text: DialogMessages.introductionLevel1layer2,
             dialogImage: images.fromCache('general/magic_book.png'),
             onContinue: () {
-              camera.viewport.add(joystick);
-              levelComponent.addLevelMessage();
+              showGameHUD();
               showingIntroduction = false;
             }
         )
