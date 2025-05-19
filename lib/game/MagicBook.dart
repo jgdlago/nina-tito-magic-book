@@ -20,7 +20,9 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   final PlayerRepositoryInterface playerRepository;
   final UserRepositoryInterface userRepository;
   final LevelRepositoryInterface levelRepository;
+  late final LevelComponent levelComponent;
   late final JoystickComponent joystick;
+  bool showingIntroduction = false;
 
   MagicBook({
     required this.playerRepository,
@@ -69,7 +71,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       joystick: joystick,
     );
 
-    final levelComponent = LevelComponent(
+    levelComponent = LevelComponent(
       scene: bedroomScenario,
       player: playerComponent,
       levelRepository: levelRepository,
@@ -95,9 +97,15 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       );
 
     add(camera);
-    camera.viewport.add(joystick);
 
-    _loadIntroduction();
+    final userProgress = await userRepository.getUserProgress();
+    if (userProgress == null) {
+      showingIntroduction = true;
+      await _loadIntroduction();
+    } else {
+      camera.viewport.add(joystick);
+      levelComponent.addLevelMessage();
+    }
 
     await Future.delayed(Duration.zero);
   }
@@ -124,30 +132,27 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     )..priority = 100;
   }
 
-  void _loadIntroduction() async {
-    final userProgress = await userRepository.getUserProgress();
-    if (userProgress == null) {
-      camera.viewport.remove(joystick);
-
-      await camera.viewport.add(
-          DialogComponent(
-            text: DialogMessages.introductionLevel1,
-            onContinue: () {
-              _showSecondDialog();
-            },
-          )
-      );
-    }
+  Future<void> _loadIntroduction() async {
+    await camera.viewport.add(
+        DialogComponent(
+          text: DialogMessages.introductionLevel1,
+          onContinue: () {
+            _showSecondDialog();
+          },
+        )
+    );
   }
 
   void _showSecondDialog() async {
     await camera.viewport.add(
         DialogComponent(
-          text: DialogMessages.introductionLevel1layer2,
-          dialogImage: images.fromCache('general/magic_book.png'),
-          onContinue: () {
-            camera.viewport.add(joystick);
-          }
+            text: DialogMessages.introductionLevel1layer2,
+            dialogImage: images.fromCache('general/magic_book.png'),
+            onContinue: () {
+              camera.viewport.add(joystick);
+              levelComponent.addLevelMessage();
+              showingIntroduction = false;
+            }
         )
     );
   }

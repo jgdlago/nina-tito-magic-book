@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:nina_tito_magic_book/domain/entities/Level.dart';
 import 'package:nina_tito_magic_book/domain/repositories/LevelRepositoryInterface.dart';
@@ -12,6 +11,10 @@ class LevelComponent extends World with HasGameReference<MagicBook> {
   final Scenario scene;
   final PlayerComponent player;
   final LevelRepositoryInterface levelRepository;
+  Level? _currentLevel;
+
+  TextComponent? _nameLabel;
+  TextBoxComponent? _messageLabel;
 
   LevelComponent({
     required this.scene,
@@ -28,24 +31,33 @@ class LevelComponent extends World with HasGameReference<MagicBook> {
 
     final level = await levelRepository.getLevel(1);
     if (level != null) {
-      _addLevelMessage(level);
-    }
+      _currentLevel = level;
 
+      if (!game.showingIntroduction) {
+        addLevelMessage();
+      }
+    }
   }
 
-  void _addLevelMessage(Level level) async {
+  void addLevelMessage() {
+    if (_currentLevel == null || _nameLabel != null) return;
+
     const double padding = 10.0;
     final double maxMessageWidth = game.size.x * 0.3;
 
     final nameLabel = TextComponent(
-      text: level.name,
+      text: _currentLevel!.name,
       textRenderer: TextPaint(style: GameTextStyles.levelMessageTitle),
-      position: Vector2(game.size.x - padding, padding),
+      position: Vector2(
+        game.size.x - padding,
+        padding,
+      ),
       anchor: Anchor.topRight,
-    )..priority = 1000;
+    )
+      ..priority = 1000;
 
     final messageLabel = TextBoxComponent(
-      text: level.message,
+      text: _currentLevel!.message,
       boxConfig: TextBoxConfig(maxWidth: maxMessageWidth),
       textRenderer: TextPaint(style: GameTextStyles.levelMessageBody),
       position: Vector2(
@@ -53,9 +65,20 @@ class LevelComponent extends World with HasGameReference<MagicBook> {
         padding + nameLabel.size.y + 4,
       ),
       anchor: Anchor.topRight,
-    )..priority = 1000;
+    )
+      ..priority = 1000;
+
+    _nameLabel = nameLabel;
+    _messageLabel = messageLabel;
 
     game.camera.viewport.add(nameLabel);
     game.camera.viewport.add(messageLabel);
+  }
+
+  void removeLevelMessage() {
+    _nameLabel?.removeFromParent();
+    _messageLabel?.removeFromParent();
+    _nameLabel = null;
+    _messageLabel = null;
   }
 }
