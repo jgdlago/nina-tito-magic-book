@@ -41,7 +41,8 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       'hud/Knob.png',
       'hud/Joystick.png',
       'ui/dialog_torn_paper.png',
-      'ui/default_button.png'
+      'ui/default_button.png',
+      'items/items_example.png'
     ]);
 
     joystick = _createJoystick();
@@ -158,6 +159,18 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         DialogComponent(
             text: DialogMessages.introductionLevel1layer2,
             dialogImage: images.fromCache('general/magic_book.png'),
+            onContinue: () {
+              _showThirdDialog();
+            }
+        )
+    );
+  }
+
+  void _showThirdDialog() async {
+    await camera.viewport.add(
+        DialogComponent(
+            text: DialogMessages.introductionLevel1layer3,
+            dialogImage: images.fromCache('items/items_example.png'),
             onContinue: () {
               showGameHUD();
               showingIntroduction = false;

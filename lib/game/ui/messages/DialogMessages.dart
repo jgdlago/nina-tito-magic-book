@@ -3,4 +3,5 @@ class DialogMessages {
 
   static const introductionLevel1layer2 = 'Estamos em busca deste livro:';
 
+  static const introductionLevel1layer3 = 'Tintas, adesivos e itens mágicos serão nescessários para a nossa jornada, pegue sempre que ver um!';
 }

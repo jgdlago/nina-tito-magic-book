@@ -1,10 +1,17 @@
 import 'dart:ui';
-
+import 'dart:math' as math;
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/game/ui/themes/GameTextStyles.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
+
+enum ImageFitMode {
+  contain,
+  cover,
+  fill,
+  scaleDown,
+}
 
 class DialogComponent extends PositionComponent with HasGameReference<MagicBook> {
   late SpriteComponent background;
@@ -15,14 +22,19 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
   final Function? onContinue;
   final Vector2? dialogSize;
   final Image? dialogImage;
-  // Espaçamento entre o texto e a imagem, em pixels
   final double imageSpacing = 10;
+  final ImageFitMode imageFitMode;
+  final double? maxImageWidth;
+  final double? maxImageHeight;
 
   DialogComponent({
     required this.text,
     this.onContinue,
     this.dialogImage,
     this.dialogSize,
+    this.imageFitMode = ImageFitMode.contain,
+    this.maxImageWidth,
+    this.maxImageHeight,
   }) : super(anchor: Anchor.center);
 
   @override
@@ -53,11 +65,11 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     // Button
     await _addButton();
 
-    // Image
     if (dialogImage != null) {
+      final imageSize = _calculateOptimalImageSize();
       imageComponent = SpriteComponent(
         sprite: Sprite(dialogImage!),
-        size: Vector2(size.x * 0.4, size.y * 0.5),
+        size: imageSize,
         position: Vector2(size.x * 0.5, 0),
         anchor: Anchor.topCenter,
       );
@@ -69,6 +81,72 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     await super.onLoad();
   }
 
+  Vector2 _calculateOptimalImageSize() {
+    if (dialogImage == null) return Vector2.zero();
+
+    final originalWidth = dialogImage!.width.toDouble();
+    final originalHeight = dialogImage!.height.toDouble();
+
+    final maxWidth = maxImageWidth ?? (size.x * 0.8);
+    final maxHeight = maxImageHeight ?? (size.y * 0.4);
+
+    Vector2 calculatedSize;
+
+    switch (imageFitMode) {
+      case ImageFitMode.contain:
+        calculatedSize = _calculateContainSize(
+            originalWidth, originalHeight, maxWidth, maxHeight
+        );
+        break;
+
+      case ImageFitMode.cover:
+        calculatedSize = _calculateCoverSize(
+            originalWidth, originalHeight, maxWidth, maxHeight
+        );
+        break;
+
+      case ImageFitMode.fill:
+        calculatedSize = Vector2(maxWidth, maxHeight);
+        break;
+
+      case ImageFitMode.scaleDown:
+        final containSize = _calculateContainSize(
+            originalWidth, originalHeight, maxWidth, maxHeight
+        );
+        calculatedSize = Vector2(
+          math.min(containSize.x, originalWidth),
+          math.min(containSize.y, originalHeight),
+        );
+        break;
+    }
+
+    return calculatedSize;
+  }
+
+  Vector2 _calculateContainSize(double originalWidth, double originalHeight,
+      double maxWidth, double maxHeight) {
+    final originalAspectRatio = originalWidth / originalHeight;
+    final maxAspectRatio = maxWidth / maxHeight;
+
+    if (originalAspectRatio > maxAspectRatio) {
+      return Vector2(maxWidth, maxWidth / originalAspectRatio);
+    } else {
+      return Vector2(maxHeight * originalAspectRatio, maxHeight);
+    }
+  }
+
+  Vector2 _calculateCoverSize(double originalWidth, double originalHeight,
+      double maxWidth, double maxHeight) {
+    final originalAspectRatio = originalWidth / originalHeight;
+    final maxAspectRatio = maxWidth / maxHeight;
+
+    if (originalAspectRatio > maxAspectRatio) {
+      return Vector2(maxHeight * originalAspectRatio, maxHeight);
+    } else {
+      return Vector2(maxWidth, maxWidth / originalAspectRatio);
+    }
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -78,8 +156,7 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     if (textBox.size.y > 0) {
       textBox.position.y = (size.y - textBox.size.y - (imageComponent != null
           ? imageComponent!.size.y + imageSpacing
-          : 0) - continueButton.size.y - 16) * 0.20
-          ;
+          : 0) - continueButton.size.y - 16) * 0.20;
 
       if (imageComponent != null) {
         imageComponent!.position.y = textBox.position.y +
@@ -87,8 +164,7 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
             imageSpacing;
       }
 
-      continueButton.position.y =
-          size.y - continueButton.size.y * 0.75;
+      continueButton.position.y = size.y - continueButton.size.y * 0.75;
     }
   }
 
