@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:nina_tito_magic_book/data/models/PlayerStateEnum.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/game/components/GroundComponent.dart';
+import 'package:nina_tito_magic_book/game/components/WallComponent.dart';
 
 class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with HasGameReference<MagicBook>, CollisionCallbacks {
   final String character;
@@ -163,15 +164,38 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is GroundComponent) {
-      if (_velocity.y > 0) {
-        isOnGround = true;
-        position.y = other.position.y;
+    super.onCollision(intersectionPoints, other);
+
+    if (other is GroundComponent && _velocity.y > 0) {
+      isOnGround = true;
+      position.y = other.position.y;
+      _velocity.y = 0;
+    }
+
+    if (other is WallComponent) {
+      final Rect playerRect = toAbsoluteRect();
+      final Rect wallRect   = other.toAbsoluteRect();
+      final Rect overlap    = playerRect.intersect(wallRect);
+
+      if (overlap.width == 0 || overlap.height == 0) return;
+
+      if (overlap.width < overlap.height) {
+        if (_velocity.x > 0) {
+          position.x -= overlap.width;
+        } else if (_velocity.x < 0) {
+          position.x += overlap.width;
+        }
+        _velocity.x = 0;
+      } else {
+        if (_velocity.y > 0) {
+          position.y -= overlap.height;
+          isOnGround = true;
+        } else if (_velocity.y < 0) {
+          position.y += overlap.height;
+        }
         _velocity.y = 0;
       }
     }
-
-    super.onCollision(intersectionPoints, other);
   }
 
   @override
