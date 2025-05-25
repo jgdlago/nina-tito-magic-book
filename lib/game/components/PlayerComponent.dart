@@ -12,8 +12,8 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
   final Vector2 fromAbove = Vector2(0, -1);
   bool isOnGround = false;
   bool _jumpRequested = false;
+  bool _movementEnabled = true;
 
-  // Configuração de movimento
   static const double _speed = 200.0;
   static const double _desiredHeight = 256.0;
   static const double _deadZone = 0.1;
@@ -59,6 +59,11 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
   }
 
   void _handleHorizontalMovement(double dt) {
+    if (!_movementEnabled) {
+      _velocity.x = lerpDouble(_velocity.x, 0.0, _movementSmoothness * 2)!;
+      return;
+    }
+
     final rawInput = joystick.relativeDelta;
     final dx = rawInput.x.abs() < _deadZone ? 0.0 : rawInput.x;
 
@@ -77,8 +82,10 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
       _velocity.y = 0;
     }
 
-    if (isOnGround && _jumpRequested) {
+    if (isOnGround && _jumpRequested && _movementEnabled) {
       _jump();
+      _jumpRequested = false;
+    } else if (!_movementEnabled) {
       _jumpRequested = false;
     }
   }
@@ -90,10 +97,21 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
   }
 
   void requestJump() {
-    if (isOnGround) {
+    if (isOnGround && _movementEnabled) {
       _jumpRequested = true;
     }
   }
+
+  void enableMovement() {
+    _movementEnabled = true;
+  }
+
+  void disableMovement() {
+    _movementEnabled = false;
+    _jumpRequested = false;
+  }
+
+  bool get isMovementEnabled => _movementEnabled;
 
   void _applyMovement(double dt) {
     position += _velocity * dt;

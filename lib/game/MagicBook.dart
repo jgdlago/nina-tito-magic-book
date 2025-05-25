@@ -121,12 +121,14 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     camera.viewport.add(joystick);
     camera.viewport.add(jumpButton);
     levelComponent.addLevelMessage();
+    playerComponent.enableMovement();
   }
 
   void removeGameHUD() {
     joystick.removeFromParent();
     jumpButton.removeFromParent();
     levelComponent.removeLevelMessage();
+    playerComponent.disableMovement();
   }
 
   Future<Player> _loadPlayerData() async {
