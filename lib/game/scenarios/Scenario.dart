@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:nina_tito_magic_book/game/components/GroundComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PotionComponent.dart';
+import 'package:nina_tito_magic_book/game/components/WallComponent.dart';
 
 abstract class Scenario extends Component {
   final TiledComponent scene;
@@ -37,6 +38,14 @@ abstract class Scenario extends Component {
               isVisible: true,
             );
             add(potion);
+            break;
+
+          case 'wall':
+            final wall = WallComponent(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+            );
+            add(wall);
             break;
 
           default:
