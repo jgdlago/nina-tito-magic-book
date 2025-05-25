@@ -49,8 +49,8 @@ const String createItemsTable = '''
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT,
-    unlock_level_id INTEGER NOT NULL,
-    FOREIGN KEY (unlock_level_id) REFERENCES levels(id) ON DELETE CASCADE
+    level_id INTEGER NOT NULL,
+    FOREIGN KEY (level_id) REFERENCES levels(id) ON DELETE CASCADE
   )
 ''';
 
