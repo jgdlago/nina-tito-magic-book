@@ -22,6 +22,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   final LevelRepositoryInterface levelRepository;
   late final LevelComponent levelComponent;
   late final JoystickComponent joystick;
+  late final PlayerComponent playerComponent;
   bool showingIntroduction = false;
 
   MagicBook({
@@ -66,7 +67,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       spawnObj.y + spawnObj.height,
     );
 
-    final playerComponent = PlayerComponent(
+    playerComponent = PlayerComponent(
       character: playerData.character.toString(),
       position: spawnPos,
       joystick: joystick,

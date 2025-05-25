@@ -1,7 +1,9 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
+import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
+import 'package:nina_tito_magic_book/game/ui/messages/DialogMessages.dart';
 
 class PotionComponent extends PositionComponent
     with HasGameReference<MagicBook>, CollisionCallbacks {
@@ -47,8 +49,18 @@ class PotionComponent extends PositionComponent
     return false;
   }
 
-  void _collectPotion() {
+  void _collectPotion() async {
     removeFromParent();
+    game.removeGameHUD();
+    game.camera.viewport.add(
+        DialogComponent(
+            text: DialogMessages.potionCollected1,
+            dialogImage: await game.images.load('items/potion_1.png'),
+            onContinue: () {
+              game.showGameHUD();
+            }
+        )
+    );
   }
 
   void hide() {
