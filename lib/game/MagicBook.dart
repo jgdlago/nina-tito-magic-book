@@ -43,9 +43,9 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       'general/magic_book.png',
       'hud/Knob.png',
       'hud/Joystick.png',
+      'hud/jump.png',
       'ui/dialog_torn_paper.png',
       'ui/default_button.png',
-      'ui/jump.png',
       'items/items_example.png'
     ]);
 
@@ -147,7 +147,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
           sprite: Sprite(images.fromCache('hud/Joystick.png')
           ),
         ),
-        margin: const EdgeInsets.only(left: 50, bottom: 50)
+        margin: const EdgeInsets.only(left: 100, bottom: 50)
     )..priority = 100;
   }
 
