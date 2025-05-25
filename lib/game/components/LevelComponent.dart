@@ -42,11 +42,12 @@ class LevelComponent extends World with HasGameReference<MagicBook> {
   void addLevelMessage() {
     if (_currentLevel == null || _nameLabel != null) return;
 
-    const double padding = 10.0;
+    const double padding = 5;
     final double maxMessageWidth = game.size.x * 0.3;
 
-    final nameLabel = TextComponent(
+    final nameLabel = TextBoxComponent(
       text: _currentLevel!.name,
+      boxConfig: TextBoxConfig(maxWidth: maxMessageWidth),
       textRenderer: TextPaint(style: GameTextStyles.levelMessageTitle),
       position: Vector2(
         game.size.x - padding,
@@ -62,7 +63,7 @@ class LevelComponent extends World with HasGameReference<MagicBook> {
       textRenderer: TextPaint(style: GameTextStyles.levelMessageBody),
       position: Vector2(
         game.size.x - padding,
-        padding + nameLabel.size.y + 4,
+        nameLabel.size.y,
       ),
       anchor: Anchor.topRight,
     )
