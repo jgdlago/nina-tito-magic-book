@@ -11,6 +11,7 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
 
   final Vector2 fromAbove = Vector2(0, -1);
   bool isOnGround = false;
+  bool _jumpRequested = false;
 
   // Configuração de movimento
   static const double _speed = 200.0;
@@ -20,7 +21,7 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
   static const double _gravity = 500.0;
   static const double _jumpForce = 300.0;
 
-  Vector2 _velocity = Vector2.zero();
+  final Vector2 _velocity = Vector2.zero();
 
   late final Map<PlayerState, SpriteAnimation> _animations;
 
@@ -76,8 +77,9 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
       _velocity.y = 0;
     }
 
-    if (isOnGround && joystick.relativeDelta.y < -0.5) {
+    if (isOnGround && _jumpRequested) {
       _jump();
+      _jumpRequested = false;
     }
   }
 
@@ -85,6 +87,12 @@ class PlayerComponent extends SpriteAnimationGroupComponent<PlayerState> with Ha
     isOnGround = false;
     _velocity.y = -_jumpForce;
     current = PlayerState.jumping;
+  }
+
+  void requestJump() {
+    if (isOnGround) {
+      _jumpRequested = true;
+    }
   }
 
   void _applyMovement(double dt) {

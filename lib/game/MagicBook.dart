@@ -11,6 +11,7 @@ import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface
 import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/LevelComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
+import 'package:nina_tito_magic_book/game/components/JumpButtonComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nina_tito_magic_book/game/ui/messages/DialogMessages.dart';
@@ -22,6 +23,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   final LevelRepositoryInterface levelRepository;
   late final LevelComponent levelComponent;
   late final JoystickComponent joystick;
+  late final JumpButtonComponent jumpButton;
   late final PlayerComponent playerComponent;
   bool showingIntroduction = false;
 
@@ -43,6 +45,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       'hud/Joystick.png',
       'ui/dialog_torn_paper.png',
       'ui/default_button.png',
+      'ui/jump.png',
       'items/items_example.png'
     ]);
 
@@ -72,6 +75,8 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       position: spawnPos,
       joystick: joystick,
     );
+
+    jumpButton = _createJumpButton();
 
     levelComponent = LevelComponent(
       scene: bedroomScenario,
@@ -114,11 +119,13 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
 
   void showGameHUD() {
     camera.viewport.add(joystick);
+    camera.viewport.add(jumpButton);
     levelComponent.addLevelMessage();
   }
 
   void removeGameHUD() {
     joystick.removeFromParent();
+    jumpButton.removeFromParent();
     levelComponent.removeLevelMessage();
   }
 
@@ -142,6 +149,16 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         ),
         margin: const EdgeInsets.only(left: 50, bottom: 50)
     )..priority = 100;
+  }
+
+  JumpButtonComponent _createJumpButton() {
+    return JumpButtonComponent(
+      onJump: () => playerComponent.requestJump(),
+      position: Vector2(
+        size.x - 100,
+        size.y - 100,
+      ),
+    );
   }
 
   Future<void> _loadIntroduction() async {
