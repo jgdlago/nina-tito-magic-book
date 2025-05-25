@@ -5,15 +5,17 @@ import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/ui/messages/DialogMessages.dart';
 
-class PotionComponent extends PositionComponent
+class ItemComponent extends PositionComponent
     with HasGameReference<MagicBook>, CollisionCallbacks {
   late final bool isVisible;
   late SpriteComponent _sprite;
+  late final String image;
 
-  PotionComponent({
+  ItemComponent({
     required Vector2 position,
     required Vector2 size,
     this.isVisible = true,
+    required this.image,
   }) : super(
     position: position,
     size: size,
@@ -31,7 +33,7 @@ class PotionComponent extends PositionComponent
 
     if (isVisible) {
       _sprite = SpriteComponent(
-        sprite: await Sprite.load('items/potion_1.png'),
+        sprite: await Sprite.load(image),
         size: size,
         anchor: Anchor.topLeft,
       );

@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:nina_tito_magic_book/game/components/GroundComponent.dart';
-import 'package:nina_tito_magic_book/game/components/PotionComponent.dart';
+import 'package:nina_tito_magic_book/game/components/ItemComponent.dart';
 import 'package:nina_tito_magic_book/game/components/WallComponent.dart';
 
 abstract class Scenario extends Component {
@@ -31,10 +31,11 @@ abstract class Scenario extends Component {
             add(ground);
             break;
 
-          case 'potion':
-            final potion = PotionComponent(
+          case 'item':
+            final potion = ItemComponent(
               position: Vector2(collision.x, collision.y),
               size: Vector2(collision.width, collision.height),
+              image: collision.properties.getValue('imagePath'),
               isVisible: true,
             );
             add(potion);
