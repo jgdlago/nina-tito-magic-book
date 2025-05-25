@@ -10,6 +10,7 @@ import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserInfoIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
+import 'package:nina_tito_magic_book/providers/ItemProvider.dart';
 import 'package:nina_tito_magic_book/providers/LevelProvider.dart';
 import 'package:nina_tito_magic_book/providers/PlayerProvider.dart';
 import 'package:nina_tito_magic_book/providers/UserProvider.dart';
@@ -119,6 +120,7 @@ class CharacterSelectionScreen extends ConsumerWidget {
     final userRepository = ref.read(userRepositoryProvider);
     final playerRepository = ref.read(playerRepositoryProvider);
     final levelRepository = ref.read(levelRepositoryProvider);
+    final itemRepository = ref.read(itemRepositoryProvider);
 
     final user = User(
       name: ref.read(nameProvider),
@@ -134,7 +136,7 @@ class CharacterSelectionScreen extends ConsumerWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => GameWidget(game: MagicBook(playerRepository: playerRepository, userRepository: userRepository, levelRepository: levelRepository)),
+        builder: (_) => GameWidget(game: MagicBook(playerRepository: playerRepository, userRepository: userRepository, levelRepository: levelRepository, itemRepository: itemRepository)),
       ),
     );
   }

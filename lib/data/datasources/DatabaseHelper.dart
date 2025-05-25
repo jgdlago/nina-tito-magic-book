@@ -29,7 +29,6 @@ class DatabaseHelper {
         await db.execute(createLevelsTable);
         await db.execute(createUserProgressTable);
         await db.execute(createItemsTable);
-        await db.execute(createUserItemsTable);
 
         await _seedDatabase(db);
       },

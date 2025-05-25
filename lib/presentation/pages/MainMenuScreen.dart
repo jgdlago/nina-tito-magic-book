@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nina_tito_magic_book/domain/repositories/ItemRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/LevelRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
@@ -9,6 +10,7 @@ import 'package:nina_tito_magic_book/presentation/components/CustomIconButton.da
 import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserNameIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
+import 'package:nina_tito_magic_book/providers/ItemProvider.dart';
 import 'package:nina_tito_magic_book/providers/LevelProvider.dart';
 import 'package:nina_tito_magic_book/providers/PlayerProvider.dart';
 import 'package:nina_tito_magic_book/providers/UserProvider.dart';
@@ -86,6 +88,7 @@ class _BottomButtons extends ConsumerWidget {
     final userRepo = ref.read(userRepositoryProvider);
     final playerRepo = ref.read(playerRepositoryProvider);
     final levelRepo = ref.read(levelRepositoryProvider);
+    final ItemRepo = ref.read(itemRepositoryProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
@@ -123,7 +126,7 @@ class _BottomButtons extends ConsumerWidget {
             width: size.width * 0.15,
             child: CustomIconButton(
               type: IconType.play,
-              onPressed: () => _handlePlay(context, userRepo, playerRepo, levelRepo),
+              onPressed: () => _handlePlay(context, userRepo, playerRepo, levelRepo, ItemRepo),
               color: AppColors.confirmationGreen,
             ),
           ),
@@ -132,7 +135,7 @@ class _BottomButtons extends ConsumerWidget {
     );
   }
 
-  Future<void> _handlePlay(BuildContext context, UserRepositoryInterface userRepo, PlayerRepositoryInterface playerRepo, LevelRepositoryInterface levelRepo) async {
+  Future<void> _handlePlay(BuildContext context, UserRepositoryInterface userRepo, PlayerRepositoryInterface playerRepo, LevelRepositoryInterface levelRepo, ItemRepositoryInterface itemRepo) async {
     final user = await userRepo.getCurrentUser();
     final player = await playerRepo.getPlayerByCurrentUser();
 
@@ -143,7 +146,7 @@ class _BottomButtons extends ConsumerWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => GameWidget(game: MagicBook(playerRepository: playerRepo, userRepository: userRepo, levelRepository: levelRepo)),
+        builder: (_) => GameWidget(game: MagicBook(playerRepository: playerRepo, userRepository: userRepo, levelRepository: levelRepo, itemRepository: itemRepo)),
       ),
     );
   }

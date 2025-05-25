@@ -2,13 +2,13 @@ class Item {
   final int? id;
   final String name;
   final String? description;
-  final int level_id;
+  final String collected_at;
 
   Item({
     this.id,
     required this.name,
     this.description,
-    required this.level_id,
+    required this.collected_at
   });
 
   factory Item.fromMap(Map<String, dynamic> map) {
@@ -16,7 +16,7 @@ class Item {
       id: map['id'],
       name: map['name'],
       description: map['description'],
-      level_id: map['level_id'],
+      collected_at: map['collected_at']
     );
   }
 
@@ -25,7 +25,7 @@ class Item {
       'id': id,
       'name': name,
       'description': description,
-      'level_id': level_id,
+      'collected_at': collected_at
     };
   }
 }

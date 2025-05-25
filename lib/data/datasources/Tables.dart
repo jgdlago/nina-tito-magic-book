@@ -22,7 +22,6 @@ final String createUsersTable = '''
   )
 ''';
 
-
 const String createLevelsTable = '''
   CREATE TABLE levels(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,24 +45,9 @@ const String createUserProgressTable = '''
 
 const String createItemsTable = '''
   CREATE TABLE items(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    description TEXT,
-    level_id INTEGER NOT NULL,
-    FOREIGN KEY (level_id) REFERENCES levels(id) ON DELETE CASCADE
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    name          TEXT    NOT NULL,
+    description   TEXT,
+    collected_at  DATETIME DEFAULT CURRENT_TIMESTAMP
   )
 ''';
-
-const String createUserItemsTable = '''
-  CREATE TABLE user_items(
-    user_id INTEGER NOT NULL,
-    item_id INTEGER NOT NULL,
-    collected_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, item_id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
-  )
-''';
-
-
-

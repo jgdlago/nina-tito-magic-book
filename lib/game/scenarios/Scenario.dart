@@ -36,6 +36,8 @@ abstract class Scenario extends Component {
               position: Vector2(collision.x, collision.y),
               size: Vector2(collision.width, collision.height),
               image: collision.properties.getValue('imagePath'),
+              itemName: collision.properties.getValue('name') ?? 'Item Desconhecido',
+              itemDescription: collision.properties.getValue('description') ?? 'Descrição não disponível',
               isVisible: true,
             );
             add(potion);
