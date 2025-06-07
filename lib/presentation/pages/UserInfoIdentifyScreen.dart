@@ -68,8 +68,8 @@ class UserInfoIdentifyScreen extends ConsumerWidget {
                             const SizedBox(height: 20),
                             NumberPicker(
                               value: selectedAge,
-                              minValue: 4,
-                              maxValue: 14,
+                              minValue: 6,
+                              maxValue: 12,
                               step: 1,
                               axis: Axis.horizontal,
                               selectedTextStyle: Theme.of(context)
