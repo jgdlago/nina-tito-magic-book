@@ -49,7 +49,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       'hud/jump.png',
       'ui/dialog_torn_paper.png',
       'ui/default_button.png',
-      'items/items_example.png'
+      'items/items_example.png',
     ]);
 
     joystick = _createJoystick();
