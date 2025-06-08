@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
@@ -18,9 +20,7 @@ class WardrobePuzzleComponent extends PositionComponent
   @override
   Future<void> onLoad() async {
     game.removeGameHUD();
-
     _addDialogs();
-
     await super.onLoad();
   }
 
@@ -38,39 +38,125 @@ class WardrobePuzzleComponent extends PositionComponent
   void _initPuzzle() async {
     puzzleOverlay = PuzzleOverlay();
     game.camera.viewport.add(puzzleOverlay);
-
     await Future.delayed(Duration.zero);
 
+    // Parâmetros de layout
+    final double screenWidth = game.size.x;
+    final double screenHeight = game.size.y;
+    final double dividerX = screenWidth * 0.5; // Divide a tela no meio
     final double padding = 20.0;
-    final double gap = 10.0;
-    final double scaleFactor = 0.5;
-    final double centerY = game.size.y / 2;
+    final double gap = 15.0;
 
-    final imagePaths = [
+    // Área dos personagens (lado esquerdo)
+    await _addCharacters(
+      areaWidth: dividerX - padding,
+      areaHeight: screenHeight,
+      padding: padding,
+      gap: gap,
+    );
+
+    // Área das roupas (lado direito)
+    await _addClothes(
+      startX: dividerX + padding,
+      areaWidth: screenWidth - dividerX - padding * 2,
+      areaHeight: screenHeight,
+      padding: padding,
+      gap: gap,
+    );
+
+    // Adiciona linha divisória visual (opcional)
+    _addDividerLine(dividerX, screenHeight);
+  }
+
+  Future<void> _addCharacters(
+      {required double areaWidth,
+        required double areaHeight,
+        required double padding,
+        required double gap}) async {
+
+    final characterPaths = [
       'main_characters/tito/idle/Idle (1).png',
       'main_characters/nina/idle/Idle (1).png',
     ];
 
-    for (var i = 0; i < imagePaths.length; i++) {
-      final img = await game.images.load(imagePaths[i]);
-      final sprite = Sprite(img);
+    final double scaleFactor = 0.6;
+    final double centerY = areaHeight / 2;
 
-      final Vector2 spriteSize = Vector2(
+    for (var i = 0; i < characterPaths.length; i++) {
+      final img = await game.images.load(characterPaths[i]);
+      final sprite = Sprite(img);
+      final Vector2 size = Vector2(
         img.width.toDouble(),
         img.height.toDouble(),
       ) * scaleFactor;
 
+      // Posiciona os personagens verticalmente, centralizados na área esquerda
       final comp = SpriteComponent()
         ..sprite = sprite
-        ..size = spriteSize
+        ..size = size
         ..position = Vector2(
-          padding + i * (spriteSize.x + gap),
-          centerY - spriteSize.y / 2,
+          areaWidth / 2 - size.x / 2, // Centraliza horizontalmente na área esquerda
+          centerY - (characterPaths.length * (size.y + gap)) / 2 + i * (size.y + gap),
         )
         ..anchor = Anchor.topLeft;
 
       puzzleOverlay.add(comp);
     }
+  }
+
+  Future<void> _addClothes(
+      {required double startX,
+        required double areaWidth,
+        required double areaHeight,
+        required double padding,
+        required double gap}) async {
+
+    final clothesPaths = [
+      'puzzles/level_1/bikini_top.png',
+      'puzzles/level_1/bikini_bottom.png',
+      'puzzles/level_1/sweater.png',
+      'puzzles/level_1/pants.png',
+      'puzzles/level_1/underpants.png',
+      'puzzles/level_1/socks.png',
+    ];
+
+    final double clothesScale = 0.08;
+    final int itemsPerRow = 3; // Organiza as roupas em 3 colunas
+    final double itemSpacing = areaWidth / itemsPerRow;
+
+    for (var i = 0; i < clothesPaths.length; i++) {
+      final img = await game.images.load(clothesPaths[i]);
+      final sprite = Sprite(img);
+      final Vector2 size = Vector2(
+        img.width.toDouble(),
+        img.height.toDouble(),
+      ) * clothesScale;
+
+      // Calcula posição em grade
+      final int row = i ~/ itemsPerRow;
+      final int col = i % itemsPerRow;
+
+      final double x = startX + (col * itemSpacing) + (itemSpacing / 2) - (size.x / 2);
+      final double y = padding + (row * (size.y + gap * 2)) + gap;
+
+      final comp = SpriteComponent()
+        ..sprite = sprite
+        ..size = size
+        ..position = Vector2(x, y)
+        ..anchor = Anchor.topLeft;
+
+      puzzleOverlay.add(comp);
+    }
+  }
+
+  void _addDividerLine(double x, double height) {
+    // Cria uma linha visual para dividir as áreas (opcional)
+    final dividerLine = RectangleComponent(
+      position: Vector2(x - 1, 0),
+      size: Vector2(2, height),
+      paint: Paint()..color = const Color(0x33FFFFFF), // Linha semi-transparente
+    );
+    puzzleOverlay.add(dividerLine);
   }
 
   void closePuzzle() {
