@@ -3,6 +3,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:nina_tito_magic_book/game/components/GroundComponent.dart';
 import 'package:nina_tito_magic_book/game/components/ItemComponent.dart';
 import 'package:nina_tito_magic_book/game/components/WallComponent.dart';
+import 'package:nina_tito_magic_book/game/components/WardrobeComponent.dart';
 
 abstract class Scenario extends Component {
   final TiledComponent scene;
@@ -49,6 +50,14 @@ abstract class Scenario extends Component {
               size: Vector2(collision.width, collision.height),
             );
             add(wall);
+            break;
+
+          case 'wardrobe':
+            final wardrobe = WardrobeComponent(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+            );
+            add(wardrobe);
             break;
 
           default:
