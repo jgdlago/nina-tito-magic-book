@@ -2,7 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
-import 'package:nina_tito_magic_book/game/components/puzzle/PuzzleOverlay.dart';
+import 'package:nina_tito_magic_book/game/components/puzzle/level1/WardrobePuzzleComponent.dart';
 
 class WardrobeComponent extends PositionComponent with HasGameReference<MagicBook>, CollisionCallbacks {
   // final Function() onInteract;
@@ -39,7 +39,6 @@ class WardrobeComponent extends PositionComponent with HasGameReference<MagicBoo
 
   void _showInteractionHint() {
     print(_isPlayerNearby);
-    game.removeGameHUD();
-    game.camera.viewport.add(PuzzleOverlay());
+    game.camera.viewport.add(WardrobePuzzleComponent(position: position, size: size));
   }
 }
