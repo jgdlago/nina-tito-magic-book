@@ -1,7 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
+import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/puzzle/PuzzleOverlay.dart';
+import 'package:nina_tito_magic_book/game/ui/messages/DialogMessages.dart';
 
 class WardrobePuzzleComponent extends PositionComponent
     with DragCallbacks, HasGameReference<MagicBook> {
@@ -14,7 +16,20 @@ class WardrobePuzzleComponent extends PositionComponent
   @override
   Future<void> onLoad() async {
     game.removeGameHUD();
-    game.camera.viewport.add(PuzzleOverlay());
+
+    _addDialogs();
+
     await super.onLoad();
+  }
+
+  void _addDialogs() async {
+    game.camera.viewport.add(
+        DialogComponent(
+            text: DialogMessages.level1WardrobePuzzleLayer1,
+        onContinue: () {
+          game.camera.viewport.add(PuzzleOverlay());
+        }
+      )
+    );
   }
 }
