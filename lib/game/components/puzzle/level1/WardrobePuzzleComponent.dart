@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
@@ -40,14 +39,13 @@ class WardrobePuzzleComponent extends PositionComponent
     game.camera.viewport.add(puzzleOverlay);
     await Future.delayed(Duration.zero);
 
-    // Parâmetros de layout
     final double screenWidth = game.size.x;
     final double screenHeight = game.size.y;
     final double dividerX = screenWidth * 0.5; // Divide a tela no meio
     final double padding = 20.0;
     final double gap = 15.0;
 
-    // Área dos personagens (lado esquerdo)
+    // Personagens (Esquerda)
     await _addCharacters(
       areaWidth: dividerX - padding,
       areaHeight: screenHeight,
@@ -55,7 +53,7 @@ class WardrobePuzzleComponent extends PositionComponent
       gap: gap,
     );
 
-    // Área das roupas (lado direito)
+    // Roupas (Direita)
     await _addClothes(
       startX: dividerX + padding,
       areaWidth: screenWidth - dividerX - padding * 2,
@@ -64,7 +62,7 @@ class WardrobePuzzleComponent extends PositionComponent
       gap: gap,
     );
 
-    // Adiciona linha divisória visual (opcional)
+    // Adiciona linha divisória visual
     _addDividerLine(dividerX, screenHeight);
   }
 
@@ -79,7 +77,7 @@ class WardrobePuzzleComponent extends PositionComponent
       'main_characters/nina/idle/Idle (1).png',
     ];
 
-    final double scaleFactor = 0.6;
+    final double scaleFactor = 0.5;
     final double centerY = areaHeight / 2;
 
     for (var i = 0; i < characterPaths.length; i++) {
@@ -90,13 +88,15 @@ class WardrobePuzzleComponent extends PositionComponent
         img.height.toDouble(),
       ) * scaleFactor;
 
-      // Posiciona os personagens verticalmente, centralizados na área esquerda
+      final double totalWidth = characterPaths.length * size.x + (characterPaths.length - 1) * gap;
+      final double startX = (areaWidth - totalWidth) / 2;
+
       final comp = SpriteComponent()
         ..sprite = sprite
         ..size = size
         ..position = Vector2(
-          areaWidth / 2 - size.x / 2, // Centraliza horizontalmente na área esquerda
-          centerY - (characterPaths.length * (size.y + gap)) / 2 + i * (size.y + gap),
+          startX + i * (size.x + gap), // Posiciona horizontalmente
+          centerY - size.y / 2, // Centraliza verticalmente
         )
         ..anchor = Anchor.topLeft;
 
@@ -150,11 +150,11 @@ class WardrobePuzzleComponent extends PositionComponent
   }
 
   void _addDividerLine(double x, double height) {
-    // Cria uma linha visual para dividir as áreas (opcional)
+    // Cria uma linha para dividir as telas
     final dividerLine = RectangleComponent(
       position: Vector2(x - 1, 0),
       size: Vector2(2, height),
-      paint: Paint()..color = const Color(0x33FFFFFF), // Linha semi-transparente
+      paint: Paint()..color = const Color(0x33FFFFFF),
     );
     puzzleOverlay.add(dividerLine);
   }
