@@ -41,21 +41,36 @@ class WardrobePuzzleComponent extends PositionComponent
 
     await Future.delayed(Duration.zero);
 
-    final boySprite = SpriteComponent()
-      ..sprite = Sprite(await game.images.load('main_characters/tito/idle/Idle (1).png'))
-      ..scale = Vector2.all(0.5)
-      ..position = Vector2(game.size.x / 2 - 120, game.size.y / 2 - 75)
-      ..anchor = Anchor.center;
+    final double padding = 20.0;
+    final double gap = 10.0;
+    final double scaleFactor = 0.5;
+    final double centerY = game.size.y / 2;
 
-    final girlSprite = SpriteComponent()
-      ..sprite = Sprite(await game.images.load('main_characters/nina/idle/Idle (1).png'))
-      ..scale = Vector2.all(0.5)
-      ..position = Vector2(game.size.x / 2 - 120, game.size.y / 2 - 75)
-      ..anchor = Anchor.center;
+    final imagePaths = [
+      'main_characters/tito/idle/Idle (1).png',
+      'main_characters/nina/idle/Idle (1).png',
+    ];
 
-    puzzleOverlay.add(boySprite);
-    puzzleOverlay.add(girlSprite);
+    for (var i = 0; i < imagePaths.length; i++) {
+      final img = await game.images.load(imagePaths[i]);
+      final sprite = Sprite(img);
 
+      final Vector2 spriteSize = Vector2(
+        img.width.toDouble(),
+        img.height.toDouble(),
+      ) * scaleFactor;
+
+      final comp = SpriteComponent()
+        ..sprite = sprite
+        ..size = spriteSize
+        ..position = Vector2(
+          padding + i * (spriteSize.x + gap),
+          centerY - spriteSize.y / 2,
+        )
+        ..anchor = Anchor.topLeft;
+
+      puzzleOverlay.add(comp);
+    }
   }
 
   void closePuzzle() {
