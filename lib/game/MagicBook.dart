@@ -3,6 +3,7 @@ import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:nina_tito_magic_book/domain/entities/Player.dart';
 import 'package:nina_tito_magic_book/domain/repositories/ItemRepositoryInterface.dart';
@@ -41,6 +42,8 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    await FlameAudio.bgm.play('soundtrack/ambient_music.mp3');
 
     await images.loadAll([
       'general/magic_book.png',
