@@ -28,6 +28,6 @@
   <object id="31" name="wardrobe" type="wardrobe" x="1680" y="320" width="240" height="368"/>
  </objectgroup>
  <objectgroup id="3" name="SpawnPoints" class="SpawnPoints">
-  <object id="16" name="player" type="player" x="576" y="352" width="144" height="224"/>
+  <object id="16" name="player" type="player" x="576" y="352" width="224" height="304"/>
  </objectgroup>
 </map>
