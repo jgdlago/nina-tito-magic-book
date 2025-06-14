@@ -80,7 +80,7 @@ class CharacterSelectionScreen extends ConsumerWidget {
     bool isSelected = character == selectedCharacter;
     final String imagePath = character == CharacterEnum.nina
         ? 'assets/images/main_characters/nina/idle/Idle (1).png'
-        : 'assets/images/main_characters/tito/idle/Idle (1).png';
+        : 'assets/images/main_characters/tito/idle/01.png';
 
     return GestureDetector(
       onTap: () => ref.read(characterProvider.notifier).state = character,

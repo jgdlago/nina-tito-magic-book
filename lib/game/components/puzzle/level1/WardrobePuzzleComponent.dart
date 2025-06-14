@@ -73,7 +73,7 @@ class WardrobePuzzleComponent extends PositionComponent
         required double gap}) async {
 
     final characterPaths = [
-      'main_characters/tito/idle/Idle (1).png',
+      'main_characters/tito/idle/01.png',
       'main_characters/nina/idle/Idle (1).png',
     ];
 
