@@ -12,6 +12,7 @@ import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterfa
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/LevelComponent.dart';
+import 'package:nina_tito_magic_book/game/components/PauseButtonComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/components/JumpButtonComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
@@ -50,6 +51,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       'hud/Knob.png',
       'hud/Joystick.png',
       'hud/jump.png',
+      'hud/pause.png',
       'ui/dialog_torn_paper.png',
       'ui/default_button.png',
       'items/items_example.png',
@@ -126,6 +128,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   void showGameHUD() {
     camera.viewport.add(joystick);
     camera.viewport.add(jumpButton);
+    addPauseButton();
     levelComponent.addLevelMessage();
     playerComponent.enableMovement();
   }
@@ -135,6 +138,22 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     jumpButton.removeFromParent();
     levelComponent.removeLevelMessage();
     playerComponent.disableMovement();
+    removePauseButton();
+  }
+
+  void addPauseButton() {
+    final buttonSize = Vector2(50, 50);
+    final pauseButton = PauseButtonComponent(
+      position: Vector2(20 + buttonSize.x / 2, 20 + buttonSize.y / 2),
+      size: buttonSize,
+    );
+    camera.viewport.add(pauseButton);
+  }
+
+  void removePauseButton() {
+    camera.viewport.children.whereType<PauseButtonComponent>().forEach((btn) {
+      btn.removeFromParent();
+    });
   }
 
   Future<Player> _loadPlayerData() async {
