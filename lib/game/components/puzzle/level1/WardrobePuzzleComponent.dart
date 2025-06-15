@@ -39,7 +39,7 @@ class WardrobePuzzleComponent extends PositionComponent
   }
 
   void _initPuzzle() async {
-    puzzleOverlay = PuzzleOverlay();
+    puzzleOverlay = PuzzleOverlay(puzzle: this);
     game.camera.viewport.add(puzzleOverlay);
     await Future.delayed(Duration.zero);
 
@@ -79,12 +79,12 @@ class WardrobePuzzleComponent extends PositionComponent
       {
         'path': 'main_characters/tito/idle/01.png',
         'name': 'tito',
-        'clothes': ['sweater', 'pants', 'underpants', 'socks'] // Roupas que Tito pode usar
+        'clothes': ['underpants'] // Deve aceitar apenas 'underpants'
       },
       {
         'path': 'main_characters/nina/idle/Idle (1).png',
         'name': 'nina',
-        'clothes': ['bikini_top', 'bikini_bottom', 'sweater', 'pants', 'socks'] // Roupas que Nina pode usar
+        'clothes': ['bikini_top', 'bikini_bottom'] // Aceita partes do biquíni
       },
     ];
 
@@ -158,6 +158,7 @@ class WardrobePuzzleComponent extends PositionComponent
         sprite: sprite,
         size: size,
         position: Vector2(x, y),
+        clothType: data['type'] as String,
       );
 
       clothes.add(clothComponent);

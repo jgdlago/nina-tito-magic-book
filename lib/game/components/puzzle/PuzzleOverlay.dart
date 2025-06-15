@@ -3,11 +3,13 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
+import 'package:nina_tito_magic_book/game/components/puzzle/level1/WardrobePuzzleComponent.dart';
 
 class PuzzleOverlay extends RectangleComponent with HasGameReference<MagicBook> {
   static const Color _overlayColor = Color(0x90000000);
+  final WardrobePuzzleComponent puzzle;
 
-  PuzzleOverlay() : super(
+  PuzzleOverlay({required this.puzzle}) : super(
     paint: Paint()..color = _overlayColor,
   );
 
