@@ -45,7 +45,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   Future<void> onLoad() async {
     await super.onLoad();
 
-    await FlameAudio.bgm.play('soundtrack/ambient_music.mp3');
+    // await FlameAudio.bgm.play('soundtrack/ambient_music.mp3');
 
     await images.loadAll([
       'general/magic_book.png',
@@ -57,6 +57,12 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       'ui/dialog_torn_paper.png',
       'ui/default_button.png',
       'items/items_example.png',
+    ]);
+
+    await FlameAudio.audioCache.loadAll([
+      'narration/introduction_01.mp3',
+      'narration/introduction_02.mp3',
+      'narration/introduction_03.mp3',
     ]);
 
     joystick = _createJoystick();
@@ -194,6 +200,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     await camera.viewport.add(
         DialogComponent(
           text: DialogMessages.introductionLevel1,
+          audioPath: 'narration/introduction_01.mp3',
           onContinue: () {
             _showSecondDialog();
           },
@@ -206,6 +213,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         DialogComponent(
             text: DialogMessages.introductionLevel1layer2,
             dialogImage: images.fromCache('general/magic_book.png'),
+            audioPath: 'narration/introduction_02.mp3',
             onContinue: () {
               _showThirdDialog();
             }
@@ -218,6 +226,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         DialogComponent(
             text: DialogMessages.introductionLevel1layer3,
             dialogImage: images.fromCache('items/items_example.png'),
+            audioPath: 'narration/introduction_03.mp3',
             onContinue: () {
               showGameHUD();
               showingIntroduction = false;

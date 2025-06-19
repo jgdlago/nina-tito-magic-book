@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'dart:math' as math;
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/game/ui/themes/GameTextStyles.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
@@ -26,6 +27,8 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
   final ImageFitMode imageFitMode;
   final double? maxImageWidth;
   final double? maxImageHeight;
+  final String? audioPath;
+  AudioPlayer? _audioPlayer;
 
   DialogComponent({
     required this.text,
@@ -35,6 +38,7 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     this.imageFitMode = ImageFitMode.contain,
     this.maxImageWidth,
     this.maxImageHeight,
+    this.audioPath,
   }) : super(anchor: Anchor.center);
 
   @override
@@ -77,6 +81,12 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     }
 
     position = viewport / 2;
+
+    if (audioPath != null) {
+      Future.delayed(const Duration(seconds: 1), () {
+        FlameAudio.playLongAudio(audioPath!);
+      });
+    }
 
     await super.onLoad();
   }
@@ -182,6 +192,7 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
       size: buttonSize,
       onPressed: () {
         onContinue?.call();
+        _stopAudio();
         removeFromParent();
       },
     );
@@ -201,5 +212,19 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     );
 
     add(continueButton);
+  }
+
+  void _stopAudio() {
+    if (_audioPlayer != null) {
+      _audioPlayer?.stop();
+      _audioPlayer?.dispose();
+      _audioPlayer = null;
+    }
+  }
+
+  @override
+  void onRemove() {
+    _stopAudio();
+    super.onRemove();
   }
 }
