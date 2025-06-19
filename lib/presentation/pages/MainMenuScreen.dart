@@ -160,6 +160,10 @@ class _BottomButtons extends ConsumerWidget {
       final magicBook = gameInstance as MagicBook;
       return PauseMenuWidget(
         onResume: magicBook.togglePause,
+        onMainMenu: () {
+          magicBook.resumeEngine();
+          Navigator.of(context).pop();
+        },
       );
     });
 
