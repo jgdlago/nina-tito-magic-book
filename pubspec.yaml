@@ -43,6 +43,7 @@ dependencies:
   flame_tiled: ^3.0.1
   flutter_native_splash: ^2.4.6
   flame_audio: ^2.11.6
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
