@@ -10,6 +10,7 @@ import 'package:nina_tito_magic_book/domain/repositories/ItemRepositoryInterface
 import 'package:nina_tito_magic_book/domain/repositories/LevelRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
+import 'package:nina_tito_magic_book/game/components/AudioManager.dart';
 import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/LevelComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PauseButtonComponent.dart';
@@ -45,7 +46,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // await FlameAudio.bgm.play('soundtrack/ambient_music.mp3');
+    AudioManager.playBGM('audio/soundtrack/ambient_music.mp3');
 
     await images.loadAll([
       'general/magic_book.png',
@@ -200,7 +201,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     await camera.viewport.add(
         DialogComponent(
           text: DialogMessages.introductionLevel1,
-          audioPath: 'narration/introduction_01.mp3',
+          audioPath: 'audio/narration/introduction_01.mp3',
           onContinue: () {
             _showSecondDialog();
           },
@@ -213,7 +214,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         DialogComponent(
             text: DialogMessages.introductionLevel1layer2,
             dialogImage: images.fromCache('general/magic_book.png'),
-            audioPath: 'narration/introduction_02.mp3',
+            audioPath: 'audio/narration/introduction_02.mp3',
             onContinue: () {
               _showThirdDialog();
             }
@@ -226,7 +227,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         DialogComponent(
             text: DialogMessages.introductionLevel1layer3,
             dialogImage: images.fromCache('items/items_example.png'),
-            audioPath: 'narration/introduction_03.mp3',
+            audioPath: 'audio/narration/introduction_03.mp3',
             onContinue: () {
               showGameHUD();
               showingIntroduction = false;

@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/input.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/animation.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
+import 'package:nina_tito_magic_book/game/components/AudioManager.dart';
 import 'package:nina_tito_magic_book/game/ui/themes/GameTextStyles.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
@@ -30,10 +30,10 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
   final double? maxImageWidth;
   final double? maxImageHeight;
   final String? audioPath;
-  AudioPlayer? _audioPlayer;
   Future? _pendingAudio;
   final Curve _animationCurve = Curves.easeOutBack;
   final double _animationDuration = 0.4;
+  String? _audioKey;
 
   DialogComponent({
     required this.text,
@@ -53,7 +53,6 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
 
     scale = Vector2.zero();
 
-    // Animação de entrada
     add(
       ScaleEffect.to(
         Vector2.all(1),
@@ -103,7 +102,8 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     if (audioPath != null) {
       _pendingAudio = Future.delayed(const Duration(seconds: 1), () async {
         if (!isRemoved) {
-          _audioPlayer = await FlameAudio.playLongAudio(audioPath!);
+          _audioKey = 'dialog_${hashCode}';
+          AudioManager.startLongAudio(_audioKey!, audioPath!);
         }
       });
     }
@@ -203,18 +203,18 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     final buttonSize = Vector2(size.x * 0.3, 50);
 
     continueButton = HudButtonComponent(
-      button: SpriteComponent(
-        sprite: Sprite(buttonSprite),
+        button: SpriteComponent(
+          sprite: Sprite(buttonSprite),
+          size: buttonSize,
+        ),
+        anchor: Anchor.center,
+        position: Vector2(size.x * 0.5, size.y * 0.85),
         size: buttonSize,
-      ),
-      anchor: Anchor.center,
-      position: Vector2(size.x * 0.5, size.y * 0.85),
-      size: buttonSize,
-      onPressed: () {
-        _stopAudio();
-        onContinue?.call();
-        removeFromParent();
-      }
+        onPressed: () {
+          _stopAudio();
+          onContinue?.call();
+          removeFromParent();
+        }
     );
 
     continueButton.add(
@@ -237,14 +237,17 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
   void _stopAudio() {
     _pendingAudio?.ignore();
     _pendingAudio = null;
-    _audioPlayer?.stop();
-    _audioPlayer?.dispose();
-    _audioPlayer = null;
+
+    if (_audioKey != null) {
+      AudioManager.stopLongAudio(_audioKey!);
+      _audioKey = null;
+    }
   }
 
   @override
   void onRemove() {
     _stopAudio();
+    AudioManager.restoreBGMVolume();
     super.onRemove();
   }
 }
