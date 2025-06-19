@@ -5,34 +5,87 @@ import 'package:nina_tito_magic_book/presentation/pages/MainMenuScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppTheme.dart';
 import 'package:nina_tito_magic_book/providers/DatabaseProvider.dart';
 
-final globalContainer = ProviderContainer();
+final initializationProvider = FutureProvider<void>((ref) async {
+  await ref.read(databaseHelperProvider).database;
+});
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Flame.device.fullScreen();
-  await Flame.device.setLandscape();
+  try {
+    await Flame.device.fullScreen();
+    await Flame.device.setLandscape();
 
-  await globalContainer.read(databaseHelperProvider).database;
-
-  runApp(
-    UncontrolledProviderScope(
-      container: globalContainer,
-      child: const App(),
-    ),
-  );
+    runApp(
+      const ProviderScope(
+        child: AppWrapper(),
+      ),
+    );
+  } catch (e) {
+    runApp(
+      MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Text('Erro na inicialização: $e'),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class App extends ConsumerWidget {
-  const App({Key? key}) : super(key: key);
+class AppWrapper extends ConsumerWidget {
+  const AppWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final initializationState = ref.watch(initializationProvider);
+
+    return initializationState.when(
+      loading: () => const MaterialApp(home: LoadingScreen()),
+      error: (err, stack) => MaterialApp(
+        home: Scaffold(
+          body: Center(child: Text('Erro: $err')),
+        ),
+      ),
+      data: (_) => const App(),
+    );
+  }
+}
+
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'As Aventuras de Nina e Tito',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
       home: const MainMenuScreen(),
+    );
+  }
+}
+
+class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 20),
+            Text(
+              'Carregando...',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

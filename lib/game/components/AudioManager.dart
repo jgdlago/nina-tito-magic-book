@@ -2,11 +2,11 @@ import 'package:flame_audio/flame_audio.dart';
 
 class AudioManager {
   static AudioPlayer? _bgmPlayer;
-  static double _bgmVolume = 0.5;
+  static double _bgmVolume = 0.7; // Valor padrão
   static bool _bgmPaused = false;
   static final Map<String, AudioPlayer> _activeAudios = {};
 
-  static Future<void> playBGM(String path, {double volume = 0.5}) async {
+  static Future<void> playBGM(String path, {double volume = 0.7}) async {
     _bgmVolume = volume;
 
     if (_bgmPlayer != null) {
@@ -19,6 +19,13 @@ class AudioManager {
       ..setReleaseMode(ReleaseMode.loop);
 
     await _bgmPlayer!.play(AssetSource(path));
+  }
+
+  static void setMusicVolume(double volume) {
+    _bgmVolume = volume;
+    if (_bgmPlayer != null && _bgmPlayer!.state == PlayerState.playing) {
+      _bgmPlayer!.setVolume(_bgmVolume);
+    }
   }
 
   static void updateBGMVolume() {
@@ -37,6 +44,7 @@ class AudioManager {
   }
 
   static Future<void> startLongAudio(String key, String path) async {
+    // Pausar temporariamente
     if (_bgmPlayer != null && _bgmPlayer!.state == PlayerState.playing) {
       await _bgmPlayer!.pause();
       _bgmPaused = true;
@@ -69,6 +77,7 @@ class AudioManager {
     player.dispose();
     _activeAudios.remove(key);
 
+    // Restaurar BGM se estava pausado
     if (_bgmPaused && _bgmPlayer != null && _bgmPlayer!.state == PlayerState.paused) {
       _bgmPlayer!.resume();
       _bgmPaused = false;

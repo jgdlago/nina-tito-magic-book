@@ -9,6 +9,7 @@ import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/presentation/components/CustomIconButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/PauseMenuWidget.dart';
 import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
+import 'package:nina_tito_magic_book/presentation/pages/OptionsScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserNameIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 import 'package:nina_tito_magic_book/providers/ItemProvider.dart';
@@ -116,7 +117,7 @@ class _BottomButtons extends ConsumerWidget {
                   type: IconType.more,
                   onPressed: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const MainMenuScreen()),
+                      MaterialPageRoute(builder: (_) => const OptionsScreen()),
                   ),
                   color: AppColors.warningAmber,
                 ),
