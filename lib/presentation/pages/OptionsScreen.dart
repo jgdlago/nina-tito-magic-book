@@ -1,99 +1,147 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
+import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
+import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
-import 'package:nina_tito_magic_book/game/components/AudioManager.dart';
-import 'package:nina_tito_magic_book/providers/SettingsProvider.dart';
 
-class OptionsScreen extends ConsumerWidget {
+class OptionsScreen extends StatefulWidget {
   const OptionsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsProvider);
-    final settingsNotifier = ref.read(settingsProvider.notifier);
+  State<OptionsScreen> createState() => _OptionsScreenState();
+}
+
+class _OptionsScreenState extends State<OptionsScreen> {
+  bool narratorActive = true;
+  bool musicActive = true;
+  String? classCode = null; // Altere para 'ABC123' para ver estado conectado
+
+  @override
+  Widget build(BuildContext context) {
+    final double buttonSize = MediaQuery.of(context).size.width * 0.15;
+    final double modalWidth = MediaQuery.of(context).size.width * 0.6;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Opções'),
-        backgroundColor: AppColors.goldenMagic,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSectionTitle('Som'),
-            _buildVolumeSlider(
-              label: 'Volume da Música',
-              value: settings.musicVolume,
-              onChanged: (value) {
-                settingsNotifier.setMusicVolume(value);
-                AudioManager.setMusicVolume(value);
-              },
-            ),
-            const SizedBox(height: 30),
-            Center(
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.confirmationGreen,
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+      body: BackgroundContainer(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InfoModal(
+                width: modalWidth,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'Configurações',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 20),
+                    // Opção Narrador
+                    _buildOptionRow(
+                      context,
+                      label: 'Narrador',
+                      status: narratorActive ? 'ativado' : 'desativado',
+                      isActive: narratorActive,
+                    ),
+                    const SizedBox(height: 16),
+                    // Opção Música
+                    _buildOptionRow(
+                      context,
+                      label: 'Música',
+                      status: musicActive ? 'ativado' : 'desativado',
+                      isActive: musicActive,
+                    ),
+                    const SizedBox(height: 16),
+                    // Opção Turma
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Turma',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          classCode != null
+                              ? Text(
+                            'conectado $classCode',
+                            style: TextStyle(
+                              color: AppColors.mysticalBlack,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                              : Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.mysticalBlack,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            child: const Text(
+                              'Conectar turma',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                child: const Text('Voltar', style: TextStyle(fontSize: 18)),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              SizedBox(
+                width: buttonSize,
+                child: ActionButton(
+                  type: ButtonType.denial,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  // Componente visual para linhas de opção
+  Widget _buildOptionRow(
+      BuildContext context, {
+        required String label,
+        required String status,
+        required bool isActive,
+      }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: AppColors.mysticalWhite,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildVolumeSlider({
-    required String label,
-    required double value,
-    required ValueChanged<double> onChanged,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 16,
-              color: AppColors.mysticalWhite,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           Row(
             children: [
-              const Icon(Icons.volume_mute, color: AppColors.mysticalWhite),
-              Expanded(
-                child: Slider(
-                  value: value,
-                  onChanged: onChanged,
-                  min: 0,
-                  max: 1,
-                  divisions: 10,
-                  activeColor: AppColors.confirmationGreen,
-                  inactiveColor: AppColors.mysticalWhite,
+              Text(
+                status,
+                style: TextStyle(
+                  color: isActive ? AppColors.mysticalBlack : Colors.grey,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const Icon(Icons.volume_up, color: AppColors.mysticalWhite),
+              const SizedBox(width: 12),
+              Switch(
+                value: isActive,
+                activeColor: AppColors.fantasyGreen,
+                onChanged: null, // Desativado funcionalidade
+              ),
             ],
           ),
         ],
