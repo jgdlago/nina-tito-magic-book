@@ -13,6 +13,7 @@ import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface
 import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/LevelComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PauseButtonComponent.dart';
+import 'package:nina_tito_magic_book/game/components/PauseMenu.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/components/JumpButtonComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
@@ -52,6 +53,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       'hud/Joystick.png',
       'hud/jump.png',
       'hud/pause.png',
+      'hud/play.png',
       'ui/dialog_torn_paper.png',
       'ui/default_button.png',
       'items/items_example.png',
@@ -222,5 +224,23 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
             }
         )
     );
+  }
+
+  @override
+  void onRemove() {
+    camera.viewport.children.whereType<PauseMenu>().forEach((menu) {
+      menu.removeFromParent();
+    });
+    super.onRemove();
+  }
+
+  void togglePause() {
+    if (paused) {
+      resumeEngine();
+      overlays.remove('pauseMenu');
+    } else {
+      pauseEngine();
+      overlays.add('pauseMenu');
+    }
   }
 }

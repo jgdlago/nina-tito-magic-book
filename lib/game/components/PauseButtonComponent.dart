@@ -3,6 +3,10 @@ import 'package:flame/events.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 
 class PauseButtonComponent extends SpriteComponent with TapCallbacks, HasGameReference<MagicBook> {
+  late final Sprite pauseSprite;
+  late final Sprite playSprite;
+  bool isPaused = false;
+
   PauseButtonComponent({
     required Vector2 position,
     required Vector2 size,
@@ -11,22 +15,19 @@ class PauseButtonComponent extends SpriteComponent with TapCallbacks, HasGameRef
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    sprite = Sprite(game.images.fromCache('hud/pause.png'));
+    pauseSprite = Sprite(game.images.fromCache('hud/pause.png'));
+    playSprite = Sprite(game.images.fromCache('hud/play.png'));
+    sprite = pauseSprite;
   }
 
   @override
   void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    if (game.paused) {
-      game.resumeEngine();
-    } else {
-      game.pauseEngine();
-      _showPauseMenu();
-    }
+    game.togglePause();
   }
 
-  void _showPauseMenu() {
-    // Menu Pause
-    print("Jogo pausado - Mostrar menu de pause");
+  @override
+  void update(double dt) {
+    super.update(dt);
+    sprite = game.paused ? playSprite : pauseSprite;
   }
 }

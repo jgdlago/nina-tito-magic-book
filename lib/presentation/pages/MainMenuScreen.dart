@@ -7,6 +7,7 @@ import 'package:nina_tito_magic_book/domain/repositories/PlayerRepositoryInterfa
 import 'package:nina_tito_magic_book/domain/repositories/UserRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/presentation/components/CustomIconButton.dart';
+import 'package:nina_tito_magic_book/presentation/components/PauseMenuWidget.dart';
 import 'package:nina_tito_magic_book/presentation/pages/InfoScreen.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserNameIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
@@ -88,7 +89,7 @@ class _BottomButtons extends ConsumerWidget {
     final userRepo = ref.read(userRepositoryProvider);
     final playerRepo = ref.read(playerRepositoryProvider);
     final levelRepo = ref.read(levelRepositoryProvider);
-    final ItemRepo = ref.read(itemRepositoryProvider);
+    final itemRepo = ref.read(itemRepositoryProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
@@ -126,7 +127,7 @@ class _BottomButtons extends ConsumerWidget {
             width: size.width * 0.15,
             child: CustomIconButton(
               type: IconType.play,
-              onPressed: () => _handlePlay(context, userRepo, playerRepo, levelRepo, ItemRepo),
+              onPressed: () => _handlePlay(context, userRepo, playerRepo, levelRepo, itemRepo),
               color: AppColors.confirmationGreen,
             ),
           ),
@@ -135,7 +136,12 @@ class _BottomButtons extends ConsumerWidget {
     );
   }
 
-  Future<void> _handlePlay(BuildContext context, UserRepositoryInterface userRepo, PlayerRepositoryInterface playerRepo, LevelRepositoryInterface levelRepo, ItemRepositoryInterface itemRepo) async {
+  Future<void> _handlePlay(BuildContext context,
+      UserRepositoryInterface userRepo,
+      PlayerRepositoryInterface playerRepo,
+      LevelRepositoryInterface levelRepo,
+      ItemRepositoryInterface itemRepo) async {
+
     final user = await userRepo.getCurrentUser();
     final player = await playerRepo.getPlayerByCurrentUser();
 
@@ -143,10 +149,26 @@ class _BottomButtons extends ConsumerWidget {
       return _goToIdentify(context);
     }
 
+    final game = MagicBook(
+      playerRepository: playerRepo,
+      userRepository: userRepo,
+      levelRepository: levelRepo,
+      itemRepository: itemRepo,
+    );
+
+    game.overlays.addEntry('pauseMenu', (context, gameInstance) {
+      final magicBook = gameInstance as MagicBook;
+      return PauseMenuWidget(
+        onResume: magicBook.togglePause,
+      );
+    });
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => GameWidget(game: MagicBook(playerRepository: playerRepo, userRepository: userRepo, levelRepository: levelRepo, itemRepository: itemRepo)),
+        builder: (_) => GameWidget(
+          game: game,
+        ),
       ),
     );
   }
