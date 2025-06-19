@@ -8,6 +8,7 @@ import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
+import 'package:nina_tito_magic_book/presentation/components/PauseMenuWidget.dart';
 import 'package:nina_tito_magic_book/presentation/pages/UserInfoIdentifyScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 import 'package:nina_tito_magic_book/providers/ItemProvider.dart';
@@ -133,10 +134,30 @@ class CharacterSelectionScreen extends ConsumerWidget {
     final player = Player(character: selectedCharacter);
     await playerRepository.createPlayer(player, createdUser.id!);
 
+    final game = MagicBook(
+      playerRepository: playerRepository,
+      userRepository: userRepository,
+      levelRepository: levelRepository,
+      itemRepository: itemRepository,
+    );
+
+    game.overlays.addEntry('pauseMenu', (context, gameInstance) {
+      final magicBook = gameInstance as MagicBook;
+      return PauseMenuWidget(
+        onResume: magicBook.togglePause,
+        onMainMenu: () {
+          magicBook.resumeEngine();
+          Navigator.of(context).pop();
+        },
+      );
+    });
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => GameWidget(game: MagicBook(playerRepository: playerRepository, userRepository: userRepository, levelRepository: levelRepository, itemRepository: itemRepository)),
+        builder: (_) => GameWidget(
+          game: game,
+        ),
       ),
     );
   }
