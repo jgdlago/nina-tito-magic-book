@@ -1,8 +1,10 @@
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/input.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter/animation.dart';
 import 'package:nina_tito_magic_book/game/MagicBook.dart';
 import 'package:nina_tito_magic_book/game/ui/themes/GameTextStyles.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
@@ -29,6 +31,9 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
   final double? maxImageHeight;
   final String? audioPath;
   AudioPlayer? _audioPlayer;
+  Future? _pendingAudio;
+  final Curve _animationCurve = Curves.easeOutBack;
+  final double _animationDuration = 0.4;
 
   DialogComponent({
     required this.text,
@@ -45,6 +50,19 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
   Future<void> onLoad() async {
     final viewport = game.camera.viewport.size;
     size = dialogSize ?? Vector2(viewport.x * 0.60, viewport.y * 0.85);
+
+    scale = Vector2.zero();
+
+    // Animação de entrada
+    add(
+      ScaleEffect.to(
+        Vector2.all(1),
+        EffectController(
+          duration: _animationDuration,
+          curve: _animationCurve,
+        ),
+      ),
+    );
 
     // Background
     final image = await game.images.load('ui/dialog_torn_paper.png');
@@ -83,8 +101,10 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
     position = viewport / 2;
 
     if (audioPath != null) {
-      Future.delayed(const Duration(seconds: 1), () {
-        FlameAudio.playLongAudio(audioPath!);
+      _pendingAudio = Future.delayed(const Duration(seconds: 1), () async {
+        if (!isRemoved) {
+          _audioPlayer = await FlameAudio.playLongAudio(audioPath!);
+        }
       });
     }
 
@@ -191,10 +211,10 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
       position: Vector2(size.x * 0.5, size.y * 0.85),
       size: buttonSize,
       onPressed: () {
-        onContinue?.call();
         _stopAudio();
+        onContinue?.call();
         removeFromParent();
-      },
+      }
     );
 
     continueButton.add(
@@ -215,11 +235,11 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
   }
 
   void _stopAudio() {
-    if (_audioPlayer != null) {
-      _audioPlayer?.stop();
-      _audioPlayer?.dispose();
-      _audioPlayer = null;
-    }
+    _pendingAudio?.ignore();
+    _pendingAudio = null;
+    _audioPlayer?.stop();
+    _audioPlayer?.dispose();
+    _audioPlayer = null;
   }
 
   @override
