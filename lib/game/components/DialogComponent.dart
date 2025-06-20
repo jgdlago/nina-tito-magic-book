@@ -99,7 +99,7 @@ class DialogComponent extends PositionComponent with HasGameReference<MagicBook>
 
     position = viewport / 2;
 
-    if (audioPath != null) {
+    if (audioPath != null && AudioManager.narratorActive) {
       _pendingAudio = Future.delayed(const Duration(seconds: 1), () async {
         if (!isRemoved) {
           _audioKey = 'dialog_${hashCode}';

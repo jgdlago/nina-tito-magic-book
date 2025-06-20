@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nina_tito_magic_book/game/components/AudioManager.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
@@ -12,9 +13,9 @@ class OptionsScreen extends StatefulWidget {
 }
 
 class _OptionsScreenState extends State<OptionsScreen> {
-  bool narratorActive = true;
+  bool narratorActive = AudioManager.narratorActive;
   bool musicActive = true;
-  String? classCode = null; // Altere para 'ABC123' para ver estado conectado
+  String? classCode = null;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,10 @@ class _OptionsScreenState extends State<OptionsScreen> {
                       label: 'Narrador',
                       status: narratorActive ? 'ativado' : 'desativado',
                       isActive: narratorActive,
+                      onChanged: (value) {
+                        setState(() => narratorActive = value);
+                        AudioManager.narratorActive = value;
+                      },
                     ),
                     const SizedBox(height: 16),
                     // Opção Música
@@ -50,6 +55,10 @@ class _OptionsScreenState extends State<OptionsScreen> {
                       context,
                       label: 'Música',
                       status: musicActive ? 'ativado' : 'desativado',
+                      onChanged: (value) {
+                        setState(() => narratorActive = value);
+                        AudioManager.narratorActive = value;
+                      },
                       isActive: musicActive,
                     ),
                     const SizedBox(height: 16),
@@ -111,12 +120,12 @@ class _OptionsScreenState extends State<OptionsScreen> {
     );
   }
 
-  // Componente visual para linhas de opção
   Widget _buildOptionRow(
       BuildContext context, {
         required String label,
         required String status,
         required bool isActive,
+        required ValueChanged<bool> onChanged,
       }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -140,7 +149,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
               Switch(
                 value: isActive,
                 activeColor: AppColors.fantasyGreen,
-                onChanged: null, // Desativado funcionalidade
+                onChanged: onChanged,
               ),
             ],
           ),

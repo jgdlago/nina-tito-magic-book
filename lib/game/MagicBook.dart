@@ -14,7 +14,6 @@ import 'package:nina_tito_magic_book/game/components/AudioManager.dart';
 import 'package:nina_tito_magic_book/game/components/DialogComponent.dart';
 import 'package:nina_tito_magic_book/game/components/LevelComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PauseButtonComponent.dart';
-import 'package:nina_tito_magic_book/game/components/PauseMenu.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/components/JumpButtonComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
@@ -236,14 +235,6 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     );
   }
 
-  @override
-  void onRemove() {
-    camera.viewport.children.whereType<PauseMenu>().forEach((menu) {
-      menu.removeFromParent();
-    });
-    super.onRemove();
-  }
-
   void togglePause() {
     if (paused) {
       resumeEngine();
@@ -251,6 +242,14 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     } else {
       pauseEngine();
       overlays.add('pauseMenu');
+      AudioManager.pauseBGM();
+      AudioManager.stopAllNarrations();
     }
+  }
+
+  @override
+  void onRemove() {
+    AudioManager.stopAllNarrations();
+    super.onRemove();
   }
 }
