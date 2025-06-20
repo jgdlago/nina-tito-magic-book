@@ -55,11 +55,11 @@ class _OptionsScreenState extends State<OptionsScreen> {
                       context,
                       label: 'Música',
                       status: musicActive ? 'ativado' : 'desativado',
-                      onChanged: (value) {
-                        setState(() => narratorActive = value);
-                        AudioManager.narratorActive = value;
-                      },
                       isActive: musicActive,
+                      onChanged: (value) {
+                        setState(() => musicActive = value);
+                        AudioManager.musicActive = value;
+                      },
                     ),
                     const SizedBox(height: 16),
                     // Opção Turma

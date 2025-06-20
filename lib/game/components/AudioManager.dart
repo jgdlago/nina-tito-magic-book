@@ -5,10 +5,14 @@ class AudioManager {
   static double _bgmVolume = 0.7; // Valor padrão
   static bool _bgmPaused = false;
   static final Map<String, AudioPlayer> _activeAudios = {};
+
   static bool _narratorActive = true;
   static bool get narratorActive => _narratorActive;
+  static bool _musicActive = true;
+  static bool get musicActive => _musicActive;
 
   static Future<void> playBGM(String path, {double volume = 0.7}) async {
+    _currentBGMPath = path;
     _bgmVolume = volume;
 
     if (_bgmPlayer != null) {
@@ -123,4 +127,23 @@ class AudioManager {
       stopLongAudio(key);
     }
   }
+
+  static set musicActive(bool active) {
+    if (_musicActive == active) return;
+    _musicActive = active;
+
+    if (active) {
+      if (_bgmPlayer != null && _bgmPlayer!.state == PlayerState.paused) {
+        _bgmPlayer!.resume();
+      } else if (_currentBGMPath != null) {
+        playBGM(_currentBGMPath!);
+      }
+    } else {
+      pauseBGM();
+    }
+  }
+
+  static String? _currentBGMPath;
+
+
 }
