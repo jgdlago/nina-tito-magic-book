@@ -135,27 +135,31 @@ class WardrobePuzzleComponent extends PositionComponent
     }
   }
 
-  Future<void> _addClothes(
-      {required double startX,
-        required double areaWidth,
-        required double areaHeight,
-        required double padding,
-        required double gap}) async {
-
+  Future<void> _addClothes({
+    required double startX,
+    required double areaWidth,
+    required double areaHeight,
+    required double padding,
+    required double gap,
+  }) async {
     final clothesData = [
-      {'path': 'puzzles/level_1/bikini_top.png', 'type': 'bikini_top'},
+      {'path': 'puzzles/level_1/bikini_top.png',    'type': 'bikini_top'},
       {'path': 'puzzles/level_1/bikini_bottom.png', 'type': 'bikini_bottom'},
-      {'path': 'puzzles/level_1/sweater.png', 'type': 'sweater'},
-      {'path': 'puzzles/level_1/pants.png', 'type': 'pants'},
-      {'path': 'puzzles/level_1/underpants.png', 'type': 'underpants'},
-      {'path': 'puzzles/level_1/socks.png', 'type': 'socks'},
+      {'path': 'puzzles/level_1/sweater.png',       'type': 'sweater'},
+      {'path': 'puzzles/level_1/pants.png',         'type': 'pants'},
+      {'path': 'puzzles/level_1/underpants.png',    'type': 'underpants'},
+      {'path': 'puzzles/level_1/socks.png',         'type': 'socks'},
     ];
 
     final double clothesScale = 0.08;
-    final int itemsPerRow = 3;
-    final double itemSpacing = areaWidth / itemsPerRow;
+    final int columns = 2;
+    final int itemCount = clothesData.length;
+    final int rows = (itemCount / columns).ceil();
 
-    for (var i = 0; i < clothesData.length; i++) {
+    final double cellWidth  = areaWidth  / columns;
+    final double cellHeight = (areaHeight - 2 * padding) / rows;
+
+    for (var i = 0; i < itemCount; i++) {
       final data = clothesData[i];
       final img = await game.images.load(data['path'] as String);
       final sprite = Sprite(img);
@@ -164,11 +168,18 @@ class WardrobePuzzleComponent extends PositionComponent
         img.height.toDouble(),
       ) * clothesScale;
 
-      final int row = i ~/ itemsPerRow;
-      final int col = i % itemsPerRow;
+      final int row = i ~/ columns;
+      final int col = i % columns;
 
-      final double x = startX + (col * itemSpacing) + (itemSpacing / 2) - (size.x / 2);
-      final double y = padding + (row * (size.y + gap * 2)) + gap;
+      final double x = startX
+          + col * cellWidth
+          + (cellWidth  / 2)
+          - (size.x / 2);
+
+      final double y = padding
+          + row * cellHeight
+          + (cellHeight / 2)
+          - (size.y / 2);
 
       final clothComponent = DraggableClothComponent(
         sprite: sprite,
