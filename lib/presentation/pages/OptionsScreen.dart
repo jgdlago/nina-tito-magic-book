@@ -3,6 +3,7 @@ import 'package:nina_tito_magic_book/game/components/AudioManager.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
+import 'package:nina_tito_magic_book/presentation/pages/GroupConnectionScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppColors.dart';
 
 class OptionsScreen extends StatefulWidget {
@@ -168,7 +169,10 @@ class _OptionsScreenState extends State<OptionsScreen> {
             ),
           )
               : GestureDetector(
-            // onTap: () => _connectClass(),  Implementar conexão
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const GroupConnectionScreen()),
+            ),
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
