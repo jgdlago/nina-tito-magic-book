@@ -42,7 +42,7 @@ class AppWrapper extends ConsumerWidget {
     final initializationState = ref.watch(initializationProvider);
 
     return initializationState.when(
-      loading: () => const MaterialApp(home: LoadingScreen()),
+      loading: () => const MaterialApp(),
       error: (err, stack) => MaterialApp(
         home: Scaffold(
           body: Center(child: Text('Erro: $err')),
@@ -63,29 +63,6 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
       home: const MainMenuScreen(),
-    );
-  }
-}
-
-class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 20),
-            Text(
-              'Carregando...',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
