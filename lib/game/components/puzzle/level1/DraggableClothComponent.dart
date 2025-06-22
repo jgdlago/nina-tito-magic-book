@@ -2,10 +2,13 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:nina_tito_magic_book/game/components/puzzle/PuzzleOverlay.dart';
+import 'package:nina_tito_magic_book/game/components/puzzle/level1/CharacterDropZone.dart';
 
 class DraggableClothComponent extends SpriteComponent with DragCallbacks {
   Vector2 originalPosition;
+  Vector2 originalSize;
   bool isDragging = false;
+  bool isPlaced = false;
   final String clothType;
 
   DraggableClothComponent({
@@ -14,6 +17,7 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
     required Vector2 position,
     required this.clothType,
   }) : originalPosition = position.clone(),
+        originalSize = size.clone(),
         super(sprite: sprite, size: size, position: position, anchor: Anchor.topLeft);
 
   @override
@@ -22,13 +26,17 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
     isDragging = true;
     priority = 10;
     scale = Vector2.all(1.1);
+
+    if (isPlaced) {
+      size = originalSize.clone();
+      isPlaced = false;
+    }
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
     if (isDragging) {
-      // Atualiza a posição baseada no movimento do drag
       position += event.localDelta;
     }
   }
@@ -56,20 +64,9 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
 
         if (characterRect.contains(centerPoint)) {
           if (character.canAcceptCloth(clothType)) {
-            final targetPosition = character.getPositionForCloth(clothType);
-
-            if (targetPosition != null) {
-              position = character.position + Vector2(
-                  character.size.x * targetPosition.x - size.x / 2,
-                  character.size.y * targetPosition.y - size.y / 2
-              );
-            } else {
-              position = character.position + Vector2(
-                  (character.size.x - size.x) / 2,
-                  character.size.y * 0.7 - size.y
-              );
-            }
+            _placeOnCharacter(character);
             droppedOnValidCharacter = true;
+            break;
           }
         }
       }
@@ -80,7 +77,54 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
     }
   }
 
+  void _placeOnCharacter(CharacterDropZone character) {
+    final targetPosition = character.getPositionForCloth(clothType);
+    final clothingScale = character.getScaleForCloth(clothType);
+
+    isPlaced = true;
+
+    if (clothingScale != null) {
+      size = originalSize * clothingScale;
+    } else {
+      final defaultScale = _getDefaultScale(character);
+      size = originalSize * defaultScale;
+    }
+
+    if (targetPosition != null) {
+      position = character.position + Vector2(
+          character.size.x * targetPosition.x - size.x / 2,
+          character.size.y * targetPosition.y - size.y / 2
+      );
+    } else {
+      position = character.position + Vector2(
+          (character.size.x - size.x) / 2,
+          character.size.y * 0.7 - size.y
+      );
+    }
+  }
+
+  double _getDefaultScale(CharacterDropZone character) {
+    switch (clothType) {
+      case 'bikini_top':
+        return 0.6;
+      case 'bikini_bottom':
+        return 0.8;
+      case 'underpants':
+        return 0.9;
+      case 'sweater':
+        return 1.2;
+      case 'pants':
+        return 1.1;
+      case 'socks':
+        return 0.4;
+      default:
+        return 1.0;
+    }
+  }
+
   void resetPosition() {
     position = originalPosition.clone();
+    size = originalSize.clone();
+    isPlaced = false;
   }
 }

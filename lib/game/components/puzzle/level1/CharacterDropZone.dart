@@ -4,6 +4,7 @@ class CharacterDropZone extends SpriteComponent {
   final String characterName;
   final List<String> acceptedClothes;
   final Map<String, Vector2> clothingPositions;
+  final Map<String, double> clothingScales;
 
   CharacterDropZone({
     required Sprite sprite,
@@ -12,6 +13,7 @@ class CharacterDropZone extends SpriteComponent {
     required this.characterName,
     required this.acceptedClothes,
     required this.clothingPositions,
+    this.clothingScales = const {},
   }) : super(sprite: sprite, size: size, position: position, anchor: Anchor.topLeft);
 
   bool canAcceptCloth(String clothType) {
@@ -20,5 +22,9 @@ class CharacterDropZone extends SpriteComponent {
 
   Vector2? getPositionForCloth(String clothType) {
     return clothingPositions[clothType];
+  }
+
+  double? getScaleForCloth(String clothType) {
+    return clothingScales[clothType];
   }
 }

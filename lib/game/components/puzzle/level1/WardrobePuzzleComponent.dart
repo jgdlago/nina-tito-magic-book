@@ -80,17 +80,24 @@ class WardrobePuzzleComponent extends PositionComponent
         'path': 'puzzles/level_1/tito_naked.png',
         'name': 'tito',
         'clothes': ['underpants'],
-        'positions': {
-          'underpants': Vector2(0.45, 0.75),
+        'positions': { // Posições tito
+          'underpants': Vector2(0.45, 0.83),
+        },
+        'scales': { // Escalas Tito
+          'underpants': 0.3,
         }
       },
       {
         'path': 'puzzles/level_1/nina_naked.png',
         'name': 'nina',
         'clothes': ['bikini_top', 'bikini_bottom'],
-        'positions': {
-          'bikini_top': Vector2(0.5, 0.35),
-          'bikini_bottom': Vector2(0.5, 0.65),
+        'positions': { // Posições Nina
+          'bikini_top': Vector2(0.57, 0.68),
+          'bikini_bottom': Vector2(0.57, 0.83),
+        },
+        'scales': { // Escalas Nina
+          'bikini_top': 0.43,
+          'bikini_bottom': 0.43,
         }
       },
     ];
@@ -120,6 +127,7 @@ class WardrobePuzzleComponent extends PositionComponent
         characterName: data['name'] as String,
         acceptedClothes: List<String>.from(data['clothes'] as List),
         clothingPositions: Map<String, Vector2>.from(data['positions'] as Map),
+        clothingScales: Map<String, double>.from(data['scales'] as Map? ?? {}),
       );
 
       characters.add(dropZone);
