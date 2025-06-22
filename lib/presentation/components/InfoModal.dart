@@ -21,6 +21,20 @@ class InfoModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget content = child;
+    if (height != null) {
+      content = SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: width ?? 0,
+            maxWidth: width ?? double.infinity,
+            maxHeight: height!,
+          ),
+          child: child,
+        ),
+      );
+    }
+
     return Container(
       width: width,
       height: height,
@@ -33,7 +47,8 @@ class InfoModal extends StatelessWidget {
           width: 4,
         ),
       ),
-      child: child,
+      child: content,
     );
   }
 }
+
