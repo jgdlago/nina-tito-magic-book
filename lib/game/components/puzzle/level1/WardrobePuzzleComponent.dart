@@ -49,7 +49,7 @@ class WardrobePuzzleComponent extends PositionComponent
     final double padding = 20.0;
     final double gap = 15.0;
 
-    // Personagens (Esquerda) - agora são zonas de drop
+    // Personagens (Esquerda)
     await _addCharacters(
       areaWidth: dividerX - padding,
       areaHeight: screenHeight,
@@ -79,12 +79,19 @@ class WardrobePuzzleComponent extends PositionComponent
       {
         'path': 'puzzles/level_1/tito_naked.png',
         'name': 'tito',
-        'clothes': ['underpants'] // Deve aceitar apenas 'underpants'
+        'clothes': ['underpants'],
+        'positions': {
+          'underpants': Vector2(0.45, 0.75),
+        }
       },
       {
         'path': 'puzzles/level_1/nina_naked.png',
         'name': 'nina',
-        'clothes': ['bikini_top', 'bikini_bottom'] // Aceita partes do biquíni
+        'clothes': ['bikini_top', 'bikini_bottom'],
+        'positions': {
+          'bikini_top': Vector2(0.5, 0.35),
+          'bikini_bottom': Vector2(0.5, 0.65),
+        }
       },
     ];
 
@@ -112,6 +119,7 @@ class WardrobePuzzleComponent extends PositionComponent
         ),
         characterName: data['name'] as String,
         acceptedClothes: List<String>.from(data['clothes'] as List),
+        clothingPositions: Map<String, Vector2>.from(data['positions'] as Map),
       );
 
       characters.add(dropZone);
@@ -175,7 +183,6 @@ class WardrobePuzzleComponent extends PositionComponent
     puzzleOverlay.add(dividerLine);
   }
 
-  // Método para resetar todas as roupas
   void resetAllClothes() {
     for (final cloth in clothes) {
       cloth.resetPosition();

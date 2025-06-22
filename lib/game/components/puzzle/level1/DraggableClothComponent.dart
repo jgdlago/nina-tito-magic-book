@@ -1,9 +1,7 @@
 import 'dart:ui';
-
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:nina_tito_magic_book/game/components/puzzle/PuzzleOverlay.dart';
-import 'package:nina_tito_magic_book/game/components/puzzle/level1/WardrobePuzzleComponent.dart';
 
 class DraggableClothComponent extends SpriteComponent with DragCallbacks {
   Vector2 originalPosition;
@@ -14,7 +12,7 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
     required Sprite sprite,
     required Vector2 size,
     required Vector2 position,
-    required this.clothType, // Receba o tipo no construtor
+    required this.clothType,
   }) : originalPosition = position.clone(),
         super(sprite: sprite, size: size, position: position, anchor: Anchor.topLeft);
 
@@ -22,9 +20,7 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
     isDragging = true;
-    // Traz o componente para frente
     priority = 10;
-    // animação de escala
     scale = Vector2.all(1.1);
   }
 
@@ -43,18 +39,15 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
     isDragging = false;
     priority = 0;
     scale = Vector2.all(1.0);
-
-    // lógica local da roupa
     _checkIfDroppedOnCharacter();
   }
 
   void _checkIfDroppedOnCharacter() {
     bool droppedOnValidCharacter = false;
 
-    // Verifique se o parent é um PuzzleOverlay
     if (parent is PuzzleOverlay) {
       final overlay = parent as PuzzleOverlay;
-      final puzzle = overlay.puzzle; // Acesse o puzzle do overlay
+      final puzzle = overlay.puzzle;
 
       for (final character in puzzle.characters) {
         final Rect characterRect = character.toRect();
@@ -63,18 +56,20 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
 
         if (characterRect.contains(centerPoint)) {
           if (character.canAcceptCloth(clothType)) {
-            print('$clothType solto sobre ${character.characterName} (ACEITO)');
+            final targetPosition = character.getPositionForCloth(clothType);
 
-            // Atualiza a posição para ficar sobre o personagem
-            position = character.position + Vector2(
-                (character.size.x - size.x) / 2,
-                character.size.y * 0.7 - size.y // Ajuste vertical
-            );
-
+            if (targetPosition != null) {
+              position = character.position + Vector2(
+                  character.size.x * targetPosition.x - size.x / 2,
+                  character.size.y * targetPosition.y - size.y / 2
+              );
+            } else {
+              position = character.position + Vector2(
+                  (character.size.x - size.x) / 2,
+                  character.size.y * 0.7 - size.y
+              );
+            }
             droppedOnValidCharacter = true;
-            break;
-          } else {
-            print('$clothType solto sobre ${character.characterName} (REJEITADO)');
           }
         }
       }
