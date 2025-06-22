@@ -81,10 +81,10 @@ class WardrobePuzzleComponent extends PositionComponent
         'name': 'tito',
         'clothes': ['underpants'],
         'positions': { // Posições tito
-          'underpants': Vector2(0.45, 0.83),
+          'underpants': Vector2(0.43, 0.81),
         },
         'scales': { // Escalas Tito
-          'underpants': 0.3,
+          'underpants': 0.27,
         }
       },
       {

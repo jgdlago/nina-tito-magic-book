@@ -38,7 +38,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     required this.levelRepository,
     required this.itemRepository,
   }) {
-    debugMode = true;
+    // debugMode = true;
   }
 
   @override
