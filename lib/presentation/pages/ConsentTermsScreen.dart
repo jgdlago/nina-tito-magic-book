@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
+import 'package:nina_tito_magic_book/presentation/pages/GroupConnectionScreen.dart';
 
 class ConsentTermsScreen extends StatelessWidget {
   const ConsentTermsScreen({super.key});
@@ -82,7 +83,7 @@ Seus direitos: acessar, corrigir ou excluir dados; revogar o consentimento; sabe
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ConsentTermsScreen(),
+                            builder: (context) => const GroupConnectionScreen(),
                           ),
                         );
                       },
