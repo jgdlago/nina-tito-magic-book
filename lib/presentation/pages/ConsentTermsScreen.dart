@@ -4,8 +4,8 @@ import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 
-class ConsentTermsnScreen extends StatelessWidget {
-  const ConsentTermsnScreen({super.key});
+class ConsentTermsScreen extends StatelessWidget {
+  const ConsentTermsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

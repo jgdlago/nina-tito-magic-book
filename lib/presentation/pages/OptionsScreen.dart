@@ -171,7 +171,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
               : GestureDetector(
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const ConsentTermsnScreen()),
+              MaterialPageRoute(builder: (_) => const ConsentTermsScreen()),
             ),
             child: Container(
               padding: const EdgeInsets.symmetric(
