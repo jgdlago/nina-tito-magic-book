@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
@@ -58,14 +57,38 @@ Seus direitos: acessar, corrigir ou excluir dados; revogar o consentimento; sabe
                 ),
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                width: buttonSize,
-                child: ActionButton(
-                  type: ButtonType.denial,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Voltar
+                  SizedBox(
+                    width: buttonSize,
+                    child: ActionButton(
+                      type: ButtonType.denial,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(width: 20),
+
+                  // Aceitar
+                  SizedBox(
+                    width: buttonSize,
+                    child: ActionButton(
+                      type: ButtonType.confirmation,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ConsentTermsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
