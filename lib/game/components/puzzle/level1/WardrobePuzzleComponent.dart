@@ -77,12 +77,12 @@ class WardrobePuzzleComponent extends PositionComponent
 
     final characterData = [
       {
-        'path': 'main_characters/tito/idle/01.png',
+        'path': 'puzzles/level_1/tito_naked.png',
         'name': 'tito',
         'clothes': ['underpants'] // Deve aceitar apenas 'underpants'
       },
       {
-        'path': 'main_characters/nina/idle/Idle (1).png',
+        'path': 'puzzles/level_1/nina_naked.png',
         'name': 'nina',
         'clothes': ['bikini_top', 'bikini_bottom'] // Aceita partes do biquíni
       },
