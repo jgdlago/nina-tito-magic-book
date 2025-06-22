@@ -16,18 +16,18 @@ class ConsentTermsScreen extends StatelessWidget {
     final TextStyle bodyStyle = Theme.of(context).textTheme.bodySmall!;
 
     const String consentText = '''
-Ao autorizar o jogo “As aventuras de Nina e Tito: em busca do livro mágico”, o(a) responsável concorda com a coleta e uso dos dados abaixo, conforme Lei 13.709/2018 (LGPD):
-
-Dados: nome (opcional), idade, gênero, acertos/erros e personagem escolhido.
-
-Finalidade: avaliar desempenho, gerar relatórios para professores e psicólogos e aperfeiçoar o jogo.
-
-Compartilhamento: somente com profissionais credenciados, em ambiente seguro.
-
-Base legal: seu consentimento (Art. 7º, I).
-
-Seus direitos: acessar, corrigir ou excluir dados; revogar o consentimento; saber prazo de retenção.
-''';
+    Ao conectar uma turma ao jogo “As aventuras de Nina e Tito: em busca do livro mágico”, o(a) responsável concorda com a coleta e uso dos dados abaixo, conforme Lei 13.709/2018 (LGPD):
+    
+    Dados: nome (opcional), idade, gênero, acertos/erros e personagem escolhido.
+    
+    Finalidade: avaliar desempenho, gerar relatórios para professores e psicólogos.
+    
+    Compartilhamento: somente com profissionais credenciados, em ambiente seguro.
+    
+    Base legal: seu consentimento (Art. 7º, I).
+    
+    Seus direitos: acessar, corrigir ou excluir dados; revogar o consentimento; saber prazo de retenção.
+    ''';
 
     return Scaffold(
       body: BackgroundContainer(
@@ -44,7 +44,7 @@ Seus direitos: acessar, corrigir ou excluir dados; revogar o consentimento; sabe
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Termos de consentimento do responsável',
+                        'Consentimento do responsável',
                         style: headingStyle,
                       ),
                       const SizedBox(height: 12),
@@ -65,6 +65,7 @@ Seus direitos: acessar, corrigir ou excluir dados; revogar o consentimento; sabe
                   SizedBox(
                     width: buttonSize,
                     child: ActionButton(
+                      text: 'Cancelar',
                       type: ButtonType.denial,
                       onPressed: () {
                         Navigator.pop(context);
@@ -78,6 +79,7 @@ Seus direitos: acessar, corrigir ou excluir dados; revogar o consentimento; sabe
                   SizedBox(
                     width: buttonSize,
                     child: ActionButton(
+                      text: 'Aceitar',
                       type: ButtonType.confirmation,
                       onPressed: () {
                         Navigator.push(
