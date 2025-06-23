@@ -96,8 +96,8 @@ class WardrobePuzzleComponent extends PositionComponent
           'bikini_bottom': Vector2(0.57, 0.83),
         },
         'scales': { // Escalas Nina
-          'bikini_top': 0.43,
-          'bikini_bottom': 0.43,
+          'bikini_top': 0.8,
+          'bikini_bottom': 0.8,
         }
       },
     ];
