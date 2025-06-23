@@ -31,6 +31,7 @@ class WardrobePuzzleComponent extends PositionComponent
     game.camera.viewport.add(
         DialogComponent(
             text: DialogMessages.level1WardrobePuzzleLayer1,
+            audioPath: 'audio/narration/puzzle_01.mp3',
             onContinue: () {
               _initPuzzle();
             }

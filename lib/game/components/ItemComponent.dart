@@ -64,6 +64,7 @@ class ItemComponent extends PositionComponent
     game.camera.viewport.add(
         DialogComponent(
             text: DialogMessages.potionCollected1,
+            audioPath: 'audio/narration/item_01.mp3',
             dialogImage: await game.images.load('items/potion_1.png'),
             onContinue: () {
               game.showGameHUD();

@@ -5,13 +5,11 @@ import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/components/puzzle/level1/WardrobePuzzleComponent.dart';
 
 class WardrobeComponent extends PositionComponent with HasGameReference<MagicBook>, CollisionCallbacks {
-  // final Function() onInteract;
   bool _isPlayerNearby = false;
 
   WardrobeComponent({
     required Vector2 position,
     required Vector2 size,
-    // required this.onInteract,
   }) : super(
     position: position,
     size: size,
