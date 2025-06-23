@@ -55,4 +55,16 @@ class UserRepository implements UserRepositoryInterface {
 
     return null;
   }
+
+  Future<void> updateTermsAcceptance(int? userId, DateTime acceptedAt) async {
+    if (userId == null) return;
+
+    final db = await _databaseHelper.database;
+    await db.update(
+      'users',
+      {'terms_accepted_at': acceptedAt.toIso8601String()},
+      where: 'id = ?',
+      whereArgs: [userId],
+    );
+  }
 }

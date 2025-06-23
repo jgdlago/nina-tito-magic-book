@@ -18,6 +18,7 @@ final String createUsersTable = '''
     age INTEGER NOT NULL,
     gender TEXT CHECK(gender IN ('$genderMasc', '$genderFem')) NOT NULL,
     player_id INTEGER UNIQUE NULL,
+    terms_accepted_at DATETIME NULL,
     FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE SET NULL
   )
 ''';

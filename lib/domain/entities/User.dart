@@ -6,6 +6,7 @@ class User {
   final int age;
   final GenderEnum gender;
   final int? playerId;
+  final DateTime? termsAcceptedAt;
 
   User({
     this.id,
@@ -13,6 +14,7 @@ class User {
     required this.age,
     required this.gender,
     this.playerId,
+    this.termsAcceptedAt,
   });
 
   String get displayName => name ?? gender.label;
@@ -26,6 +28,9 @@ class User {
             (e) => e.label == map['gender'],
       ),
       playerId: map['player_id'],
+      termsAcceptedAt: map['terms_accepted_at'] != null
+          ? DateTime.parse(map['terms_accepted_at'])
+          : null,
     );
   }
 
@@ -36,6 +41,7 @@ class User {
       'age': age,
       'gender': gender.label,
       'player_id': playerId,
+      'terms_accepted_at': termsAcceptedAt?.toIso8601String(),
     };
   }
 }

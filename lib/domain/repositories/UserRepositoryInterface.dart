@@ -5,4 +5,5 @@ abstract class UserRepositoryInterface {
   Future<User?> getCurrentUser();
   Future<User> createUser(User user);
   Future<Map<String, dynamic>?> getUserProgress();
+  Future<void> updateTermsAcceptance(int userId, DateTime acceptedAt);
 }

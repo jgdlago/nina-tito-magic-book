@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
 import 'package:nina_tito_magic_book/presentation/pages/GroupConnectionScreen.dart';
+import 'package:nina_tito_magic_book/providers/UserProvider.dart';
 
-class ConsentTermsScreen extends StatelessWidget {
+class ConsentTermsScreen extends ConsumerWidget {
   const ConsentTermsScreen({super.key});
 
+  void _showPlayerIdentificationAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text('Para prosseguir com a conexão você deve identificar seu player.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final double buttonSize = MediaQuery.of(context).size.width * 0.15;
     final double modalWidth = MediaQuery.of(context).size.width * 0.6;
     final double modalHeight = MediaQuery.of(context).size.height * 0.7;
@@ -75,19 +92,40 @@ class ConsentTermsScreen extends StatelessWidget {
 
                   const SizedBox(width: 20),
 
-                  // Aceitar
                   SizedBox(
                     width: buttonSize,
                     child: ActionButton(
                       text: 'Aceitar',
                       type: ButtonType.confirmation,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const GroupConnectionScreen(),
-                          ),
-                        );
+                      onPressed: () async {
+                        try {
+                          final userRepo = ref.read(userRepositoryProvider);
+                          final currentUser = await userRepo.getCurrentUser();
+
+                          if (currentUser == null || currentUser.id == null) {
+                            _showPlayerIdentificationAlert(context);
+                            return;
+                          }
+
+                          await userRepo.updateTermsAcceptance(
+                              currentUser.id!,
+                              DateTime.now()
+                          );
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const GroupConnectionScreen(),
+                            ),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Ocorreu um erro: ${e.toString()}'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),
