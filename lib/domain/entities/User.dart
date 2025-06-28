@@ -17,7 +17,11 @@ class User {
     this.termsAcceptedAt,
   });
 
-  String get displayName => name ?? gender.label;
+  // Implementação única e síncrona do displayName
+  String get displayName {
+    if (name != null && name!.isNotEmpty) return name!;
+    return gender.label;
+  }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
@@ -37,7 +41,7 @@ class User {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'name': name ?? gender.label,
+      'name': name,
       'age': age,
       'gender': gender.label,
       'player_id': playerId,

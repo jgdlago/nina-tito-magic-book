@@ -165,11 +165,11 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   }
 
   Future<Player> _loadPlayerData() async {
-    final data = await playerRepository.getPlayerByCurrentUser();
-    if (data == null) {
+    final player = await playerRepository.getPlayerByCurrentUser();
+    if (player == null) {
       throw Exception('Nenhum player encontrado para o usuário atual.');
     }
-    return Player.fromMap(data);
+    return player;
   }
 
   JoystickComponent _createJoystick() {

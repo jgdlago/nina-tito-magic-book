@@ -7,8 +7,9 @@ enum ButtonType { confirmation, denial, warning, skip }
 class ActionButton extends StatelessWidget {
   final ButtonType type;
   final String? text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isDisabled;
+  final bool isLoading;
 
   const ActionButton({
     super.key,
@@ -16,10 +17,11 @@ class ActionButton extends StatelessWidget {
     required this.onPressed,
     this.text,
     this.isDisabled = false,
+    this.isLoading = false,
   });
 
   Color _getBackgroundColor() {
-    if (isDisabled) return Colors.grey;
+    if (isDisabled || isLoading) return Colors.grey;
     switch (type) {
       case ButtonType.confirmation:
         return AppColors.confirmationGreen;
@@ -46,6 +48,8 @@ class ActionButton extends StatelessWidget {
   }
 
   Widget? _getIcon() {
+    if (isLoading) return null;
+
     switch (type) {
       case ButtonType.confirmation:
       case ButtonType.skip:
@@ -75,7 +79,7 @@ class ActionButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: isDisabled ? null : onPressed,
+        onPressed: (isDisabled || isLoading) ? null : onPressed,
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 12),
           backgroundColor: _getBackgroundColor(),
@@ -88,7 +92,12 @@ class ActionButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: Row(
+        child: isLoading
+            ? const CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          strokeWidth: 3,
+        )
+            : Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: type == ButtonType.denial

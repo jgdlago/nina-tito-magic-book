@@ -1,10 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nina_tito_magic_book/domain/services/GroupConnectionService.dart';
 import 'package:nina_tito_magic_book/presentation/components/ActionButton.dart';
 import 'package:nina_tito_magic_book/presentation/components/BackgroundContainer.dart';
 import 'package:nina_tito_magic_book/presentation/components/InfoModal.dart';
+import 'package:nina_tito_magic_book/providers/PlayerProvider.dart';
+import 'package:nina_tito_magic_book/providers/UserProvider.dart';
 
-class GroupConnectionScreen extends StatelessWidget {
+class GroupConnectionScreen extends ConsumerStatefulWidget {
   const GroupConnectionScreen({super.key});
+
+  @override
+  ConsumerState<GroupConnectionScreen> createState() => _GroupConnectionScreenState();
+}
+
+class _GroupConnectionScreenState extends ConsumerState<GroupConnectionScreen> {
+  late TextEditingController _codeController;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _codeController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _connectToGroup() async {
+    final code = _codeController.text.trim();
+    if (code.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, digite um código válido')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final playerRepo = ref.read(playerRepositoryProvider);
+      final userRepo = ref.read(userRepositoryProvider);
+
+      final user = await userRepo.getCurrentUser();
+      if (user == null) throw Exception('Usuário não autenticado');
+
+      final player = await playerRepo.getPlayerByCurrentUser();
+      if (player == null) throw Exception('Perfil do jogador não encontrado');
+
+      // Verificar dados obrigatórios
+      if (user.displayName.isEmpty) {
+        throw Exception('Nome do usuário não definido');
+      }
+
+      if (user.age <= 0) throw Exception('Idade do usuário inválida');
+
+      // Enviar requisição
+      final success = await GroupConnectionService.connectToGroup(code, user, player);
+      if (!success) throw Exception('Falha na conexão com o grupo');
+
+      // Atualizar banco local
+      await playerRepo.updateGroupAccessCode(code);
+
+      // Navegar de volta com sucesso
+      if (mounted) Navigator.pop(context, true);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro: ${e.toString()}')),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +82,6 @@ class GroupConnectionScreen extends StatelessWidget {
     final double modalWidth = MediaQuery.of(context).size.width * 0.6;
     final TextStyle headingStyle = Theme.of(context).textTheme.titleMedium!;
     final TextStyle bodyStyle = Theme.of(context).textTheme.bodySmall!;
-    final TextEditingController _codeController = TextEditingController();
 
     return Scaffold(
       body: BackgroundContainer(
@@ -49,6 +118,7 @@ class GroupConnectionScreen extends StatelessWidget {
                             ),
                             style: bodyStyle.copyWith(fontSize: 16),
                             textAlign: TextAlign.center,
+                            enabled: !_isLoading,
                           ),
                         ],
                       ),
@@ -60,14 +130,11 @@ class GroupConnectionScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 12),
                   SizedBox(
                     width: buttonSize,
                     child: ActionButton(
                       type: ButtonType.denial,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                      onPressed: _isLoading ? null : () => Navigator.pop(context),
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -75,22 +142,8 @@ class GroupConnectionScreen extends StatelessWidget {
                     width: buttonSize,
                     child: ActionButton(
                       type: ButtonType.confirmation,
-                      onPressed: () {
-                        // Lógica para validar e enviar o código
-                        final code = _codeController.text.trim();
-                        if (code.isNotEmpty) {
-                          // TODO: Implementar lógica de conexão
-                          print('Código enviado: $code');
-                          // Navegar para próxima tela após conexão
-                          // Navigator.push(...);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Por favor, digite um código válido'),
-                            ),
-                          );
-                        }
-                      },
+                      onPressed: _isLoading ? null : _connectToGroup,
+                      isLoading: _isLoading,
                     ),
                   ),
                 ],

@@ -11,7 +11,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
   PlayerRepository(this._databaseHelper, this._userRepository);
 
   @override
-  Future<Map<String, dynamic>?> getPlayerByCurrentUser() async {
+  Future<Player?> getPlayerByCurrentUser() async {
     final db = await _databaseHelper.database;
     final User? user = await _userRepository.getCurrentUser();
 
@@ -25,7 +25,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
     );
 
     if (result.isNotEmpty) {
-      return result.first;
+      return Player.fromMap(result.first);
     }
 
     return null;
@@ -45,6 +45,23 @@ class PlayerRepository implements PlayerRepositoryInterface {
       {'player_id': playerId},
       where: 'id = ?',
       whereArgs: [userId],
+    );
+  }
+
+  @override
+  Future<void> updateGroupAccessCode(String code) async {
+    final db = await _databaseHelper.database;
+    final User? user = await _userRepository.getCurrentUser();
+
+    if (user == null || user.playerId == null) {
+      throw Exception('Usuário ou playerId não encontrado');
+    }
+
+    await db.update(
+      'players',
+      {'group_access_code': code},
+      where: 'id = ?',
+      whereArgs: [user.playerId],
     );
   }
 }

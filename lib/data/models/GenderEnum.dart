@@ -23,4 +23,13 @@ extension GenderEnumExtension on GenderEnum {
         throw Exception('Gênero desconhecido');
     }
   }
+
+  String toApiString() {
+    switch (this) {
+      case GenderEnum.male:
+        return 'male';
+      case GenderEnum.female:
+        return 'female';
+    }
+  }
 }

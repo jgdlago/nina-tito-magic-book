@@ -4,7 +4,8 @@ const String createPlayersTable = '''
   CREATE TABLE players(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     character TEXT NOT NULL,
-    equipped_skin TEXT NOT NULL
+    equipped_skin TEXT NOT NULL,
+    groups_access_code VARCHAR(8)
   )
 ''';
 
