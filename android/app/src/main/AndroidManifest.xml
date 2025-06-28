@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="nina_tito_magic_book"
+        android:label="As aventuras de Nina e Tito: Em busca do livro mágico"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
