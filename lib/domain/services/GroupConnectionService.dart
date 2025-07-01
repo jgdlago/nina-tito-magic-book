@@ -10,6 +10,10 @@ class GroupConnectionService {
     return dotenv.get('BASE_URL', fallback: 'http://localhost');
   }
 
+  static String get appToken {
+    return dotenv.get('APP_TOKEN', fallback: '');
+  }
+
   static Future<bool> connectToGroup(String code, User user, Player player) async {
     final url = '$baseUrl/$code/player';
 
@@ -19,6 +23,7 @@ class GroupConnectionService {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'X-App-Token': appToken,
         },
         body: jsonEncode({
           'name': user.name ?? user.displayName,
@@ -28,15 +33,14 @@ class GroupConnectionService {
         }),
       );
 
+      print('URL: $url');
+      print('Status Code: ${response.statusCode}');
+      print('Response: ${response.body}');
+
       if (response.statusCode == 200) {
         return true;
       } else {
-        try {
-          final errorData = jsonDecode(response.body);
-          throw Exception('Erro ${response.statusCode}: ${errorData['message']}');
-        } catch (_) {
-          throw Exception('Erro ${response.statusCode}: ${response.body}');
-        }
+        throw Exception('HTTP ${response.statusCode}: ${response.body}');
       }
     } catch (e) {
       print('Erro na conexão com $url: $e');
