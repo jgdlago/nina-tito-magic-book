@@ -1,5 +1,6 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nina_tito_magic_book/presentation/pages/MainMenuScreen.dart';
 import 'package:nina_tito_magic_book/presentation/theme/AppTheme.dart';
@@ -11,6 +12,9 @@ final initializationProvider = FutureProvider<void>((ref) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  const env = String.fromEnvironment('ENV', defaultValue: 'development');
+  await dotenv.load(fileName: env == 'production' ? '.env.production' : '.env');
 
   try {
     await Flame.device.fullScreen();
