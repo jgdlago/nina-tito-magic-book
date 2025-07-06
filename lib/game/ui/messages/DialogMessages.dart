@@ -8,4 +8,6 @@ class DialogMessages {
   static const potionCollected1 = 'Você encontrou uma poção mágica!';
 
   static const level1WardrobePuzzleLayer1 = 'Para começar vamos encontrar as roupas que cobrem as partes íntimas e privadas do corpo da menina e do menino.\nse acertar todas, ganhará seu primeiro item mágico!';
+
+  static const level1PuzzleSuccess = 'Parabéns! Agora que nos vestimos corretamente, podemos começar a jornada!\nHora de ir a escola...';
 }

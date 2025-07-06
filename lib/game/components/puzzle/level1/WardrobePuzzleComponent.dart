@@ -229,7 +229,8 @@ class WardrobePuzzleComponent extends PositionComponent
   void _showSuccessDialog() {
     game.camera.viewport.add(
         DialogComponent(
-          text: "Parabéns! Você vestiu os personagens corretamente!",
+          text: DialogMessages.level1PuzzleSuccess,
+          audioPath: 'audio/narration/puzzle_success_01.mp3',
           onContinue: () {
             closePuzzle();
           },
