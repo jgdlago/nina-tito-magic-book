@@ -3,40 +3,83 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "bedroomMap.tmx",
+    "activeFile": "schoolMap.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
+        ":/automap-tiles.tsx": {
+            "scaleInDock": 1
+        },
         "C:/dev/pixel-adventure/assets/tiles/Pixel Adventure.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "bedroomMap.tmx": {
             "scale": 0.5,
-            "selectedLayer": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 967,
-                "y": 512
+                "x": 940,
+                "y": 514
             }
         },
         "bedroom_tiled_64x64.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "schooMap": {
+            "scale": 0.21930443548387094,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1997.223626752471,
+                "y": 1126.288209606987
+            }
+        },
+        "schooMap.tmx": {
+            "scale": 0.21930443548387094,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1988.1038841645604,
+                "y": 994.0519420822801
+            }
+        },
+        "schoolMap.tmx": {
+            "scale": 0.19436035156249998,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 216.0934555960307,
+                "y": 1811.0689611857808
+            }
+        },
+        "school_tiled.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "school_tiled_64x64.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 0.0625
         }
     },
-    "last.imagePath": "C:/dev/nina-tito-magic-book/assets/images",
-    "map.height": 11,
+    "last.imagePath": "/home/dallago/dev/projects/magic-book-game/assets/images",
+    "map.height": 31,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 64,
     "map.tileWidth": 64,
-    "map.width": 32,
+    "map.width": 62,
     "openFiles": [
-        "bedroomMap.tmx"
+        "bedroomMap.tmx",
+        "bedroom_tiled_64x64.tsx",
+        "schoolMap.tmx"
     ],
     "project": "MagicBookProject.tiled-project",
     "recentFiles": [
+        "schooMap",
+        "school_tiled.tsx",
+        "school_tiled_64x64.tsx",
         "bedroomMap.tmx",
+        "bedroom_tiled_64x64.tsx",
+        "schoolMap.tmx",
         "C:/dev/pixel-adventure/assets/tiles/Pixel Adventure.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
