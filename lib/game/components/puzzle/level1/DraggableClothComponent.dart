@@ -10,6 +10,8 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
   bool isDragging = false;
   bool isPlaced = false;
   final String clothType;
+  CharacterDropZone? placedCharacter;
+  VoidCallback? onStateChanged;
 
   DraggableClothComponent({
     required Sprite sprite,
@@ -101,6 +103,10 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
           character.size.y * 0.7 - size.y
       );
     }
+
+    placedCharacter = character;
+    character.addCloth(clothType);
+    onStateChanged?.call();
   }
 
   double _getDefaultScale(CharacterDropZone character) {
@@ -123,8 +129,14 @@ class DraggableClothComponent extends SpriteComponent with DragCallbacks {
   }
 
   void resetPosition() {
+    if (placedCharacter != null) {
+      placedCharacter!.removeCloth(clothType);
+      placedCharacter = null;
+    }
+
     position = originalPosition.clone();
     size = originalSize.clone();
     isPlaced = false;
+    onStateChanged?.call();
   }
 }

@@ -21,7 +21,6 @@ class PuzzleOverlay extends RectangleComponent with HasGameReference<MagicBook> 
     position = Vector2.zero();
   }
 
-  @override
   bool onTapDown(TapDownInfo info) {
     return true;
   }

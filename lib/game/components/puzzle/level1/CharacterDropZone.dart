@@ -5,6 +5,7 @@ class CharacterDropZone extends SpriteComponent {
   final List<String> acceptedClothes;
   final Map<String, Vector2> clothingPositions;
   final Map<String, double> clothingScales;
+  List<String> placedClothes = [];
 
   CharacterDropZone({
     required Sprite sprite,
@@ -26,5 +27,22 @@ class CharacterDropZone extends SpriteComponent {
 
   double? getScaleForCloth(String clothType) {
     return clothingScales[clothType];
+  }
+
+  // adicionar roupa
+  void addCloth(String clothType) {
+    if (acceptedClothes.contains(clothType)) {
+    placedClothes.add(clothType);
+    }
+  }
+
+  // remover roupa
+  void removeCloth(String clothType) {
+    placedClothes.remove(clothType);
+  }
+
+  // verifica se todas as roupas necessárias foram colocadas
+  bool get isComplete {
+    return acceptedClothes.every((cloth) => placedClothes.contains(cloth));
   }
 }

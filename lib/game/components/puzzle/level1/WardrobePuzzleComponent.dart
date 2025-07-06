@@ -14,6 +14,7 @@ class WardrobePuzzleComponent extends PositionComponent
   late PuzzleOverlay puzzleOverlay;
   final List<DraggableClothComponent> clothes = [];
   final List<CharacterDropZone> characters = [];
+  bool _isPuzzleComplete = false;
 
   WardrobePuzzleComponent({
     required Vector2 position,
@@ -187,7 +188,7 @@ class WardrobePuzzleComponent extends PositionComponent
         size: size,
         position: Vector2(x, y),
         clothType: data['type'] as String,
-      );
+      )..onStateChanged = _checkPuzzleCompletion;
 
       clothes.add(clothComponent);
       puzzleOverlay.add(clothComponent);
@@ -212,5 +213,27 @@ class WardrobePuzzleComponent extends PositionComponent
   void closePuzzle() {
     puzzleOverlay.closePuzzle();
     game.showGameHUD();
+    removeFromParent();
+  }
+
+  void _checkPuzzleCompletion() {
+    if (_isPuzzleComplete) return;
+    final isComplete = characters.every((character) => character.isComplete);
+
+    if (isComplete) {
+      _isPuzzleComplete = true;
+      _showSuccessDialog();
+    }
+  }
+
+  void _showSuccessDialog() {
+    game.camera.viewport.add(
+        DialogComponent(
+          text: "Parabéns! Você vestiu os personagens corretamente!",
+          onContinue: () {
+            closePuzzle();
+          },
+        )
+    );
   }
 }
