@@ -16,7 +16,7 @@ class OptionsScreen extends StatefulWidget {
 class _OptionsScreenState extends State<OptionsScreen> {
   bool narratorActive = AudioManager.narratorActive;
   bool musicActive = true;
-  String? classCode = null;
+  String? classCode;
 
   @override
   Widget build(BuildContext context) {

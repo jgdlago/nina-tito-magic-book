@@ -56,6 +56,7 @@ class UserRepository implements UserRepositoryInterface {
     return null;
   }
 
+  @override
   Future<void> updateTermsAcceptance(int? userId, DateTime acceptedAt) async {
     if (userId == null) return;
 

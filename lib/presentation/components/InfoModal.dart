@@ -10,14 +10,14 @@ class InfoModal extends StatelessWidget {
   final Color borderColor;
 
   const InfoModal({
-    Key? key,
+    super.key,
     required this.child,
     this.width,
     this.height,
     this.padding = const EdgeInsets.all(12),
     this.backgroundColor = AppColors.mysticalWhite,
     this.borderColor = AppColors.mysticalBlack,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
