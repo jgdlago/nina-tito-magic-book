@@ -227,6 +227,9 @@ class WardrobePuzzleComponent extends PositionComponent
   }
 
   void _showSuccessDialog() {
+    // Mark level 1 as completed
+    game.levelRepository.completeLevel(1);
+
     game.camera.viewport.add(
         DialogComponent(
           text: DialogMessages.level1PuzzleSuccess,
