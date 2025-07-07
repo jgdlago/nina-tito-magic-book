@@ -47,4 +47,18 @@ class LevelRepository implements LevelRepositoryInterface {
       [levelOrder],
     );
   }
+
+  @override
+  Future<Level?> getLastUnfinishedLevel() async {
+    final db = await _databaseHelper.database;
+    final result = await db.query(
+      'levels',
+      where: 'finished_at IS NULL',
+      orderBy: 'level_order ASC',
+      limit: 1,
+    );
+
+    if (result.isEmpty) return null;
+    return Level.fromMap(result.first);
+  }
 }
