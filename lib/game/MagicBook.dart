@@ -17,6 +17,7 @@ import 'package:nina_tito_magic_book/game/components/PauseButtonComponent.dart';
 import 'package:nina_tito_magic_book/game/components/PlayerComponent.dart';
 import 'package:nina_tito_magic_book/game/components/JumpButtonComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
+import 'package:nina_tito_magic_book/game/scenarios/Scenario.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nina_tito_magic_book/game/ui/messages/DialogMessages.dart';
 
@@ -69,8 +70,8 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
 
     playerData = await _loadPlayerData();
 
-    final bedroomScenario = await Bedroom.load();
-    final tiledComponent = bedroomScenario.scene;
+    final scenario = await _loadScenarioFromLastUnfinishedLevel();
+    final tiledComponent = scenario.scene;
     final renderableMap = tiledComponent.tileMap;
     final tiledMap = renderableMap.map;
 
@@ -95,7 +96,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     jumpButton = _createJumpButton();
 
     levelComponent = LevelComponent(
-      scene: bedroomScenario,
+      scene: scenario,
       player: playerComponent,
       levelRepository: levelRepository,
     );
@@ -170,6 +171,25 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       throw Exception('Nenhum player encontrado para o usuário atual.');
     }
     return player;
+  }
+
+  Future<Scenario> _loadScenarioFromLastUnfinishedLevel() async {
+    final level = await levelRepository.getLastUnfinishedLevel();
+    if (level == null) {
+      // Fallback to Bedroom if no unfinished level is found
+      return await Bedroom.load();
+    }
+
+    // The scenario column contains the class name of the scenario
+    switch (level.scenario) {
+      case 'Bedroom':
+        return await Bedroom.load();
+      // Add more cases for other scenarios as they are implemented
+      default:
+        // Default to Bedroom if the scenario class is not recognized
+        print('Scenario class ${level.scenario} not found, defaulting to Bedroom');
+        return await Bedroom.load();
+    }
   }
 
   JoystickComponent _createJoystick() {
