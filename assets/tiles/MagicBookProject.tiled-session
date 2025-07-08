@@ -18,13 +18,14 @@
         },
         "bedroomMap.tmx": {
             "expandedObjectLayers": [
+                2,
                 3
             ],
-            "scale": 0.5,
-            "selectedLayer": 2,
+            "scale": 4,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 940,
-                "y": 514
+                "x": 1015,
+                "y": 683.75
             }
         },
         "bedroom_tiled_64x64.tsx": {
@@ -49,13 +50,14 @@
         },
         "schoolMap.tmx": {
             "expandedObjectLayers": [
-                2
+                2,
+                3
             ],
-            "scale": 0.33,
+            "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1939.3939393939393,
-                "y": 1293.939393939394
+                "x": 2894,
+                "y": 1954
             }
         },
         "school_tiled.tsx": {
