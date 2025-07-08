@@ -21,11 +21,11 @@
                 2,
                 3
             ],
-            "scale": 4,
-            "selectedLayer": 1,
+            "scale": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 1015,
-                "y": 683.75
+                "x": 969,
+                "y": 724
             }
         },
         "bedroom_tiled_64x64.tsx": {
@@ -50,14 +50,13 @@
         },
         "schoolMap.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                2
             ],
-            "scale": 0.5,
+            "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 2894,
-                "y": 1954
+                "x": 590,
+                "y": 640
             }
         },
         "school_tiled.tsx": {
@@ -70,11 +69,11 @@
         }
     },
     "last.imagePath": "/home/dallago/dev/projects/magic-book-game/assets/images",
-    "map.height": 31,
+    "map.height": 11,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 64,
     "map.tileWidth": 64,
-    "map.width": 62,
+    "map.width": 22,
     "openFiles": [
         "bedroomMap.tmx",
         "bedroom_tiled_64x64.tsx",
@@ -82,12 +81,12 @@
     ],
     "project": "MagicBookProject.tiled-project",
     "recentFiles": [
+        "schoolMap.tmx",
+        "school_tiled_64x64.tsx",
         "bedroom_tiled_64x64.tsx",
         "schooMap",
         "school_tiled.tsx",
-        "school_tiled_64x64.tsx",
         "bedroomMap.tmx",
-        "schoolMap.tmx",
         "C:/dev/pixel-adventure/assets/tiles/Pixel Adventure.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
