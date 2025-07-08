@@ -18,12 +18,14 @@ class Level {
 
   factory Level.fromMap(Map<String, dynamic> map) {
     return Level(
-      id: map['id'],
-      order: map['level_order'],
-      name: map['name'],
-      message: map['message'],
-      scenario: map['scenario'],
-      finishedAt: map['finished_at'],
+      id: map['id'] as int?,
+      order: map['level_order'] as int,
+      name: map['name'] as String,
+      message: map['message'] as String,
+      scenario: map['scenario'] as String,
+      finishedAt: map['finished_at'] != null
+          ? DateTime.tryParse(map['finished_at'] as String)
+          : null,
     );
   }
 
@@ -34,7 +36,7 @@ class Level {
       'name': name,
       'message': message,
       'scenario': scenario,
-      'finished_at': finishedAt,
+      'finished_at': finishedAt?.toIso8601String(),
     };
   }
 }

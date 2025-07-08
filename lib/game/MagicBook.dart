@@ -19,6 +19,7 @@ import 'package:nina_tito_magic_book/game/components/JumpButtonComponent.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Bedroom.dart';
 import 'package:nina_tito_magic_book/game/scenarios/Scenario.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nina_tito_magic_book/game/scenarios/School.dart';
 import 'package:nina_tito_magic_book/game/ui/messages/DialogMessages.dart';
 
 class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
@@ -179,11 +180,13 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
       return await Bedroom.load();
     }
 
+    print('Scenario: ${level.scenario}');
     switch (level.scenario) {
       case 'Bedroom':
         return await Bedroom.load();
+      case 'School':
+        return await School.load();
       default:
-        print('Scenario class ${level.scenario} not found, defaulting to Bedroom');
         return await Bedroom.load();
     }
   }

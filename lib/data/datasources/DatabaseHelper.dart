@@ -36,6 +36,6 @@ class DatabaseHelper {
   }
 
   Future<void> _seedDatabase(Database db) async {
-    await db.execute(addLevel1);
+    await db.execute(addLevels);
   }
 }

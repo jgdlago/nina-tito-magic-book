@@ -17,8 +17,11 @@
             "scaleInEditor": 1
         },
         "bedroomMap.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
             "scale": 0.5,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
                 "x": 940,
                 "y": 514
@@ -45,11 +48,14 @@
             }
         },
         "schoolMap.tmx": {
-            "scale": 0.19436035156249998,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.33,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 216.0934555960307,
-                "y": 1811.0689611857808
+                "x": 1939.3939393939393,
+                "y": 1293.939393939394
             }
         },
         "school_tiled.tsx": {
@@ -74,11 +80,11 @@
     ],
     "project": "MagicBookProject.tiled-project",
     "recentFiles": [
+        "bedroom_tiled_64x64.tsx",
         "schooMap",
         "school_tiled.tsx",
         "school_tiled_64x64.tsx",
         "bedroomMap.tmx",
-        "bedroom_tiled_64x64.tsx",
         "schoolMap.tmx",
         "C:/dev/pixel-adventure/assets/tiles/Pixel Adventure.tsx"
     ],
