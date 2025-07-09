@@ -78,12 +78,12 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     final renderableMap = tiledComponent.tileMap;
     final tiledMap = renderableMap.map;
 
-    final ObjectGroup spawnGroup = renderableMap
-        .getLayer<ObjectGroup>('SpawnPoints')
-        ?? (throw Exception('Layer "SpawnPoints" não encontrado'));
+    final ObjectGroup spawnGroup =
+        renderableMap.getLayer<ObjectGroup>('SpawnPoints') ??
+            (throw Exception('Layer "SpawnPoints" não encontrado'));
 
-    final TiledObject spawnObj = spawnGroup.objects
-        .firstWhere((o) => o.name == 'player',
+    final TiledObject spawnObj = spawnGroup.objects.firstWhere(
+        (o) => o.name == 'player',
         orElse: () => spawnGroup.objects.first);
 
     final spawnPos = Vector2(
@@ -103,8 +103,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         scene: scenario,
         player: playerComponent,
         levelRepository: levelRepository,
-        level: currentLevel
-    );
+        level: currentLevel);
     add(levelComponent);
 
     final worldWidth = tiledMap.width * tiledMap.tileWidth.toDouble();
@@ -116,12 +115,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     )
       ..follow(playerComponent, snap: false, maxSpeed: 400)
       ..setBounds(
-        Rectangle.fromLTWH(
-            0,
-            0,
-            worldWidth,
-            worldHeight
-        ),
+        Rectangle.fromLTWH(0, 0, worldWidth, worldHeight),
         considerViewport: true,
       );
 
@@ -179,17 +173,11 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   }
 
   Future<Scenario> _loadScenarioFromLastUnfinishedLevel() async {
-    // Armazene o nível na variável
     currentLevel = await levelRepository.getLastUnfinishedLevel();
 
     if (currentLevel == null) {
-      print(
-          'Nenhum nível não finalizado encontrado. Carregando Bedroom padrão.');
       return await Bedroom.load();
     }
-
-    print('Carregando nível: ${currentLevel!.id} | Cenário: ${currentLevel!
-        .scenario}');
 
     switch (currentLevel!.scenario.toLowerCase()) {
       case 'bedroom':
@@ -204,15 +192,12 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   JoystickComponent _createJoystick() {
     return JoystickComponent(
         knob: SpriteComponent(
-          sprite: Sprite(images.fromCache('hud/Knob.png')
-          ),
+          sprite: Sprite(images.fromCache('hud/Knob.png')),
         ),
         background: SpriteComponent(
-          sprite: Sprite(images.fromCache('hud/Joystick.png')
-          ),
+          sprite: Sprite(images.fromCache('hud/Joystick.png')),
         ),
-        margin: const EdgeInsets.only(left: 100, bottom: 50)
-    )
+        margin: const EdgeInsets.only(left: 100, bottom: 50))
       ..priority = 100;
   }
 
@@ -227,42 +212,63 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   }
 
   Future<void> _loadIntroduction() async {
-    await camera.viewport.add(
-        DialogComponent(
-          text: DialogMessages.introductionLevel1,
-          audioPath: 'audio/narration/introduction_01.mp3',
-          onContinue: () {
-            _showSecondDialog();
-          },
-        )
-    );
+    if (currentLevel != null) {
+      switch (currentLevel!.scenario.toLowerCase()) {
+        case 'bedroom':
+          await _loadBedroomIntroduction();
+          break;
+        case 'school':
+          await _loadSchoolIntroduction();
+          break;
+        default:
+          await _loadBedroomIntroduction();
+          break;
+      }
+    } else {
+      await _loadBedroomIntroduction();
+    }
   }
 
-  void _showSecondDialog() async {
-    await camera.viewport.add(
-        DialogComponent(
-            text: DialogMessages.introductionLevel1layer2,
-            dialogImage: images.fromCache('general/magic_book.png'),
-            audioPath: 'audio/narration/introduction_02.mp3',
-            onContinue: () {
-              _showThirdDialog();
-            }
-        )
-    );
+  Future<void> _loadBedroomIntroduction() async {
+    await camera.viewport.add(DialogComponent(
+      text: DialogMessages.introductionLevel1,
+      audioPath: 'audio/narration/introduction_01.mp3',
+      onContinue: () {
+        _showBedroomSecondDialog();
+      },
+    ));
   }
 
-  void _showThirdDialog() async {
-    await camera.viewport.add(
-        DialogComponent(
-            text: DialogMessages.introductionLevel1layer3,
-            dialogImage: images.fromCache('items/items_example.png'),
-            audioPath: 'audio/narration/introduction_03.mp3',
-            onContinue: () {
-              showGameHUD();
-              showingIntroduction = false;
-            }
-        )
-    );
+  void _showBedroomSecondDialog() async {
+    await camera.viewport.add(DialogComponent(
+        text: DialogMessages.introductionLevel1layer2,
+        dialogImage: images.fromCache('general/magic_book.png'),
+        audioPath: 'audio/narration/introduction_02.mp3',
+        onContinue: () {
+          _showBedroomThirdDialog();
+        }));
+  }
+
+  void _showBedroomThirdDialog() async {
+    await camera.viewport.add(DialogComponent(
+        text: DialogMessages.introductionLevel1layer3,
+        dialogImage: images.fromCache('items/items_example.png'),
+        audioPath: 'audio/narration/introduction_03.mp3',
+        onContinue: () {
+          showGameHUD();
+          showingIntroduction = false;
+        }));
+  }
+
+  Future<void> _loadSchoolIntroduction() async {
+    await camera.viewport.add(DialogComponent(
+      text: DialogMessages.introductionLevel2,
+      audioPath: 'audio/narration/introduction_04.mp3',
+      onContinue: () {
+        showGameHUD();
+        showingIntroduction = false;
+      },
+    ));
   }
 
   void togglePause() {
@@ -284,12 +290,21 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   }
 
   void loadLevel(Level newLevel) async {
+    String? previousScenario = currentLevel?.scenario;
+
     currentLevel = newLevel;
     levelComponent.updateLevel(newLevel);
 
-    if (newLevel.scenario != currentLevel?.scenario) {
+    if (newLevel.scenario != previousScenario) {
       final newScenario = await _loadScenarioForLevel(newLevel);
       levelComponent.scene = newScenario;
+
+      final userProgress = await userRepository.getUserProgress();
+      if (userProgress != null) {
+        showingIntroduction = true;
+        removeGameHUD();
+        await _loadIntroduction();
+      }
     }
   }
 
