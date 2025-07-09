@@ -52,11 +52,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1,
+            "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 590,
-                "y": 640
+                "x": 325.33333333333337,
+                "y": 228.66666666666666
             }
         },
         "school_tiled.tsx": {
@@ -76,17 +76,16 @@
     "map.width": 22,
     "openFiles": [
         "bedroomMap.tmx",
-        "bedroom_tiled_64x64.tsx",
         "schoolMap.tmx"
     ],
     "project": "MagicBookProject.tiled-project",
     "recentFiles": [
+        "bedroomMap.tmx",
         "schoolMap.tmx",
         "school_tiled_64x64.tsx",
         "bedroom_tiled_64x64.tsx",
         "schooMap",
         "school_tiled.tsx",
-        "bedroomMap.tmx",
         "C:/dev/pixel-adventure/assets/tiles/Pixel Adventure.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",

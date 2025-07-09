@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:nina_tito_magic_book/domain/entities/Level.dart';
 import 'package:nina_tito_magic_book/domain/entities/Player.dart';
 import 'package:nina_tito_magic_book/domain/repositories/ItemRepositoryInterface.dart';
 import 'package:nina_tito_magic_book/domain/repositories/LevelRepositoryInterface.dart';
@@ -33,6 +34,7 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   late final JumpButtonComponent jumpButton;
   late final PlayerComponent playerComponent;
   bool showingIntroduction = false;
+  Level? currentLevel;
 
   MagicBook({
     required this.playerRepository,
@@ -81,7 +83,8 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
         ?? (throw Exception('Layer "SpawnPoints" não encontrado'));
 
     final TiledObject spawnObj = spawnGroup.objects
-        .firstWhere((o) => o.name == 'player', orElse: () => spawnGroup.objects.first);
+        .firstWhere((o) => o.name == 'player',
+        orElse: () => spawnGroup.objects.first);
 
     final spawnPos = Vector2(
       spawnObj.x + spawnObj.width / 2,
@@ -97,9 +100,10 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     jumpButton = _createJumpButton();
 
     levelComponent = LevelComponent(
-      scene: scenario,
-      player: playerComponent,
-      levelRepository: levelRepository,
+        scene: scenario,
+        player: playerComponent,
+        levelRepository: levelRepository,
+        level: currentLevel
     );
     add(levelComponent);
 
@@ -175,16 +179,22 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   }
 
   Future<Scenario> _loadScenarioFromLastUnfinishedLevel() async {
-    final level = await levelRepository.getLastUnfinishedLevel();
-    if (level == null) {
+    // Armazene o nível na variável
+    currentLevel = await levelRepository.getLastUnfinishedLevel();
+
+    if (currentLevel == null) {
+      print(
+          'Nenhum nível não finalizado encontrado. Carregando Bedroom padrão.');
       return await Bedroom.load();
     }
 
-    print('Scenario: ${level.scenario}');
-    switch (level.scenario) {
-      case 'Bedroom':
+    print('Carregando nível: ${currentLevel!.id} | Cenário: ${currentLevel!
+        .scenario}');
+
+    switch (currentLevel!.scenario.toLowerCase()) {
+      case 'bedroom':
         return await Bedroom.load();
-      case 'School':
+      case 'school':
         return await School.load();
       default:
         return await Bedroom.load();
@@ -202,7 +212,8 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
           ),
         ),
         margin: const EdgeInsets.only(left: 100, bottom: 50)
-    )..priority = 100;
+    )
+      ..priority = 100;
   }
 
   JumpButtonComponent _createJumpButton() {
@@ -270,5 +281,26 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
   void onRemove() {
     AudioManager.stopAllNarrations();
     super.onRemove();
+  }
+
+  void loadLevel(Level newLevel) async {
+    currentLevel = newLevel;
+    levelComponent.updateLevel(newLevel);
+
+    if (newLevel.scenario != currentLevel?.scenario) {
+      final newScenario = await _loadScenarioForLevel(newLevel);
+      levelComponent.scene = newScenario;
+    }
+  }
+
+  Future<Scenario> _loadScenarioForLevel(Level level) async {
+    switch (level.scenario.toLowerCase()) {
+      case 'bedroom':
+        return await Bedroom.load();
+      case 'school':
+        return await School.load();
+      default:
+        return await Bedroom.load();
+    }
   }
 }
