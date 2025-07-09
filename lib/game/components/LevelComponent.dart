@@ -8,7 +8,7 @@ import 'package:nina_tito_magic_book/game/scenarios/Scenario.dart';
 import 'package:nina_tito_magic_book/game/ui/themes/GameTextStyles.dart';
 
 class LevelComponent extends World with HasGameReference<MagicBook> {
-  late final Scenario scene;
+  Scenario scene;
   final PlayerComponent player;
   final LevelRepositoryInterface levelRepository;
   Level? _currentLevel;
@@ -85,5 +85,21 @@ class LevelComponent extends World with HasGameReference<MagicBook> {
     _currentLevel = newLevel;
     removeLevelMessage();
     addLevelMessage();
+  }
+
+  void updateScene(Scenario newScene, Level newLevel) {
+    remove(scene);
+
+    scene = newScene;
+    _currentLevel = newLevel;
+    add(newScene);
+    removeLevelMessage();
+
+    if (!game.showingIntroduction) {
+      addLevelMessage();
+    }
+
+    player.removeFromParent();
+    add(player);
   }
 }

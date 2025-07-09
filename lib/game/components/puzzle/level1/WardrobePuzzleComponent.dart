@@ -234,8 +234,14 @@ class WardrobePuzzleComponent extends PositionComponent
         DialogComponent(
           text: DialogMessages.level1PuzzleSuccess,
           audioPath: 'audio/narration/puzzle_success_01.mp3',
-          onContinue: () {
+          onContinue: () async {
             closePuzzle();
+
+            // Load level 2 after completing level 1
+            final nextLevel = await game.levelRepository.getLevel(2);
+            if (nextLevel != null) {
+              await game.loadLevel(nextLevel);
+            }
           },
         )
     );

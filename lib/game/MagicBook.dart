@@ -289,23 +289,73 @@ class MagicBook extends FlameGame with DragCallbacks, HasCollisionDetection {
     super.onRemove();
   }
 
-  void loadLevel(Level newLevel) async {
+  Future<void> loadLevel(Level newLevel) async {
     String? previousScenario = currentLevel?.scenario;
 
     currentLevel = newLevel;
-    levelComponent.updateLevel(newLevel);
+
+    Scenario newScenario;
+    if (newLevel.scenario != previousScenario) {
+      newScenario = await _loadScenarioForLevel(newLevel);
+    } else {
+      newScenario = levelComponent.scene;
+    }
+
+    final spawnPos = await _getSpawnPosition(newScenario);
+
+    playerComponent.position = spawnPos;
+
+    levelComponent.updateScene(newScenario, newLevel);
+
+    _recreateCamera(newScenario);
 
     if (newLevel.scenario != previousScenario) {
-      final newScenario = await _loadScenarioForLevel(newLevel);
-      levelComponent.scene = newScenario;
-
-      final userProgress = await userRepository.getUserProgress();
-      if (userProgress != null) {
-        showingIntroduction = true;
-        removeGameHUD();
-        await _loadIntroduction();
-      }
+      showingIntroduction = true;
+      removeGameHUD();
+      await _loadIntroduction();
+    } else {
+      showGameHUD();
     }
+  }
+
+  Future<Vector2> _getSpawnPosition(Scenario scenario) async {
+    final tiledComponent = scenario.scene;
+    final renderableMap = tiledComponent.tileMap;
+
+    final ObjectGroup spawnGroup = renderableMap.getLayer<ObjectGroup>('SpawnPoints') ??
+        (throw Exception('Layer "SpawnPoints" não encontrado'));
+
+    final TiledObject spawnObj = spawnGroup.objects.firstWhere(
+          (o) => o.name == 'player',
+      orElse: () => spawnGroup.objects.first,
+    );
+
+    return Vector2(
+      spawnObj.x + spawnObj.width / 2,
+      spawnObj.y + spawnObj.height,
+    );
+  }
+
+  void _recreateCamera(Scenario scenario) {
+    final tiledComponent = scenario.scene;
+    final tiledMap = tiledComponent.tileMap.map;
+
+    final worldWidth = tiledMap.width * tiledMap.tileWidth.toDouble();
+    final worldHeight = tiledMap.height * tiledMap.tileHeight.toDouble();
+
+    remove(camera);
+
+    camera = CameraComponent(
+      world: levelComponent,
+      viewport: FixedSizeViewport(size.x, size.y),
+    )
+      ..follow(playerComponent, snap: false, maxSpeed: 400)
+      ..setBounds(
+        Rectangle.fromLTWH(0, 0, worldWidth, worldHeight),
+        considerViewport: true,
+      );
+
+    add(camera);
   }
 
   Future<Scenario> _loadScenarioForLevel(Level level) async {
